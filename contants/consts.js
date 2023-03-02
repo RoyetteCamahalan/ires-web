@@ -1,0 +1,1 @@
+export const foodstatus = { cancelled: 0, pending : 1, preparing: 2, ready: 3, served: 4}
