@@ -10,18 +10,24 @@
   "devDependencies": {
     "autoprefixer": "^10.4.13",
     "nuxt": "^3.2.2",
+    "nuxt-icon": "^0.3.2",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.7"
   },
   "dependencies": {
+    "@headlessui/vue": "^1.7.12",
+    "@kyvg/vue3-notification": "^2.9.0",
     "@nuxtjs/axios": "^5.13.6",
     "@pinia/nuxt": "^0.4.7",
+    "@vueform/multiselect": "^2.5.8",
     "@vuelidate/core": "^2.0.0",
     "@vuelidate/validators": "^2.0.0",
     "@vueuse/sound": "^2.0.1",
     "click-outside-vue3": "^4.0.1",
+    "moment": "^2.29.4",
     "pinia": "^2.0.32",
     "pinia-plugin-persistedstate": "^3.1.0",
-    "vue-loading-overlay": "6.0"
+    "vue-loading-overlay": "6.0",
+    "vue-sweetalert2": "^5.0.5"
   }
 }

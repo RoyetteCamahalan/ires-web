@@ -1,1 +1,2 @@
-export const foodstatus = { cancelled: 0, pending : 1, preparing: 2, ready: 3, served: 4}
+export const surveyStatus = { pending: 0, cancelled : 1, surveyed: 2, completed: 3}
+export const appModules = { sales: 2, payment: 3, employees: 8}

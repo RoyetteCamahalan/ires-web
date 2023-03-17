@@ -1,42 +1,42 @@
 <template>
   <div>
-    <div class="flex items-center min-h-screen p-6 bg-gray-50">
-      <div class="flex-1 h-full max-w-lg mx-auto overflow-hidden bg-white rounded-lg shadow-xl">
-        <LoadingSpinner :is-active="state.isPageLoading">
-          <div class="flex flex-col overflow-y-auto">
-            <div class="flex items-center justify-center p-6">
-              <div class="w-full">
-                <h1 class="mb-4 text-2xl font-semibold text-gray-700 text-center">
-                  Hidden Gardens
-                </h1>
-                <h4 class="mb-4 text-l font-semibold text-gray-700">
-                  Login
-                </h4>
-                <label class="block text-sm">
-                  <FormTextField name="username" placeholder="Username" v-model="state.username"/>
-                  <FormError :error="v$.username && v$.username.$errors && v$.username.$errors.length > 0 ? v$.username.$errors[0].$message : null "/>
-                </label>
-                <label class="block mt-4 text-sm">
-                  <input class="block w-full mt-1 text-sm focus:border-blue-400 form-input" placeholder="Password" type="password" v-model="state.password">
-                  <FormError :error="v$.password && v$.password.$errors && v$.password.$errors.length > 0 ? v$.password.$errors[0].$message : null "/>
-                  <FormError :error="state.error && state.error != '' ? state.error : null "/>
-                </label>
+    <main class="bg-gray-50">
+      <div class="flex flex-col justify-center items-center px-6 pt-8 mx-auto md:h-screen pt:mt-0">
+        <a href="/" class="flex justify-center items-center mb-6 text-2xl font-semibold lg:mb-4">
+          <img src="https://i.imgur.com/hamRKWZ.jpeg" class="mr-4 h-10" alt="Creative Tim Logo">
+          <span class="self-center text-xl font-bold whitespace-nowrap">{{ runtimeConfig.public.appName }} Dashboard</span>
+        </a>
+        <div class="p-10 w-full max-w-lg bg-white rounded-2xl shadow-xl shadow-gray-300">
+          <LoadingSpinner :is-active="state.isPageLoading">
+            <div class="space-y-8">
+              <h2 class="text-lg font-bold text-gray-900">
+                Sign in to platform
+              </h2>
+              <form class="mt-8 space-y-6" method="POST" @submit.prevent="login">
+                <div>
+                    <FormTextField name="username" placeholder="Username or Email" v-model="state.username"/>
+                    <FormError :error="v$.username && v$.username.$errors && v$.username.$errors.length > 0 ? v$.username.$errors[0].$message : null "/>
+                </div>
+                <div>
+                  <FormPasswordField name="password" placeholder="Password" v-model="state.password"></FormPasswordField>
+                      <FormError :error="v$.password && v$.password.$errors && v$.password.$errors.length > 0 ? v$.password.$errors[0].$message : null "/>
+                      <FormError :error="state.error && state.error != '' ? state.error : null "/>
+                </div>
 
-                <!-- You should use a button here, as the anchor is only used for the example  -->
-                <button class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded hover:bg-blue-700"
-                  @click="login">
-                  Log in
-                </button>
-                <button class="block w-full px-4 py-2 mt-2 text-sm font-medium leading-5 text-center transition-colors text-gray-700 duration-150 bg-gray-100 border border-2 rounded hover:bg-gray-200"
-                  @click="configureURL">
-                  Configure URL
-                </button>
+                <div class="flex items-end">
+                  <div class="text-sm font-medium text-gray-500">
+                      Not registered? <NuxtLink to="/company/register" class="text-blue-600 hover:underline">Create Account</NuxtLink>
+                  </div>
+                  <a href="#" class="ml-auto text-sm text-blue-600 hover:underline">Lost Password?</a>
+                </div>
+                <button type="submit" class="py-2 px-4 w-full text-base font-medium text-center text-white bg-blue-500 hover:scale-[1.02] shadow-md shadow-gray-300 transition-transform rounded-lg sm:w-auto">Login to your account</button>
+                
+                </form>
               </div>
-            </div>
-          </div>
-        </LoadingSpinner>
+          </LoadingSpinner>
+        </div>
       </div>
-    </div>
+    </main>
   </div>
 </template>
 
@@ -47,9 +47,14 @@ import { required, helpers } from '@vuelidate/validators'
 import { authService } from '@/components/api/AuthService'
 import { useUserStore } from '@/store/user'
 
+definePageMeta({
+    middleware: ["authenticated"]
+})
+
 export default {
     setup(){
       const userStore = useUserStore()
+      const runtimeConfig = useRuntimeConfig()
       const state = reactive({
         username: '',
         password: '',
@@ -58,7 +63,7 @@ export default {
       })
       const validators = computed(()=>{
         return{
-          username: { required: helpers.withMessage('This field is required.', required) },
+          username: { required: helpers.withMessage('Username or Email is required.', required) },
           password: { required: helpers.withMessage('Password is required.', required) },
         }
       })
@@ -75,29 +80,22 @@ export default {
           }
           try{
             const response = await authService.login(params)
-            if(response.status == 1){
-              localStorage.setItem("_officecode", response.office.code)
-              userStore.setUser(response.office)
+              localStorage.setItem("_token", response.data.token)
+              userStore.setUser(response.data)
               state.error = null
-              navigateTo('/')
-            }else{
-              state.error = 'Invalid login credentials.'
-            }
+              navigateTo('/surveys')
           }catch(error){
               state.isPageLoading = false
-              state.error = 'Unable to process request.'
+              state.error = error.message
           }
         }
       }
-      const configureURL = () =>{
-        navigateTo('/changeurl')
-      }
 
       return {
+        runtimeConfig,
         state,
         v$,
-        login,
-        configureURL
+        login
       }
     }
 }
