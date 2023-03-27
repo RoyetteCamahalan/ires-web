@@ -11,7 +11,7 @@ const props = defineProps({
         required: true,
     },
     modelValue: {
-        type: String,
+        type: Number,
         required: false
     },
     placeholder: {
@@ -23,6 +23,9 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 
 function updateValue(event: any) {
-    emit('update:modelValue', event.target.value)
+    if(event.target.value === '')
+        emit('update:modelValue', null)
+    else
+        emit('update:modelValue', parseFloat(event.target.value))
 }
 </script>

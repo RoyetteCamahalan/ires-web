@@ -15,7 +15,7 @@
                 <div class="overflow-x-auto rounded-2xl">
                     <div class="inline-block min-w-full align-middle">
                         <div class="overflow-hidden shadow-lg">
-                            <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.users"
+                            <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.users.data"
                                 class="w-full whitespace-no-wrap">
                                 
                                 <template #body

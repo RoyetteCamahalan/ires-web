@@ -32,11 +32,20 @@
                 </div>
             </div>
         </div>
+        <div class="px-4">
+            <FormError :error="state.error && state.error.length > 0 ? state.error : null "/>
+            <div class="flex flex-row-reverse">
+                <FormButton buttonStyle="primary" class="text-sm" @click="submit">Submit</FormButton>
+            </div>
+        </div>
     </div>
 </template>
 <script setup>
-import { reactive } from 'vue';
+import { reactive, watch } from 'vue';
 import { paymentService } from '@/components/api/PaymentService'
+import { useSearchStore } from '@/store/search';
+
+const searchStore = useSearchStore()
 
 const props = defineProps({
     searchType:{
@@ -48,6 +57,8 @@ const props = defineProps({
         required: true
     }
 })
+
+const emit = defineEmits(['modalClose'])
 
 const state = reactive({
     payables: [],
@@ -65,6 +76,10 @@ const state = reactive({
 
 onMounted(() => {
     fetchData()
+})
+
+watch(() => state.searchString, async () =>{
+    await fetchData();
 })
 
 async function fetchData(){
@@ -86,9 +101,10 @@ const onPageChanged = (value) => {
 function addSelectedItem(item){
     const itemCount = state.selectedItems.length
     removeObjectWithId(item.payableID)
-    if(itemCount == state.selectedItems.length)
+    if(itemCount == state.selectedItems.length){
+        item.paymentAmount = null
         state.selectedItems.push(item)
-    console.log(state.selectedItems)
+    }
 }
 function removeObjectWithId(id) {
   const objWithIdIndex = state.selectedItems.findIndex((obj) => obj.payableID === id);
@@ -96,6 +112,15 @@ function removeObjectWithId(id) {
   if (objWithIdIndex > -1) {
     state.selectedItems.splice(objWithIdIndex, 1);
   }
+}
+
+function submit(){
+    if(state.selectedItems && state.selectedItems.length > 0){
+        searchStore.setSelectedData(state.selectedItems)
+        emit('modalClose')
+    }
+    else
+        state.error = "Please select record."
 }
 
 </script>

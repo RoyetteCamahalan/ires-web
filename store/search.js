@@ -9,6 +9,9 @@ export const useSearchStore = defineStore('searchStore',
         actions: {
             setSelectedData(data) {
                 this.searchData = data
+            },
+            resetSelectedData() {
+                this.searchData = null
             }
         },
         getters: {

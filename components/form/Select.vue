@@ -1,7 +1,7 @@
 <template>
     <Multiselect :close-on-select="true" :searchable="props.searchable" :options="props.options"
         :canClear="props.canClear" 
-        class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus:border-blue-400 focus:ring-2"/>
+        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-blue-400 focus:ring-2"/>
 </template>
 
 <script setup lang="ts">

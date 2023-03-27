@@ -15,7 +15,7 @@
                 <div class="overflow-x-auto rounded-2xl">
                     <div class="inline-block min-w-full align-middle">
                         <div class="overflow-hidden shadow-lg">
-                            <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.clients"
+                            <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.clients.data"
                                 class="w-full whitespace-no-wrap">
                                 
                                 <template #body
@@ -89,7 +89,6 @@ export default{
             state.isPageLoading = true
             try{
                 const response = await clientService.get(state.currentPage, search)
-                console.log(response);
                 state.clients = response.data
             }catch(error){
                 console.log(error)

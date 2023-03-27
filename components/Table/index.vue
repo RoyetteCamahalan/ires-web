@@ -14,7 +14,7 @@
         </thead>
         <tbody class="bg-white divide-y">
             <slot name="body"></slot>
-            <tr v-if="isLoading || (data && data.data && data.data.length === 0)">
+            <tr v-if="isLoading || (data && data && data.length === 0)">
                 <td :colspan="columnHeaders.length" class="text-center h-36">
                     <div class="flex items-center justify-center flex-col gap-2" v-if="isLoading">
                         <div class="w-16 h-16 border-b-2 border-gray-900 rounded-full animate-spin"></div>

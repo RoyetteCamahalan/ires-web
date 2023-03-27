@@ -15,7 +15,7 @@
                 <div class="rounded-2xl">
                     <div class="inline-block min-w-full align-middle">
                         <div class="shadow-lg">
-                            <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.surveys"
+                            <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.surveys.data"
                                 class="w-full whitespace-no-wrap">
                                 
                                 <template #body
