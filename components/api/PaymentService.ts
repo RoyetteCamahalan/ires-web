@@ -14,9 +14,12 @@ class PaymentService extends BaseAPIService{
     async getReceiptNo(receiptType: number): Promise<any> {
         return await this.request(`/payment/getreceiptno?receiptType=${receiptType}`, 'GET')
     }
-    // async getDetails(id: number): Promise<any> {
-    //     return await this.request(`/survey/${id}`, 'GET')
-    // }
+    async getPayments(params: object): Promise<any> {
+        return await this.request(`/payment`, 'GET', params)
+    }
+    async getDetails(id: number): Promise<any> {
+        return await this.request(`/payment/${id}`, 'GET')
+    }
     async create(params: object): Promise<any> {
         return await this.request(`/payment`, 'POST', params)
     }

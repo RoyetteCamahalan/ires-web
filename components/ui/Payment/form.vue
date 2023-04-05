@@ -6,13 +6,7 @@
               <div class="grid grid-cols-6 gap-4 p-3 mb-3 rounded-lg bg-white border">
                   <div class="col-span-6 sm:col-span-4">
                       <FormLabel for="client" label="Client" />
-                      <Multiselect v-on:search-change="searchClient" 
-                        :searchable="true" 
-                        :options="state.clients" 
-                        :loading="state.isClientLoading"
-                        v-model="state.payment.custid"
-                        noOptionsText="Type to search clients"
-                        class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus-:border-blue-400 focus:ring-2"></Multiselect>
+                      <FormSelectClient v-model="state.payment.custid"></FormSelectClient>
                         <FormError :error="v$.payment.custid && v$.payment.custid.$errors && v$.payment.custid.$errors.length > 0 ? v$.payment.custid.$errors[0].$message : null "/>
                   </div>
                   <div class="col-span-6 sm:col-span-2">
@@ -85,14 +79,9 @@
                             <FormSelect :options="state.paymentModes" :searchable="false" :canClear="false" v-model="state.payment.paymentmode"></FormSelect>
                             <div v-if="state.payment.paymentmode === 1">
                               
-                              <FormLabel for="checkbank" label="Bank" />
-                              <Multiselect v-on:search-change="searchBanks" 
-                                :searchable="true" 
-                                :options="state.banks" 
-                                :loading="state.isBankLoading"
-                                v-model="state.payment.paymentCheckRequestDto.bankid"
-                                noOptionsText="Type to search banks"
-                                class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus-:border-blue-400 focus:ring-2"></Multiselect>
+                              <FormLabel for="checkbank" label="Issuing Bank" />
+                              <FormSelectBanks
+                                v-model="state.payment.paymentCheckRequestDto.bankid"></FormSelectBanks>
                               <FormError :error="vCheck$.payment.paymentCheckRequestDto.bankid && vCheck$.payment.paymentCheckRequestDto.bankid.$errors && vCheck$.payment.paymentCheckRequestDto.bankid.$errors.length > 0 ? vCheck$.payment.paymentCheckRequestDto.bankid.$errors[0].$message : null "/>
                               
                               <div class="grid grid-cols-6 gap-4">
@@ -120,25 +109,22 @@
                                 
                             </div>
                             <div v-if="state.payment.paymentmode === 2">
-                              <FormLabel for="banks" label="Bank" />
-                              <Multiselect v-on:search-change="searchBanks" 
-                                :searchable="true" 
-                                :options="state.banks" 
-                                :loading="state.isBankLoading"
-                                v-model="state.payment.bankTransfer.bankid"
-                                noOptionsText="Type to search banks"
-                                class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus-:border-blue-400 focus:ring-2"></Multiselect>
-                              <FormError :error="vbankTransfer$.payment.bankTransfer.bankid && vbankTransfer$.payment.bankTransfer.bankid.$errors && vbankTransfer$.payment.bankTransfer.bankid.$errors.length > 0 ? vbankTransfer$.payment.bankTransfer.bankid.$errors[0].$message : null "/>
+                              <FormLabel for="banks" label="Bank Account" />
+                              <div class="relative">
+                                <FormSelectBankaccounts 
+                                  :newAccountID="state.newBankAccountID"
+                                  v-model="state.payment.bankTransfer.accountid" class="pr-16" ></FormSelectBankaccounts>
+                                  <button 
+                                    @click="state.modalBankAccountShow = true"
+                                    class="absolute inset-y-0 right-0 px-3 text-sm font-medium text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-r-md hover:bg-blue-700">
+                                    Create
+                                  </button>
+                              </div>
+                              <FormError :error="vbankTransfer$.payment.bankTransfer.accountid && vbankTransfer$.payment.bankTransfer.accountid.$errors && vbankTransfer$.payment.bankTransfer.accountid.$errors.length > 0 ? vbankTransfer$.payment.bankTransfer.accountid.$errors[0].$message : null "/>
                             </div>
                             <div v-if="state.payment.paymentmode === 3">
                               <FormLabel for="wallets" label="Wallet" />
-                              <Multiselect v-on:search-change="searchWallets" 
-                                :searchable="true" 
-                                :options="state.wallets" 
-                                :loading="state.isWalletLoading"
-                                v-model="state.payment.bankTransfer.bankid"
-                                noOptionsText="Type to search wallets"
-                                class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus-:border-blue-400 focus:ring-2"></Multiselect>
+                              <FormSelectEwallets v-model="state.payment.bankTransfer.bankid"></FormSelectEwallets>
                               <FormError :error="vbankTransfer$.payment.bankTransfer.bankid && vbankTransfer$.payment.bankTransfer.bankid.$errors && vbankTransfer$.payment.bankTransfer.bankid.$errors.length > 0 ? vbankTransfer$.payment.bankTransfer.bankid.$errors[0].$message : null "/>
                             </div>
                             <div v-if="state.payment.paymentmode === 2 || state.payment.paymentmode === 3">
@@ -183,19 +169,20 @@
         <Modal title="Search Payables" :isShow="state.modalShow" @modalClose="modalClose">
           <SearchPayables searchType="payables" :clientID="state.payment.custid" @modalClose="modalClose"></SearchPayables>
         </Modal>
+        <Modal title="Create Bank Account" :isShow="state.modalBankAccountShow" @modalClose="modalBankAccountClose">
+          <UiBankAccountForm @modalClose="modalBankAccountClose"></UiBankAccountForm>
+        </Modal>
     </div>
 </template>
 <script setup>
-import Multiselect from '@vueform/multiselect'
-import '@vueform/multiselect/themes/default.css'
 import { reactive, computed, watch } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
-import { required, minValue, maxValue, helpers, numeric } from '@vuelidate/validators'
-import { clientService } from '@/components/api/ClientService'
+import { required, minValue, helpers, numeric, requiredIf } from '@vuelidate/validators'
 import { useSearchStore } from '@/store/search';
 import { useUserStore } from '@/store/user'
 import moment from 'moment'
 import { paymentService } from '~~/components/api/PaymentService'
+import { paymentMode } from '~~/contants/consts';
 
 const { $toastNotification } = useNuxtApp()
 
@@ -226,9 +213,8 @@ const state = reactive({
     transtype: 'P',
     paidby: '',
     remarks: '',
-    //payables: [],
     payables: [],
-    paymentmode: 0,
+    paymentmode: 2,
     paymentCheckRequestDto:{
       bankid: 0,
       checkno: '',
@@ -239,18 +225,14 @@ const state = reactive({
     },
     bankTransfer:{
       bankid: 0,
+      accountid: 0,
       paymentdate: moment(currentDate).format('YYYY-MM-DD'),
       amount: 0,
       refno: '',
       memo: ''
     }
   },
-  clients:[],
-  isClientLoading: false,
-  banks:[],
-  isBankLoading: false,
-  wallets:[],
-  isWalletLoading: false,
+  newBankAccountID: 0,
   receiptTypes:[
     { label: "Official Receipt", value: 1},
     { label: "Acknowledgement Receipt", value: 2},
@@ -270,6 +252,7 @@ const state = reactive({
                 { name: 'Payment', width: '20%', textAlign: 'center'},
                 { name: '', width: '28'},
             ],
+  modalBankAccountShow: false
 })
 
 const validators = computed(() =>{
@@ -308,12 +291,16 @@ const checkValidators = computed(() =>{
     }
   }
 })
+
 const bankTransferValidators = computed(() =>{
   return {
     payment: {
       bankTransfer: { 
         bankid:{ 
-          minValue: helpers.withMessage('This field is required.', minValue(1)) 
+          minValue: helpers.withMessage('This field is required.b', minValue(state.payment.paymentmode == paymentMode.eWallet ? 1 : 0)),
+        },
+        accountid:{ 
+          minValue: helpers.withMessage('This field is required.', minValue(state.payment.paymentmode == paymentMode.bankTransfer ? 1 : 0)),
         },
         refno:{ 
           required: helpers.withMessage('This field is required.', required),
@@ -333,10 +320,9 @@ const v$ = useVuelidate(validators, state)
 const vCheck$ = useVuelidate(checkValidators, state)
 const vbankTransfer$ = useVuelidate(bankTransferValidators, state)
 
-onMounted(() =>{
-  searchWallets('')
+watch(() => state.payment.custid, async (newValue) => {
+  state.payment.payables = []
 })
-
 watch(() => state.payment.receipttype, async (newValue) => {
     if (newValue != null) {
         state.isReceiptLoading = true
@@ -369,46 +355,12 @@ function modalClose(){
   }
 }
 
-const searchClient = async (query) =>{
-  state.isClientLoading = true
-  try{
-    const response = await clientService.get(1,query)
-    state.clients = []
-    response.data.data.forEach(element => {
-      state.clients.push({ value: element.custid, label: element.fname + ' ' + element.lname })
-    });
-  }catch(error){
-    state.clients = []
+function modalBankAccountClose(accountid = 0){
+  if(accountid > 0){
+    state.newBankAccountID = accountid
+    state.payment.bankTransfer.accountid = accountid
   }
-  state.isClientLoading = false
-}
-
-const searchBanks = async (query) =>{
-  state.isBankLoading = true
-  try{
-    const response = await paymentService.getBanks(1, query)
-    state.banks = []
-    response.data.data.forEach(element => {
-      state.banks.push({ value: element.bankid, label: element.name })
-    });
-  }catch(error){
-    state.banks = []
-  }
-  state.isBankLoading = false
-}
-
-const searchWallets = async (query) =>{
-  state.isWalletLoading = true
-  try{
-    const response = await paymentService.getWallets(1, query)
-    state.wallets = []
-    response.data.data.forEach(element => {
-      state.wallets.push({ value: element.bankid, label: element.name })
-    });
-  }catch(error){
-    state.wallets = []
-  }
-  state.isWalletLoading = false
+  state.modalBankAccountShow = false
 }
 
 function addNew(){
@@ -439,6 +391,7 @@ function validatePayables(){
 }
 
 async function submit(){
+  console.log(state.payment.bankTransfer)
   v$.value.$validate()
   let isValid = !v$.value.$error
   if(state.payment.paymentmode === 1){
@@ -457,14 +410,21 @@ async function submit(){
 
   if(isValid){
     state.payment.totalamount = totalPayment.value
+    if(state.payment.paymentmode === 1){
+      vCheck$.value.$validate()
+      isValid = !vCheck$.value.$error && isValid
+    }else if(state.payment.paymentmode === 2 || state.payment.paymentmode === 3){
+      vbankTransfer$.value.$validate()
+      isValid = !vbankTransfer$.value.$error && isValid
+    }
     state.isPageLoading = true
     try{
-      console.log(JSON.stringify(state.payment))
-      await paymentService.create(state.payment)
+      const response = await paymentService.create(state.payment)
+      console.log(response)
+      navigateTo('/payments/receipt/' + response.data.paymentid)
     }
     catch(error){
       state.error = error.message
-      console.log(error)
     }
     state.isPageLoading = false
   }

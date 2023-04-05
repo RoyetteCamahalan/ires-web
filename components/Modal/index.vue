@@ -4,7 +4,7 @@
         <div class="relative px-4 w-full max-w-2xl h-full md:h-auto">
             <div class="relative bg-white rounded-2xl shadow-lg">
             <div class="flex justify-between items-start px-5 py-2 rounded-t border-b">
-                <h3 class="text-xl font-semibold">{{ title }}</h3>
+                <h3 class="textlg font-semibold my-auto">{{ title }}</h3>
                 <button
                 type="button"
                 class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-2xl text-sm p-1.5 ml-auto inline-flex items-center"

@@ -8,6 +8,9 @@ class CompanyService extends BaseAPIService{
     async verify(params: object): Promise<any> {
         return await this.request(`/company/verify`, 'POST', params)
     }
+    async get(): Promise<any> {
+        return await this.request(`/company`, 'GET')
+    }
 }
 
 export const companyService = new CompanyService()
