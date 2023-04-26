@@ -1,0 +1,111 @@
+<template>
+    <div>
+        <div class="w-full flex justify-between p-2 mt-3 mx-4 font-semibold text-blue-600">
+            <div class="my-auto">My Invoices</div>
+            <div class="text-xs w-48 mx-6">
+                <FormSelect :options="state.filters" :searchable="false" :canClear="false" class="rounded-2xl text-sm" v-model="state.selectedFilter"></FormSelect>
+            </div>
+        </div>
+        <div class="flex flex-col mb-3 mx-4 rounded-2xl shadow-xl shadow-gray-200">
+            <div class="inline-block min-w-full align-middle">
+                <div class="rounded-2xl shadow-lg bg-white">
+                    <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.bills.data"
+                        class="w-full whitespace-no-wrap">
+                        
+                        <template #body
+                            v-if="!(state.isPageLoading || (state.bills.data && state.bills.data.length === 0))">
+                            
+                            <tr v-for="(bill, index) in state.bills.data" :key="index" class="text-gray-700">
+                                <td class="px-4 py-3 text-sm">
+                                    {{ bill.id }}
+                                </td>
+                                <td class="px-4 py-3 text-sm">
+                                    {{ bill.particular }}
+                                </td>
+                                <td class="px-4 py-3 text-sm">
+                                    {{ moment(bill.datedue).format('YYYY-MM-DD') }}
+                                </td>
+                                <td class="px-4 py-3 text-sm">
+                                    {{ $formatAmount(bill.amount) }}
+                                </td>
+                                <td class="px-4 py-3 text-xs">
+                                        <span v-if="bill.status === billStatus.open" class="px-2 py-1 font-semibold leading-tight rounded-full text-red-700 bg-red-100">Unpaid</span>
+                                        <span v-else-if="bill.status === billStatus.paid" class="px-2 py-1 font-semibold leading-tight rounded-full text-green-700 bg-green-100">Paid</span>
+                                        <span v-else class="px-2 py-1 font-semibold leading-tight rounded-full text-gray-700 bg-gray-100">Cancelled</span>
+                                </td>
+                                <td class="px-4 py-3 text-xs text-center">
+                                    <button v-if="bill.status === billStatus.open" 
+                                        @click="payBill(bill.id)"
+                                        type="button" class="px-2 py-1 text-sm bg-blue-600 text-white rounded-lg text-xs">Pay Now</button>
+                                </td>
+                            </tr>
+                        </template>
+                    </Table>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script setup>
+import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+import { billingService } from '~~/components/api/BillingService'
+import { billStatus } from '@/contants/consts'
+import moment from 'moment';
+
+const state = reactive({
+    bills: [],
+    error: '',
+    currentPage: 1,
+    isPageLoading: false,
+    columnHeaders: [
+        { name: 'Bill #'},
+        { name: 'Particular'},
+        { name: 'Due Date'},
+        { name: 'Total'},
+        { name: 'Status'},
+        { name: 'Action', textAlign: 'center'}
+    ],
+    selectedFilter: 0,
+    filters:[
+        { label: "Open", value: 0},
+        { label: "Paid", value: 1},
+        { label: "All", value: 2}
+    ]
+})
+onMounted(() =>{
+    loadData()
+})
+watch(() => state.selectedFilter, () => {
+    loadData()
+})
+
+async function loadData(){
+    state.isPageLoading = true
+    try{
+        const response = await billingService.getBills(state.currentPage, state.selectedFilter)
+        state.bills = response.data
+    }catch(error){
+        state.error = error
+    }
+    state.isPageLoading = false
+}
+const onPageChanged = (value) => {
+    state.currentPage = value
+    loadData()
+}
+async function payBill(billID){
+    state.isPageLoading = true
+    try{
+        const params = {
+            id: billID
+        }
+        const response = await billingService.startPayment(params)
+        if(response.data.checkouturl.length > 0){
+            navigateTo(response.data.checkouturl, { external: true })
+        }
+    }catch(error){
+        state.error = error
+    }
+    state.isPageLoading = false
+}
+</script>

@@ -24,48 +24,47 @@
                       </button>
                   </div>
               </div>
-              <div class="flex flex-col mb-3 mt-1 rounded-lg border">
-                  <div class="overflow-x-auto rounded-lg">
-                      <div class="inline-block min-w-full align-middle">
-                          <div class="overflow-hidden shadow-lg">
-                              <Table :columnHeaders="state.columnHeaders" :isLoading="false" :data="state.payment.payables"
-                                  class="w-full whitespace-no-wrap">
+              
+              <div class="flex flex-col my-3 mt-1 shadow-gray-200">
+                  <div class="inline-block min-w-full align-middle">
+                      <div class="rounded-2xl shadow-lg bg-white">
+                          <Table :columnHeaders="state.columnHeaders" :isLoading="false" :data="state.payment.payables"
+                              class="w-full whitespace-no-wrap">
+                              
+                              <template #body
+                                  v-if="!(state.payment.payables && state.payment.payables.length === 0)">
                                   
-                                  <template #body
-                                      v-if="!(state.payment.payables && state.payment.payables.length === 0)">
-                                      
-                                      <tr v-for="(payable, index) in state.payment.payables" :key="index" class="text-gray-700">
-                                          <td class="px-4 py-3 text-sm">
-                                              {{ payable.description }}
-                                          </td>
-                                          <td class="px-4 py-3 text-sm text-right">
-                                              {{ $formatAmount(payable.grossAmount) }}
-                                          </td>
-                                          <td class="px-4 py-3 text-sm text-right">
-                                              {{ $formatAmount(payable.balance) }}
-                                          </td>
-                                          <td class="pl-4 py-3 text-sm text-right">
-                                              <FormNumberField name="paymentamount" placeholder="Payment" class="text-right" v-model="payable.paymentAmount"></FormNumberField>
-                                              <FormError :error="payable.paymentAmount > payable.balance || payable.paymentAmount <= 0 ? 'Invalid input' : null "/>
-                                          </td>
-                                          <td class="p-4 py-3">
-                                              <button type="button" @click="removeItem(payable)">
-                                                <Icon name="material-symbols:delete" class="w-6 h-6 text-red-600"/>
-                                              </button>
-                                          </td>
-                                      </tr>
-                                      <tr class="text-gray-700">
-                                        <td class="px-4 py-3 text-sm text-right font-semibold" colspan="3">
-                                          Total Payment:
-                                        </td>
-                                        <td class="px-4 py-3 text-sm text-right font-semibold">
-                                          {{ $formatAmount(totalPayment) }}
-                                        </td>
-                                        <td class="p-4 py-3"></td>
-                                      </tr>
-                                  </template>
-                              </Table>
-                          </div>
+                                  <tr v-for="(payable, index) in state.payment.payables" :key="index" class="text-gray-700">
+                                      <td class="px-4 py-3 text-sm">
+                                          {{ payable.description }}
+                                      </td>
+                                      <td class="px-4 py-3 text-sm text-right">
+                                          {{ $formatAmount(payable.grossAmount) }}
+                                      </td>
+                                      <td class="px-4 py-3 text-sm text-right">
+                                          {{ $formatAmount(payable.balance) }}
+                                      </td>
+                                      <td class="pl-4 py-3 text-sm text-right">
+                                          <FormNumberField name="paymentamount" placeholder="Payment" class="text-right" v-model="payable.paymentAmount"></FormNumberField>
+                                          <FormError :error="payable.paymentAmount > payable.balance || payable.paymentAmount <= 0 ? 'Invalid input' : null "/>
+                                      </td>
+                                      <td class="p-4 py-3">
+                                          <button type="button" @click="removeItem(payable)">
+                                            <Icon name="material-symbols:delete" class="w-6 h-6 text-red-600"/>
+                                          </button>
+                                      </td>
+                                  </tr>
+                                  <tr class="text-gray-700">
+                                    <td class="px-4 py-3 text-sm text-right font-semibold" colspan="3">
+                                      Total Payment:
+                                    </td>
+                                    <td class="px-4 py-3 text-sm text-right font-semibold">
+                                      {{ $formatAmount(totalPayment) }}
+                                    </td>
+                                    <td class="p-4 py-3"></td>
+                                  </tr>
+                              </template>
+                          </Table>
                       </div>
                   </div>
               </div>

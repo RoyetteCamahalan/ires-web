@@ -14,6 +14,9 @@ class SurveyService extends BaseAPIService{
     async update(params: object): Promise<any> {
         return await this.request(`/survey`, 'PUT', params)
     }
+    async updateStatus(params: object): Promise<any> {
+        return await this.request(`/survey/updatestatus`, 'PUT', params)
+    }
 }
 
 export const surveyService = new SurveyService()

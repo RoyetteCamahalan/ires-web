@@ -30,14 +30,14 @@
             <Icon name="material-symbols:menu" class="w-6 h-6"></Icon>
           </button>
           <a href="/" class="text-md font-semibold flex items-center lg:mr-1.5">
-            <img
+            <!-- <img
               src="https://i.imgur.com/hamRKWZ.jpeg"
               class="mr-2 h-7"
               alt="Creative Tim Logo"
-            />
+            /> -->
             <span
-              class="hidden md:inline-block self-center text-xl font-bold whitespace-nowrap"
-              >IRES</span
+              class="hidden md:inline-block self-center text-lg font-bold whitespace-nowrap"
+              >HexaByt</span
             >
           </a>
           <form action="#" method="GET" class="hidden lg:block lg:pl-8">
@@ -470,24 +470,6 @@
               >
                 <svg
                   class="mx-auto mb-1 w-7 h-7 text-gray-500"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M5 2a2 2 0 00-2 2v14l3.5-2 3.5 2 3.5-2 3.5 2V4a2 2 0 00-2-2H5zm2.5 3a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm6.207.293a1 1 0 00-1.414 0l-6 6a1 1 0 101.414 1.414l6-6a1 1 0 000-1.414zM12.5 10a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-                <div class="text-sm font-medium text-gray-900">Billing</div>
-              </a>
-              <a
-                href="#"
-                class="block p-4 text-center rounded-2xl hover:bg-gray-100"
-              >
-                <svg
-                  class="mx-auto mb-1 w-7 h-7 text-gray-500"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -536,6 +518,26 @@
                       class="w-5 h-5"
                     />
                     My Profile
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/billing"
+                    class="flex items-center gap-x-3 px-4 py-3 text-sm text-gray-700 cursor-pointer hover:bg-gray-200"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M5 2a2 2 0 00-2 2v14l3.5-2 3.5 2 3.5-2 3.5 2V4a2 2 0 00-2-2H5zm2.5 3a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm6.207.293a1 1 0 00-1.414 0l-6 6a1 1 0 101.414 1.414l6-6a1 1 0 000-1.414zM12.5 10a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    Billing
                   </a>
                 </li>
                 <li>

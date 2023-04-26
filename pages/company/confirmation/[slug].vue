@@ -21,7 +21,7 @@
                             {{ state.message }}
                         </p>
                     </div>
-                    <FormButton type="submit" buttonStyle="primary" @click="navigateTo('/login')">
+                    <FormButton type="submit" buttonStyle="primary" @click="navigateTo('/login')" class="block w-full">
                         Login
                     </FormButton>
                 </LoadingSpinner>

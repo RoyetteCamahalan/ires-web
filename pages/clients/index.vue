@@ -11,44 +11,42 @@
                     </button>
                 </div>
             </div>
-            <div class="flex flex-col my-3 mx-4 rounded-2xl shadow-xl shadow-gray-200">
-                <div class="overflow-x-auto rounded-2xl">
-                    <div class="inline-block min-w-full align-middle">
-                        <div class="overflow-hidden shadow-lg">
-                            <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.clients.data"
-                                class="w-full whitespace-no-wrap">
+            <div class="flex flex-col my-3 mx-4 shadow-gray-200">
+                <div class="inline-block min-w-full align-middle">
+                    <div class="rounded-2xl shadow-lg bg-white">
+                        <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.clients.data"
+                            class="w-full whitespace-no-wrap">
+                            
+                            <template #body
+                                v-if="!(state.isPageLoading || (state.clients.data && state.clients.data.length === 0))">
                                 
-                                <template #body
-                                    v-if="!(state.isPageLoading || (state.clients.data && state.clients.data.length === 0))">
-                                    
-                                    <tr v-for="(client, index) in state.clients.data" :key="index" class="text-gray-700">
-                                        <td class="px-4 py-3 text-sm">
-                                            {{ client.fname + ' ' + client.lname }}
-                                        </td>
-                                        <td class="px-4 py-3 text-sm">
-                                            {{ client.address }}
-                                        </td>
-                                        <td class="px-4 py-3 text-sm">
-                                            {{ client.contactno }}
-                                        </td>
-                                        <td class="px-4 py-3 text-sm">
-                                            {{ client.email }}
-                                        </td>
-                                        <td class="px-4 py-3 text-sm">
-                                            {{ client.tinnumber }}
-                                        </td>
-                                        <td class="px-4 py-3">
-                                            <button class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray" 
-                                                aria-label="Edit"
-                                                @click="updateClient(client.custid)">
-                                                <Icon name="material-symbols:edit" class="w-5 h-5"></Icon>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </template>
-                            </Table>
-                            <Pagination @onPageChanged="onPageChanged" :isLoading="state.isPageLoading" :data="state.clients" :currentPage="state.currentPage"></Pagination>
-                        </div>
+                                <tr v-for="(client, index) in state.clients.data" :key="index" class="text-gray-700">
+                                    <td class="px-4 py-3 text-sm">
+                                        {{ client.fname + ' ' + client.lname }}
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        {{ client.address }}
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        {{ client.contactno }}
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        {{ client.email }}
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        {{ client.tinnumber }}
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <button class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray" 
+                                            aria-label="Edit"
+                                            @click="updateClient(client.custid)">
+                                            <Icon name="material-symbols:edit" class="w-5 h-5"></Icon>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </template>
+                        </Table>
+                        <Pagination @onPageChanged="onPageChanged" :isLoading="state.isPageLoading" :data="state.clients" :currentPage="state.currentPage"></Pagination>
                     </div>
                 </div>
             </div>

@@ -18,7 +18,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
           apiBaseURL: process.env.API_BASE_URL || 'https://api.example.com/',
-          appName: process.env.APP_NAME || 'IRES',
+          appName: process.env.APP_NAME || 'HexaByt',
         },
     },
     sound: {

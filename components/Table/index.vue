@@ -1,7 +1,7 @@
 <template>
     <table>
         <thead>
-            <tr class="text-xs font-semibold tracking-wide bg-white text-left uppercase border-bg-gray-50 border-b">
+            <tr class="text-xs font-semibold tracking-wide text-left uppercase border-bg-gray-50 border-b">
                 <th v-for="(item, index) in columnHeaders" :key="index" :width="item.width"
                     class="px-4 py-3" :class="[
                         item.textAlign === 'left' && 'text-left',
@@ -12,7 +12,7 @@
                 </th>
             </tr>
         </thead>
-        <tbody class="bg-white divide-y">
+        <tbody class="divide-y">
             <slot name="body"></slot>
             <tr v-if="isLoading || (data && data && data.length === 0)">
                 <td :colspan="columnHeaders.length" class="text-center h-36">

@@ -26,6 +26,9 @@ class PaymentService extends BaseAPIService{
     // async update(params: object): Promise<any> {
     //     return await this.request(`/survey`, 'PUT', params)
     // }
+    async voidPayment(params: object): Promise<any> {
+        return await this.request(`/payment/voidPayment`, 'PUT', params)
+    }
 }
 
 export const paymentService = new PaymentService()

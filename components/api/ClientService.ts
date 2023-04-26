@@ -14,6 +14,9 @@ class ClientService extends BaseAPIService{
     async update(params: object): Promise<any> {
         return await this.request(`/client`, 'PUT', params)
     }
+    async sendMail(params: object): Promise<any> {
+        return await this.request(`/client/sendmail`, 'POST', params)
+    }
 }
 
 export const clientService = new ClientService()

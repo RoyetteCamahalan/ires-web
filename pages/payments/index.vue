@@ -19,70 +19,72 @@
                     </button>
                 </div>
             </div>
-            <div class="flex flex-col my-3 mx-4 rounded-2xl shadow-xl shadow-gray-200">
-                <div class="rounded-2xl">
-                    <div class="inline-block min-w-full align-middle">
-                        <div class="shadow-lg">
-                            <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.payments.data"
-                                class="w-full whitespace-no-wrap rounded-2xl">
+            <div class="flex flex-col my-3 mx-4 shadow-gray-200">
+                <div class="inline-block min-w-full align-middle">
+                    <div class="rounded-2xl shadow-lg bg-white">
+                        <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.payments.data"
+                            class="w-full whitespace-no-wrap">
+                            
+                            <template #body
+                                v-if="!(state.isPageLoading || (state.payments.data && state.payments.data.length === 0))">
                                 
-                                <template #body
-                                    v-if="!(state.isPageLoading || (state.payments.data && state.payments.data.length === 0))">
-                                    
-                                    <tr v-for="(data, index) in state.payments.data" :key="index" class="text-gray-700">
-                                        <td class="px-4 py-3">
-                                            <p class="text-sm font-semibold">{{ data.client.fname + ' ' + data.client.lname }}</p>
-                                            <div class="flex text-xs">
-                                                <p class="text-gray-600 dark:text-gray-300 my-auto">
-                                                    {{ $ReceiptTypeDesc(data.receipttype) + '-' + data.orno }}
-                                                </p>
-                                                <span v-if="data.status === paymentStatus.void" class="px-2 py-1 ml-1 font-semibold leading-tight rounded-full text-red-700 bg-red-100">Void</span>
-                                                <span v-else-if="data.status === paymentStatus.refunded" class="px-2 py-1 ml-1 font-semibold leading-tight rounded-full text-gray-700 bg-gray-100">Refunded</span>
-                                            </div>
-                                            
-                                        </td>
-                                        <td class="px-4 py-3 text-sm">
-                                            {{ moment(data.paymentdate).format('YYYY/MM/DD') }}
-                                        </td>
-                                        <td class="px-4 py-3 text-sm">
-                                            {{ $PaymentModeDescription(data.paymentmode) }}
-                                        </td>
-                                        <td class="px-4 py-3 text-sm text-right">
-                                            {{ $formatAmount(data.totalamount) }}
-                                        </td>
-                                        <td class="px-4 py-3">
-                                            <div class="flex justify-center">
-                                                <MenuDropDown class="mt-1">
-                                                    <MenuItem>
-                                                        <button @click="updateRecord(data.id)"
-                                                            class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
-                                                            Edit
-                                                        </button>
-                                                    </MenuItem>
-                                                    <MenuItem v-if="data.receipttype != receiptType.OR">
-                                                        <button
-                                                            @click="navigateTo('/payments/receipt/' + data.paymentid)"
-                                                            class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
-                                                            Print Receipt
-                                                        </button>
-                                                    </MenuItem>
-                                                    <MenuItem v-if="data.status === paymentStatus.paid">
-                                                        <button
-                                                            class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
-                                                            Void Payment
-                                                        </button>
-                                                    </MenuItem>
-                                                </MenuDropDown>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </template>
-                            </Table>
-                            <Pagination @onPageChanged="onPageChanged" :isLoading="state.isPageLoading" :data="state.payments" :currentPage="state.currentPage"></Pagination>
-                        </div>
+                                <tr v-for="(data, index) in state.payments.data" :key="index" class="text-gray-700">
+                                    <td class="px-4 py-3">
+                                        <p class="text-sm font-semibold">{{ data.client.fname + ' ' + data.client.lname }}</p>
+                                        <div class="flex text-xs">
+                                            <p class="text-gray-600 dark:text-gray-300 my-auto">
+                                                {{ $ReceiptTypeDesc(data.receipttype) + '-' + data.orno }}
+                                            </p>
+                                            <span v-if="data.status === paymentStatus.void" class="px-2 py-1 ml-1 font-semibold leading-tight rounded-full text-red-700 bg-red-100">Void</span>
+                                            <span v-else-if="data.status === paymentStatus.refunded" class="px-2 py-1 ml-1 font-semibold leading-tight rounded-full text-gray-700 bg-gray-100">Refunded</span>
+                                        </div>
+                                        
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        {{ moment(data.paymentdate).format('YYYY/MM/DD') }}
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        {{ $PaymentModeDescription(data.paymentmode) }}
+                                    </td>
+                                    <td class="px-4 py-3 text-sm text-right">
+                                        {{ $formatAmount(data.totalamount) }}
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <div class="flex justify-center">
+                                            <MenuDropDown class="mt-1">
+                                                <!-- <MenuItem>
+                                                    <button @click="updateRecord(data.paymentid)"
+                                                        class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                                        Edit
+                                                    </button>
+                                                </MenuItem> -->
+                                                <MenuItem v-if="data.receipttype != receiptType.OR">
+                                                    <button
+                                                        @click="navigateTo('/payments/receipt/' + data.paymentid)"
+                                                        class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                                        Print Receipt
+                                                    </button>
+                                                </MenuItem>
+                                                <MenuItem v-if="data.status === paymentStatus.paid">
+                                                    <button
+                                                        @click="voidPayment(data.paymentid)"
+                                                        class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                                        Void Payment
+                                                    </button>
+                                                </MenuItem>
+                                            </MenuDropDown>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </Table>
+                        <Pagination @onPageChanged="onPageChanged" :isLoading="state.isPageLoading" :data="state.payments" :currentPage="state.currentPage"></Pagination>
                     </div>
                 </div>
             </div>
+            <ModalEmpty title="" :isShow="state.modalIsShowOverride">
+                <UiUserOverride :action="'Void Payment: ' + state.selectedPaymentID" @AfterOverride="modalCloseOverride"></UiUserOverride>
+            </ModalEmpty>
         </NuxtLayout>
     </div>
 </template>
@@ -93,6 +95,8 @@ import { usePrefStore } from '@/store/pref'
 import moment from 'moment'
 import { paymentStatus, receiptType } from '@/contants/consts'
 
+
+const { $toastNotification } = useNuxtApp()
 const prefStore = usePrefStore()
 
 const currentDate = new Date();
@@ -112,9 +116,9 @@ const state = reactive({
     ],
     startDate: moment(firstDay).format('YYYY-MM-DD'),
     endDate: moment(currentDate).format('YYYY-MM-DD'),
-    modalShow: false,
+    modalIsShowOverride: false,
     formStatusEdit: false,
-    selectedClientID: 0,
+    selectedPaymentID: 0,
 })
 
 const loadList = async (search) =>{
@@ -159,10 +163,28 @@ const createNew = () => {
 }
 const updateRecord = (value) => {
     //surveyStore.setSelectedSurvey(value)
-    navigateTo('/payments/edit')
+    //navigateTo('/payments/edit')
 }
 
-const updateStatus = (value) => {
-    
+const voidPayment = (paymentID) => {
+    state.selectedPaymentID = paymentID
+    state.modalIsShowOverride = true
+    console.log(state.selectedPaymentID)
+}
+
+const modalCloseOverride = async (success) =>{
+    state.modalIsShowOverride = false
+    if(success){
+        state.isPageLoading = true
+        try{
+            console.log(state.selectedPaymentID)
+            await paymentService.voidPayment( { paymentid: state.selectedPaymentID })
+            $toastNotification('success', '', 'Payment has been tagged as Void.')
+        }catch(error){
+            $toastNotification('error', '', error.message)
+        }
+        state.isPageLoading = false
+        loadList(prefStore.getSearchString)
+    }
 }
 </script>
