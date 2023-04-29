@@ -5,12 +5,6 @@ class PaymentService extends BaseAPIService{
     async getPayables(clientID: number, currentPage: number, search: string): Promise<any> {
         return await this.request(`/payment/getpayables?clientID=${clientID}&currentPage=${currentPage}&search=${search}`, 'GET')
     }
-    async getBanks(currentPage: number, search: string): Promise<any> {
-        return await this.request(`/payment/getbanks?currentPage=${currentPage}&search=${search}`, 'GET')
-    }
-    async getWallets(currentPage: number, search: string): Promise<any> {
-        return await this.request(`/payment/getewallets?currentPage=${currentPage}&search=${search}`, 'GET')
-    }
     async getReceiptNo(receiptType: number): Promise<any> {
         return await this.request(`/payment/getreceiptno?receiptType=${receiptType}`, 'GET')
     }

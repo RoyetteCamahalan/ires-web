@@ -86,7 +86,7 @@
                 </div>
             </div>
             <ModalEmpty  title="" :isShow="state.modalIsShowAttachment">
-                <UiAttachment></UiAttachment>
+                <UiAttachment :typeID="15" :attachableID="state.selectedSurveyID" @closeAttachment="closeAttachment"></UiAttachment>
             </ModalEmpty>
         </NuxtLayout>
     </div>
@@ -176,6 +176,11 @@ const updateStatus = async (surveyID, status) => {
     state.isPageLoading = false
 }
 function showAttachment (surveyID){
-    state.modalIsShowAttachment = true;
+    state.selectedSurveyID = surveyID
+    state.modalIsShowAttachment = true
+}
+function closeAttachment (){
+    state.selectedSurveyID = 0
+    state.modalIsShowAttachment = false
 }
 </script>

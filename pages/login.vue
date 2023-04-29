@@ -47,10 +47,6 @@ import { required, helpers } from '@vuelidate/validators'
 import { authService } from '@/components/api/AuthService'
 import { useUserStore } from '@/store/user'
 
-definePageMeta({
-    middleware: ["authenticated"]
-})
-
 export default {
     setup(){
       const userStore = useUserStore()
@@ -83,7 +79,10 @@ export default {
               localStorage.setItem("_token", response.data.token)
               userStore.setUser(response.data)
               state.error = null
-              navigateTo('/surveys')
+              if(response.data.company.isexpired)
+                navigateTo('/billing')
+              else
+                navigateTo('/surveys')
           }catch(error){
               state.isPageLoading = false
               state.error = error.message

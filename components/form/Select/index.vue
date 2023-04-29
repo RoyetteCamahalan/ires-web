@@ -1,6 +1,7 @@
 <template>
     <Multiselect :close-on-select="true" :searchable="props.searchable" :options="props.options"
         :canClear="props.canClear" 
+        :placeholder="props.placeholder"
         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-blue-400 focus:ring-2"/>
 </template>
 
@@ -22,6 +23,11 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: true
+    },
+    placeholder: {
+        type: String,
+        required: false,
+        default: ''
     },
 })
 </script>

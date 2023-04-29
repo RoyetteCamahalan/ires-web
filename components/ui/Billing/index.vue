@@ -23,7 +23,7 @@
                                     {{ bill.particular }}
                                 </td>
                                 <td class="px-4 py-3 text-sm">
-                                    {{ moment(bill.datedue).format('YYYY-MM-DD') }}
+                                    {{ moment(bill.duedate).format('YYYY-MM-DD') }}
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     {{ $formatAmount(bill.amount) }}
@@ -41,6 +41,7 @@
                             </tr>
                         </template>
                     </Table>
+                    <Pagination @onPageChanged="onPageChanged" :isLoading="state.isPageLoading" :data="state.bills" :currentPage="state.currentPage"></Pagination>
                 </div>
             </div>
         </div>

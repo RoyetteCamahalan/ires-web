@@ -1,0 +1,282 @@
+{
+    "data": {
+      "id": "cs_kcpd3gJtLco9HB5g2yDLMgE2",
+      "type": "checkout_session",
+      "attributes": {
+        "billing": {
+          "address": {
+            "city": null,
+            "country": null,
+            "line1": null,
+            "line2": null,
+            "postal_code": null,
+            "state": null
+          },
+          "email": null,
+          "name": null,
+          "phone": null
+        },
+        "billing_information_fields_editable": "enabled",
+        "cancel_url": "http://localhost:4000/billing",
+        "checkout_url": "https://checkout.paymongo.com/cs_kcpd3gJtLco9HB5g2yDLMgE2_client_DWVsP2nCpv4AHkEQkMjSEgxU#cGtfdGVzdF9wTEpQNzlOd2NQaml5M0N1c3RKenNSVnI=",
+        "client_key": "cs_kcpd3gJtLco9HB5g2yDLMgE2_client_DWVsP2nCpv4AHkEQkMjSEgxU",
+        "customer_email": null,
+        "description": "Subscription for April 2023",
+        "line_items": [
+          {
+            "amount": 40000,
+            "currency": "PHP",
+            "description": "Subscription for April 2023",
+            "images": [],
+            "name": "Subscription",
+            "quantity": 1
+          }
+        ],
+        "livemode": false,
+        "merchant": "HexaByt Solutions",
+        "origin": null,
+        "paid_at": 1682474961,
+        "payments": [
+          {
+            "id": "pay_LSQZRwNE7DrEv17H8oaSrm6K",
+            "type": "payment",
+            "attributes": {
+              "access_url": null,
+              "amount": 40000,
+              "balance_transaction_id": "bal_txn_6MVp2MFAyBEsAF6UNUCTNM8R",
+              "billing": {
+                "address": {
+                  "city": "",
+                  "country": "",
+                  "line1": "",
+                  "line2": "",
+                  "postal_code": "",
+                  "state": ""
+                },
+                "email": "royette.camahalan09@gmail.com",
+                "name": "Royette Camahalan",
+                "phone": "9499153547"
+              },
+              "currency": "PHP",
+              "description": "Subscription for April 2023",
+              "disputed": false,
+              "external_reference_number": null,
+              "fee": 1000,
+              "livemode": false,
+              "net_amount": 39000,
+              "origin": "api",
+              "payment_intent_id": null,
+              "payout": null,
+              "source": {
+                "id": "src_z3Usnb8xLeshN2ZoxmLjnG1W",
+                "type": "gcash"
+              },
+              "statement_descriptor": "HexaByt Payment",
+              "status": "paid",
+              "tax_amount": null,
+              "metadata": null,
+              "refunds": [],
+              "taxes": [],
+              "available_at": 1682672400,
+              "created_at": 1682474961,
+              "credited_at": 1683104400,
+              "paid_at": 1682474961,
+              "updated_at": 1682474961
+            }
+          }
+        ],
+        "payment_intent": {
+          "id": "pi_WPzvmQznG2UgSoNeXzfLyPzo",
+          "type": "payment_intent",
+          "attributes": {
+            "amount": 40000,
+            "capture_type": "automatic",
+            "client_key": "pi_WPzvmQznG2UgSoNeXzfLyPzo_client_MBACdm5CHyJJW1RPJtRxJjoX",
+            "currency": "PHP",
+            "description": "Subscription for April 2023",
+            "livemode": false,
+            "statement_descriptor": "HexaByt Payment",
+            "status": "awaiting_payment_method",
+            "last_payment_error": null,
+            "payment_method_allowed": [
+              "gcash",
+              "grab_pay",
+              "paymaya",
+              "card"
+            ],
+            "payments": [],
+            "next_action": null,
+            "payment_method_options": {
+              "card": {
+                "request_three_d_secure": "any"
+              }
+            },
+            "metadata": null,
+            "setup_future_usage": null,
+            "created_at": 1682474886,
+            "updated_at": 1682474886
+          }
+        },
+        "payment_method_types": [
+          "card",
+          "grab_pay",
+          "gcash",
+          "paymaya"
+        ],
+        "payment_method_used": "gcash",
+        "reference_number": "1",
+        "send_email_receipt": true,
+        "show_description": true,
+        "show_line_items": false,
+        "source_id": "src_z3Usnb8xLeshN2ZoxmLjnG1W",
+        "status": "active",
+        "success_url": "http://localhost:4000/billing/success/1",
+        "created_at": 1682474886,
+        "updated_at": 1682474952,
+        "metadata": null
+      }
+    }
+  }
+
+{"data":
+    {
+        "id":"cs_rtYmbJkhgXM7VUj1SFwm6p5s",
+        "type":"checkout_session",
+        "attributes":
+        {
+            "billing":
+            {
+                "address":
+                {
+                    "city":null,
+                    "country":null,
+                    "line1":null,
+                    "line2":null,
+                    "postal_code":null,
+                    "state":null},
+                    "email":null,
+                    "name":null,
+                    "phone":null
+                },
+                "billing_information_fields_editable":"enabled",
+                "cancel_url":"https://api.paymongo.com/v1/checkout_sessions",
+                "checkout_url":"https://checkout.paymongo.com/cs_rtYmbJkhgXM7VUj1SFwm6p5s_client_mXpsEjHmW4qaxwscJ3V7aAKE#cGtfdGVzdF9wTEpQNzlOd2NQaml5M0N1c3RKenNSVnI=",
+                "client_key":"cs_rtYmbJkhgXM7VUj1SFwm6p5s_client_mXpsEjHmW4qaxwscJ3V7aAKE",
+                "customer_email":null,
+                "description":"Subscription for April 2023",
+                "line_items":[{"amount":40000,
+                "currency":"PHP",
+                "description":"Subscription for April 2023",
+                "images":[],
+                "name":"Subscription",
+                "quantity":1}],
+                "livemode":false,
+                "merchant":"HexaByt Solutions",
+                "payments":[],
+                "payment_intent":
+                {
+                    "id":"pi_ABCFrw5XPZJ6k19mWjw7Z8bi",
+                    "type":"payment_intent",
+                    "attributes":
+                    {
+                        "amount":40000,
+                        "capture_type":"automatic",
+                        "client_key":"pi_ABCFrw5XPZJ6k19mWjw7Z8bi_client_LmtNk11f1gyQFDaWvnGRW9bH",
+                        "currency":"PHP",
+                        "description":"Subscription for April 2023",
+                        "livemode":false,
+                        "statement_descriptor":"HexaByt Payment",
+                        "status":"awaiting_payment_method",
+                        "last_payment_error":null,
+                        "payment_method_allowed":["card","
+                        gcash","
+                        paymaya","
+                        grab_pay"],
+                        "payments":[],
+                        "next_action":null,
+                        "payment_method_options":
+                        {
+                            "card":
+                            {
+                                "request_three_d_secure":"any"
+                            }
+                        },
+                "metadata":null,
+                "setup_future_usage":null,
+                "created_at":1682471862,
+                "updated_at":1682471862}},
+                "payment_method_types":["gcash","
+                grab_pay","
+                paymaya","
+                card"],
+                "reference_number":"1",
+                "send_email_receipt":true,
+                "show_description":true,
+                "show_line_items":false,
+                "status":"active",
+                "success_url":"https://api.paymongo.com/v1/checkout_sessions",
+                "created_at":1682471862,
+                "updated_at":1682471862,
+                "metadata":null
+        }
+    }
+}
+
+{"data":{"id":"cs_9NMzGM8h4iXVdCZu62hp5zpe","
+type":"checkout_session","
+attributes":{"billing":{"
+email":null,"
+name":null,"
+phone":null},"
+billing_information_fields_editable":"enabled","
+cancel_url":"http://localhost:4000/billing","
+checkout_url":"https://checkout.paymongo.com/cs_9NMzGM8h4iXVdCZu62hp5zpe_client_Err6hCqzCKXoQ3MRedjUqvGY#cGtfdGVzdF9wTEpQNzlOd2NQaml5M0N1c3RKenNSVnI=","
+client_key":"cs_9NMzGM8h4iXVdCZu62hp5zpe_client_Err6hCqzCKXoQ3MRedjUqvGY","
+customer_email":null,"
+description":"Subscription for April 2023","
+line_items":[{"amount":40000,"
+currency":"PHP","
+description":"Subscription for April 2023","
+images":[],"
+name":"Subscription","
+quantity":1}],"
+livemode":false,"
+merchant":"HexaByt Solutions","
+payments":[],"
+payment_intent":{"id":"pi_EDBTkn4nytpPdgwTRWydvaGu","
+type":"payment_intent","
+attributes":{"amount":40000,"
+capture_type":"automatic","
+client_key":"pi_EDBTkn4nytpPdgwTRWydvaGu_client_vf1MMADjX6BidfZgFvYx2e8L","
+currency":"PHP","
+description":"Subscription for April 2023","
+livemode":false,"
+statement_descriptor":"HexaByt Payment","
+status":"awaiting_payment_method","
+last_payment_error":null,"
+payment_method_allowed":["gcash","
+paymaya","
+card","
+grab_pay"],"
+payments":[],"
+next_action":null,"
+payment_method_options":{"card":{"request_three_d_secure":"any"}},"
+metadata":null,"
+setup_future_usage":null,"
+created_at":1682474299,"
+updated_at":1682474299}},"
+payment_method_types":["gcash","
+paymaya","
+grab_pay","
+card"],"
+reference_number":"1","
+send_email_receipt":true,"
+show_description":true,"
+show_line_items":false,"
+status":"active","
+success_url":"http://localhost:4000/billing/success/1","
+created_at":1682474299,"
+updated_at":1682474299,"
+metadata":null}}}
+
+

@@ -7,7 +7,7 @@ class BaseAPIService{
         if (method === 'GET') {
             // GET
             config = {
-                baseURL: runtimeConfig.public.apiBaseURL,
+                baseURL: runtimeConfig.public.apiBaseURL + '/api',
                 method: method,
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem('_token'),
@@ -19,7 +19,7 @@ class BaseAPIService{
         } else {
             // POST, PUT, DELETE
             config = {
-                baseURL: runtimeConfig.public.apiBaseURL,
+                baseURL: runtimeConfig.public.apiBaseURL + '/api',
                 method: method,
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem('_token'),

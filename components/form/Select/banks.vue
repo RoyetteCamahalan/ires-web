@@ -11,20 +11,40 @@
 <script setup lang="ts">
 import Multiselect from '@vueform/multiselect'
 import '@vueform/multiselect/themes/default.css'
-import { paymentService } from '~~/components/api/PaymentService';
-
+import { bankService } from '~~/components/api/BankService';
+ 
+const props = defineProps({
+    defaultOption:{
+        type: Object,
+        required: false,
+        default: null
+    }
+})
 const state = reactive({
     options: Array(),
     isLoading: false
 })
 
+watch(() => props.defaultOption, async (newValue) => {
+    if(props.defaultOption){
+        state.options = []
+        state.options.push({ value: props.defaultOption.bankid, label: props.defaultOption.name })
+    }
+})
+
 async function searchChange(query: string){
     state.isLoading = true
     try{
-        const response = await paymentService.getBanks(1, query)
+        const response = await bankService.getBanks(1, query)
         state.options = []
+        if(props.defaultOption){
+            state.options = []
+            state.options.push({ value: props.defaultOption.bankid, label: props.defaultOption.name })
+        }
         response.data.data.forEach((element: any) => {
-            state.options.push({ value: element.bankid, label: element.name })
+            if(!(props.defaultOption && props.defaultOption.bankid === element.bankid)){
+                state.options.push({ value: element.bankid, label: element.name })
+            }
         });
     }catch(error){}
     state.isLoading = false

@@ -52,10 +52,6 @@
   import { required, helpers } from '@vuelidate/validators'
   import { authService } from '@/components/api/AuthService'
   
-  definePageMeta({
-      middleware: ["authenticated"]
-  })
-
 const props = defineProps({
     action:{
         type: String,

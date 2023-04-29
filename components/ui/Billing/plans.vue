@@ -14,8 +14,9 @@
                             
                             <tr v-for="(plan, index) in state.plans.data" :key="index" class="text-gray-700">
                                 <td class="px-4 py-3">
-                                    <div>
+                                    <div class="flex">
                                         <p class="underline font-semibold">{{ plan.subscriptionPlan.name }}</p>
+                                        <button v-if="state.currentPlanID < 2" class="ml-2 px-2 py-1 text-xs bg-purple-600 text-white rounded-lg" @click="state.showPlanUpgrade = true">Upgrade</button>
                                     </div>
                                 </td>
                                 <td class="px-4 py-3 text-sm">
@@ -75,13 +76,8 @@
                                     {{ $formatAmount(plan.amount) }}
                                 </td>
                                 <td class="px-4 py-3 text-xs">
-                                    <span class="px-2 py-1 font-semibold leading-tight rounded-full text-green-700 bg-green-100">
-                                        Active
-                                    </span>
-                                    <!-- <span class="px-2 py-1 font-semibold leading-tight rounded-full"
-                                        :class="user.isactive ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100'">
-                                        {{ user.isactive ? 'Active' : 'Inactive' }}
-                                    </span> -->
+                                    <span v-if="plan.isexpired" class="px-2 py-1 font-semibold leading-tight rounded-full text-red-700 bg-red-100">Expired</span>
+                                    <span v-else class="px-2 py-1 font-semibold leading-tight rounded-full text-green-700 bg-green-100">Active</span>
                                 </td>
                             </tr>
                         </template>
@@ -89,12 +85,22 @@
                 </div>
             </div>
         </div>
+        <ModalEmpty :isShow="state.showPlanUpgrade">
+            <LoadingSpinner :isActive="state.isUpgrading">
+                <LandingPlanupgrade :currentPlanID="state.currentPlanID" @upgradePlan="upgradePlan"></LandingPlanupgrade>
+            </LoadingSpinner>
+        </ModalEmpty>
     </div>
 </template>
 <script setup>
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
-import { billingService } from '~~/components/api/BillingService'
+import { billingService } from '@/components/api/BillingService'
+import { useUserStore } from '@/store/user';
 import moment from 'moment';
+
+const { $toastNotification } = useNuxtApp()
+
+const user = useUserStore().getUser
 
 const state = reactive({
     plans: [],
@@ -103,11 +109,16 @@ const state = reactive({
     columnHeaders: [
         { name: 'Plan'},
         { name: 'Description'},
-        { name: 'Due Date'},
+        { name: 'Expiry'},
         { name: 'Billing Cycle'},
         { name: 'Total'},
         { name: 'Status'}
     ],
+    currentPlanID: 0,
+    showPlanUpgrade: false,
+    isUpgrading: false,
+    isexpired: false,
+    
 })
 onMounted(() =>{
     getPlans()
@@ -118,6 +129,13 @@ async function getPlans(){
     try{
         const response = await billingService.getPlans()
         state.plans = response.data
+        if(state.plans.data && state.plans.data.length > 0){
+            state.currentPlanID = state.plans.data[0].planid
+            if(state.plans.data[0].isexpired != user.company.isexpired){
+                localStorage.removeItem("_token")
+                navigateTo('/login')
+            }
+        }
     }catch(error){
         state.error = error
     }
@@ -139,6 +157,27 @@ async function updateCycle(plan, billingcycle){
             state.error = error
         }
         state.isPageLoading = false
+    }
+}
+
+async function upgradePlan(planID){
+    console.log(planID)
+    if(planID == 0)
+        state.showPlanUpgrade = false
+    else if(planID > state.currentPlanID){
+        state.isUpgrading = true
+        try{
+            const params = {
+                planid: planID
+            }
+            await billingService.upgradePlan(params)
+            $toastNotification('success', '', 'Plan has been updated. We will email you when bill is available. Thank you!')
+            getPlans()
+        }catch(error){
+            $toastNotification('error', '', error.message)
+        }
+        state.isUpgrading = false
+        state.showPlanUpgrade = false
     }
 }
 </script>

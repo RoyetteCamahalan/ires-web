@@ -17,6 +17,9 @@ class BillingService extends BaseAPIService{
     async completePayment(params: Object): Promise<any> {
         return await this.request(`/billing/completepayment`, 'POST', params)
     }
+    async upgradePlan(params: Object): Promise<any> {
+        return await this.request(`/billing/upgradeplan`, 'PUT', params)
+    }
 
 }
 

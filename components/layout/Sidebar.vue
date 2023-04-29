@@ -96,6 +96,155 @@
                 >
               </a>
             </li>
+            <li v-if="user.isappsysadmin">
+              <LayoutSidebarToggleMenu title="Finance" iconname="streamline:money-cash-bag-dollar-bag-payment-cash-money-finance">
+                <li>
+                  <a
+                    href="https://demos.creative-tim.com/soft-ui-flowbite-pro/e-commerce/products/"
+                    class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
+                    ><span>Expenses</span></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://demos.creative-tim.com/soft-ui-flowbite-pro/e-commerce/products/"
+                    class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
+                    ><span>Accounts Payable</span></a>
+                </li>
+                <li>
+                  <a
+                    href="https://demos.creative-tim.com/soft-ui-flowbite-pro/e-commerce/products/"
+                    class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
+                    ><span>Petty Cash</span></a
+                  >
+                </li>
+              </LayoutSidebarToggleMenu>
+            </li>
+            <li v-if="user.isappsysadmin">
+              <LayoutSidebarToggleMenu title="Master Files" iconname="material-symbols:file-copy-outline">
+                <li>
+                  <a
+                    href="/masterfiles/banks"
+                    class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
+                    ><span>Banks</span></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/masterfiles/bankaccounts"
+                    class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
+                    ><span>Bank Accounts</span></a>
+                </li>
+                <li>
+                  <a
+                    href="/masterfiles/expensetypes"
+                    class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
+                    ><span>Expense Types</span></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/masterfiles/offices"
+                    class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
+                    ><span>Offices</span></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://demos.creative-tim.com/soft-ui-flowbite-pro/e-commerce/products/"
+                    class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
+                    ><span>Vendors</span></a
+                  >
+                </li>
+              </LayoutSidebarToggleMenu>
+            </li>
+            <!-- <li>
+              <button
+                type="button"
+                class="w-full flex items-center py-2.5 px-4 text-base font-normal text-dark-500 rounded-lg hover:bg-gray-200 group transition-all duration-200"
+                sidebar-toggle-collapse=""
+                aria-controls="dropdown-ecommerce"
+                data-collapse-toggle="dropdown-ecommerce"
+              >
+                <div
+                  class="bg-white shadow-lg shadow-gray-300 text-dark-700 w-8 h-8 p-2.5 mr-1 rounded-lg text-center grid place-items-center"
+                >
+                  <svg
+                    class="text-dark"
+                    width="12px"
+                    height="12px"
+                    viewBox="0 0 42 44"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                  >
+                    <title>basket</title>
+                    <g
+                      stroke="none"
+                      stroke-width="1"
+                      fill="none"
+                      fill-rule="evenodd"
+                    >
+                      <g
+                        transform="translate(-1869.000000, -741.000000)"
+                        fill="currentColor"
+                        fill-rule="nonzero"
+                      >
+                        <g transform="translate(1716.000000, 291.000000)">
+                          <g
+                            id="basket"
+                            transform="translate(153.000000, 450.000000)"
+                          >
+                            <path
+                              class="color-background"
+                              d="M34.080375,13.125 L27.3748125,1.9490625 C27.1377583,1.53795093 26.6972449,1.28682264 26.222716,1.29218729 C25.748187,1.29772591 25.3135593,1.55890827 25.0860125,1.97535742 C24.8584658,2.39180657 24.8734447,2.89865282 25.1251875,3.3009375 L31.019625,13.125 L10.980375,13.125 L16.8748125,3.3009375 C17.1265553,2.89865282 17.1415342,2.39180657 16.9139875,1.97535742 C16.6864407,1.55890827 16.251813,1.29772591 15.777284,1.29218729 C15.3027551,1.28682264 14.8622417,1.53795093 14.6251875,1.9490625 L7.919625,13.125 L0,13.125 L0,18.375 L42,18.375 L42,13.125 L34.080375,13.125 Z"
+                              opacity="0.595377604"
+                            ></path>
+                            <path
+                              class="color-background"
+                              d="M3.9375,21 L3.9375,38.0625 C3.9375,40.9619949 6.28800506,43.3125 9.1875,43.3125 L32.8125,43.3125 C35.7119949,43.3125 38.0625,40.9619949 38.0625,38.0625 L38.0625,21 L3.9375,21 Z M14.4375,36.75 L11.8125,36.75 L11.8125,26.25 L14.4375,26.25 L14.4375,36.75 Z M22.3125,36.75 L19.6875,36.75 L19.6875,26.25 L22.3125,26.25 L22.3125,36.75 Z M30.1875,36.75 L27.5625,36.75 L27.5625,26.25 L30.1875,26.25 L30.1875,36.75 Z"
+                            ></path>
+                          </g>
+                        </g>
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+                <span
+                  class="ml-3 text-dark-500 text-sm font-light"
+                  sidebar-toggle-item=""
+                  >Finance</span
+                >
+                
+              </button>
+              <ul
+                id="dropdown-ecommerce"
+                sidebar-toggle-list=""
+                class="pb-2 pt-1 hidden"
+              >
+                <li>
+                  <a
+                    href="https://demos.creative-tim.com/soft-ui-flowbite-pro/e-commerce/products/"
+                    class="text-sm text-dark-500 font-light rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
+                    ><span>Products</span><span class="hidden">P</span></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://demos.creative-tim.com/soft-ui-flowbite-pro/e-commerce/billing/"
+                    class="text-sm text-dark-500 font-light rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
+                    ><span>Billing</span><span class="hidden">B</span></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://demos.creative-tim.com/soft-ui-flowbite-pro/e-commerce/invoice/"
+                    class="text-sm text-dark-500 font-light rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
+                    ><span>Invoice</span><span class="hidden">I</span></a
+                  >
+                </li>
+              </ul>
+            </li> -->
             <!-- <li>
               <a
                 href="https://demos.creative-tim.com/soft-ui-flowbite-pro/kanban/"
