@@ -151,7 +151,7 @@
                 </li>
                 <li>
                   <a
-                    href="https://demos.creative-tim.com/soft-ui-flowbite-pro/e-commerce/products/"
+                    href="/masterfiles/vendors"
                     class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
                     ><span>Vendors</span></a
                   >
