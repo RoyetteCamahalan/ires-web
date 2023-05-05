@@ -3,7 +3,7 @@
     <main class="bg-gray-50">
       <div class="flex flex-col justify-center items-center px-6 pt-8 mx-auto md:h-screen pt:mt-0">
         <a href="/" class="flex justify-center items-center mb-6 text-2xl font-semibold lg:mb-4">
-          <img src="https://i.imgur.com/hamRKWZ.jpeg" class="mr-4 h-10" alt="Creative Tim Logo">
+          <img src="/img/logo.png" class="mr-2 h-10" alt="HexaByt Logo">
           <span class="self-center text-xl font-bold whitespace-nowrap">{{ runtimeConfig.public.appName }} Dashboard</span>
         </a>
         <div class="p-10 w-full max-w-lg bg-white rounded-2xl shadow-xl shadow-gray-300">

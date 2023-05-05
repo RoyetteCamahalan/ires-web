@@ -28,11 +28,22 @@ export default defineNuxtPlugin(() => {
       else
         return ''
     }
+    const PettyCashTransTypeDesc = (transtype) =>{
+      if(transtype == 0)
+          return 'Cash In'
+      else if(transtype == 1)
+        return 'Transfer Out'
+      else if(transtype == 2)
+        return 'Transfer In'
+      else
+        return ''
+    }
     return {
       provide: {
         formatAmount: formatAmount,
         PaymentModeDescription: PaymentModeDescription,
-        ReceiptTypeDesc: ReceiptTypeDesc
+        ReceiptTypeDesc: ReceiptTypeDesc,
+        PettyCashTransTypeDesc: PettyCashTransTypeDesc
       }
     }
   })
