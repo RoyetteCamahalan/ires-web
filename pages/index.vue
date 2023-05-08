@@ -43,7 +43,7 @@
             data-aos="fade-up"
             data-aos-delay="400"
             data-aos-once="true"
-            class="absolute top-20 right-10 sm:right-24 sm:top-28 md:top-36 md:right-32 lg:top-32 lg:right-16 floating aos-init aos-animate"
+            class="absolute top-20 right-10 sm:right-24 sm:top-28 md:top-36 md:right-32 lg:top-44 lg:right-16 floating aos-init aos-animate"
           >
             <svg
               viewBox="0 0 149 149"

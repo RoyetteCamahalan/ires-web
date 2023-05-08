@@ -27,6 +27,9 @@
                                     <td class="px-4 py-3 text-sm">
                                         {{ data.memo}}
                                     </td>
+                                    <td class="px-4 py-3 text-sm text-right">
+                                        {{ $formatAmount(data.pettycashbalance) }}
+                                    </td>
                                     <td class="px-4 py-3 text-xs w-1/5 text-center">
                                         <span v-if="data.isactive" class="px-2 py-1 font-semibold leading-tight rounded-full text-green-700 bg-green-100">Active</span>
                                         <span v-else class="px-2 py-1 font-semibold leading-tight rounded-full text-red-700 bg-red-100">Inactive</span>
@@ -65,8 +68,9 @@ const state = reactive({
     columnHeaders: [
         { name: 'Office Name'},
         { name: 'Memo'},
+        { name: 'Petty Cash Balance', textAlign: 'center'},
         { name: 'Status', textAlign: 'center'},
-        { name: 'Action', textAlign: 'center'}
+        { name: 'Action', textAlign: 'center'},
     ],
     modalTitle: 'Add New Record',
     modalShow: false,
@@ -77,7 +81,7 @@ const state = reactive({
 const loadList = async (search) =>{
     state.isPageLoading = true
     try{
-        const response = await accountService.getOffices(state.currentPage, search)
+        const response = await accountService.getOffices(state.currentPage, true, search)
         state.mainList = response.data
     }catch(error){
         state.error = error.message

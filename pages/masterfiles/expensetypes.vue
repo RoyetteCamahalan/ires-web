@@ -77,7 +77,7 @@ const state = reactive({
 const loadList = async (search) =>{
     state.isPageLoading = true
     try{
-        const response = await expenseService.getExpenseTypes(state.currentPage, search)
+        const response = await expenseService.getExpenseTypes(state.currentPage, true, search)
         state.mainList = response.data
     }catch(error){
         state.error = error.message

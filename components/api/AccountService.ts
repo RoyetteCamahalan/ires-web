@@ -22,8 +22,8 @@ class AccountService extends BaseAPIService{
     async getOffice(id: number): Promise<any> {
         return await this.request(`/account/getoffice?id=${id}`, 'GET')
     }
-    async getOffices(currentPage: number, search: string): Promise<any> {
-        return await this.request(`/account/getoffices?currentPage=${currentPage}&search=${search}`, 'GET')
+    async getOffices(currentPage: number, viewAll: boolean, search: string): Promise<any> {
+        return await this.request(`/account/getoffices?currentPage=${currentPage}&viewAll=${viewAll}&search=${search}`, 'GET')
     }
     async createOffice(params: object): Promise<any> {
         return await this.request(`/account/createoffice`, 'POST', params)

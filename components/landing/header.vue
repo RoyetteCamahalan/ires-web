@@ -8,20 +8,10 @@
         <div class="relative md:mt-8">
           <a
             href="/"
-            class="text-lg relative z-50 font-bold tracking-widest text-gray-900 rounded-lg focus:outline-none focus:shadow-outline"
+            class="ml-6 text-lg relative z-50 font-bold tracking-widest text-gray-900 rounded-lg focus:outline-none focus:shadow-outline"
             >HexaByt
           </a>
-          <svg
-            viewBox="0 0 79 79"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-11 z-40 absolute -top-2 -left-3"
-          >
-            <path
-              d="M35.2574 2.24264C37.6005 -0.100501 41.3995 -0.100505 43.7426 2.24264L76.7574 35.2574C79.1005 37.6005 79.1005 41.3995 76.7574 43.7426L43.7426 76.7574C41.3995 79.1005 37.6005 79.1005 35.2574 76.7574L2.24264 43.7426C-0.100501 41.3995 -0.100505 37.6005 2.24264 35.2574L35.2574 2.24264Z"
-              fill="#65DAFF"
-            ></path>
-          </svg>
+          <img src="/img/logo.png" class="h-8 z-40 absolute top-0 -left-3"/>
         </div>
         <button
           class="rounded-lg md:hidden focus:outline-none focus:shadow-outline"
