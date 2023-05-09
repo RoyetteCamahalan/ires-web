@@ -120,7 +120,7 @@
     if(!v$.value.$error){
         state.isPageLoading = true;
         try{
-          if(props.formStatus = 0)
+          if(props.formStatus === 0)
             await expenseService.createAccountPayable(state.data)
           else
             await expenseService.updateAccountPayable(state.data)

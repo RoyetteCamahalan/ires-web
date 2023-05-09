@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 
-export const useAccountsPayableStore = defineStore('surveyStore',
+export const useAccountsPayableStore = defineStore('accountsPayableStore',
     {
         persist: true,
         state: () => ({

@@ -2,12 +2,23 @@ import BaseAPIService from "./BaseAPIService";
 
 
 class ExpenseService extends BaseAPIService{
-    // async create(params: object): Promise<any> {
-    //     return await this.request(`/bank`, 'POST', params)
-    // }
-    // async update(params: object): Promise<any> {
-    //     return await this.request(`/bank`, 'PUT', params)
-    // }
+    async get(id: number): Promise<any> {
+        return await this.request(`/expense?id=${id}`, 'GET')
+    }
+    async getAll(params: object): Promise<any> {
+        return await this.request(`/expense/getall`, 'GET', params)
+    }
+    async create(params: object): Promise<any> {
+        return await this.request(`/expense`, 'POST', params)
+    }
+    async update(params: object): Promise<any> {
+        return await this.request(`/expense`, 'PUT', params)
+    }
+    async VoidExpense(params: object): Promise<any> {
+        return await this.request(`/expense/voidexpense`, 'PUT', params)
+    }
+
+    //Expense Types
     async getExpenseType(id: number): Promise<any> {
         return await this.request(`/expense/getexpensetype?id=${id}`, 'GET')
     }

@@ -18,7 +18,12 @@ const props = defineProps({
         type: Object,
         required: false,
         default: null
-    }
+    },
+    newID: {
+        type: Number,
+        required: false,
+        default: 0
+    },
 })
 const state = reactive({
     options: Array(),
@@ -27,6 +32,13 @@ const state = reactive({
 
 watch(() => props.defaultOption, async (newValue) => {
     if(props.defaultOption){
+        state.options = []
+        state.options.push({ value: props.defaultOption.vendorid, label: props.defaultOption.vendorname })
+    }
+})
+
+watch(() => props.defaultOption, async (newValue) => {
+    if(props.newID > 0 && props.defaultOption){
         state.options = []
         state.options.push({ value: props.defaultOption.vendorid, label: props.defaultOption.vendorname })
     }
