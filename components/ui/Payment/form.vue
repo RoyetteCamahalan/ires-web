@@ -213,7 +213,7 @@ const state = reactive({
     paidby: '',
     remarks: '',
     payables: [],
-    paymentmode: 2,
+    paymentmode: 0,
     paymentCheckRequestDto:{
       bankid: 0,
       checkno: '',

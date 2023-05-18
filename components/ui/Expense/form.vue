@@ -113,6 +113,7 @@
         usepettycash: true
       },
       vendor: null,
+      newVendorID: null,
       currentBalance: 0,
       isFetchingBalance: false,
       modalVendorShow: false,
@@ -175,9 +176,14 @@
     state.isPageLoading = false
   }
 
-  function onCloseVendor(id = 0){
-    if(id > 0)
-        state.data.payeeid = id;
+  function onCloseVendor(id = 0, name = ''){
+    if(id > 0){
+      state.data.payeeid = id;
+      state.vendor = {
+        vendorid: id,
+        vendorname: name
+      }
+    }
     state.modalVendorShow = false;
   }
 

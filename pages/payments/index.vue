@@ -11,6 +11,13 @@
                         <FormLabel label="To" class="my-auto mr-2 ml-0 sm:ml-2"></FormLabel>
                         <FormDateField name="enddate" placeholder="Start Date" class="py-1"
                             v-model="state.endDate"></FormDateField>
+                        <div>
+                        <button type="button" class="inline-flex items-center py-2 px-2 text-xs font-medium text-center text-white rounded-lg bg-blue-500 shadow-md shadow-gray-300 hover:scale-[1.02] transition-transform"
+                            @click="createNew">
+                            <Icon name="material-symbols:add" class="-ml-1 w-4 h-4"></Icon>
+                            Create New
+                        </button>
+                        </div>
                     </div>
                     <button type="button" class="inline-flex items-center py-2 px-2 text-xs font-medium text-center text-white rounded-lg bg-blue-500 shadow-md shadow-gray-300 hover:scale-[1.02] transition-transform"
                         @click="createNew">
@@ -20,8 +27,8 @@
                 </div>
             </div>
             <div class="flex flex-col my-3 mx-4 shadow-gray-200">
-                <div class="inline-block min-w-full align-middle">
-                    <div class="rounded-2xl shadow-lg bg-white">
+                <div class="inline-block min-w-full align-middle overflow-hidden">
+                    <div class="w-full overflow-x-auto rounded-2xl bg-white">
                         <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.payments.data"
                             class="w-full whitespace-no-wrap">
                             

@@ -32,6 +32,10 @@
                     <FormLabel for="email" label="Email" />
                     <FormTextField name="email" placeholder="Email" v-model="state.company.email"/>
                     <FormError :error="v$.company.email && v$.company.email.$errors && v$.company.email.$errors.length > 0 ? v$.company.email.$errors[0].$message : null "/>
+                               
+                    <FormLabel for="app" label="App" />
+                    <FormSelect :options="state.plans" v-model="state.company.planid" :canClear="false"></FormSelect>
+                    <FormError :error="v$.company.planid && v$.company.planid.$errors && v$.company.planid.$errors.length > 0 ? v$.company.planid.$errors[0].$message : null "/>
 
                 <!-- You should use a button here, as the anchor is only used for the example  -->
                 <FormButton type="submit" buttonStyle="primary" class="block w-full">
@@ -59,10 +63,13 @@ import { companyService} from '@/components/api/CompanyService'
 import { useVuelidate } from '@vuelidate/core'
 import { required, email, helpers } from '@vuelidate/validators'
 import { notify } from "@kyvg/vue3-notification"
+import { useSubscriptionStore } from '@/store/subscription'
+
 
 export default {
     setup(){
         const runtimeConfig = useRuntimeConfig()
+        const subscriptionStore = useSubscriptionStore()
         const state = reactive({
             error: '',
             company: {
@@ -71,8 +78,13 @@ export default {
                 contactno: '',
                 adminfirstname: '',
                 adminlastname: '',
-                email: ''
+                email: '',
+                planid: subscriptionStore.getSelectedPlanID ? subscriptionStore.getSelectedPlanID : null
             },
+            plans:[
+                { label: "Surveying Management App", value: 0},
+                { label: "Finance Monitoring App", value: 3},
+            ],
             isPageLoading: false
         })
         
@@ -95,6 +107,7 @@ export default {
                         required: helpers.withMessage('This field is required.', required),
                         email: helpers.withMessage('Please enter a valid email address.', email)
                     },
+                    planid: { required: helpers.withMessage('Select your app.', required) },
                 }
             }
         })

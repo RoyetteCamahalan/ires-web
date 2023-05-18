@@ -38,7 +38,7 @@
             </button>
           </div>
         </div>
-        <div id="girl" class="w-full lg:w-6/12 lg:-mt-10 relative">
+        <div id="girl" class="w-full lg:w-6/12 lg:-mt-10 relative sm:hidden">
           <div
             data-aos="fade-up"
             data-aos-delay="400"
@@ -129,7 +129,7 @@
           </div>
         </div>
       </div>
-      <div class="text-white -mt-14 sm:-mt-24 lg:-mt-36 z-40 relative">
+      <div class="text-white -mt-14 sm:-mt-16 lg:-mt-24 z-40 relative">
         <svg
           data-name="Layer 1"
           xmlns="http://www.w3.org/2000/svg"
@@ -167,7 +167,7 @@
       </div> -->
       <div
         data-aos="flip-up"
-        class="max-w-xl mx-auto text-center mt-24 aos-init aos-animate"
+        class="max-w-xl mx-auto text-center mt-16 aos-init aos-animate"
       >
         <h1 class="font-bold text-darken my-3 text-2xl">
           One <span class="text-blue-600">Cloud Software.</span>
@@ -193,6 +193,9 @@
           <p class="px-4 text-gray-500">
             Simple app for survey record keeping. Survey scheduling and payment management. Also comes with expense management for monitoring
           </p>
+          <button 
+            @click="tryPlan(0)"
+            type="button" class="px-4 py-2 mt-2 bg-blue-600 text-white rounded-full text-sm font-semibold">Try for Free</button>
         </div>
         <div
           data-aos="fade-up"
@@ -213,11 +216,34 @@
           <p class="px-4 text-gray-500">
             Track your company's expenses, petty cash funds and accounts payable 
           </p>
+          <button
+            @click="tryPlan(3)"
+            type="button" class="px-4 py-2 mt-2 bg-blue-600 text-white rounded-full text-sm font-semibold">Try for Free</button>
+        </div>
+        <div
+          data-aos="fade-up"
+          data-aos-delay="300"
+          class="bg-white shadow-xl p-6 text-center rounded-xl aos-init aos-animate"
+        >
+          <div
+            class="rounded-full w-16 h-16 flex items-center justify-center mx-auto shadow-lg bg-teal-500 transform -translate-y-12"
+          >
+            <Icon name="ion:ios-pricetags" class="w-6 h-6 text-white"></Icon>
+          </div>
+          <h1
+            class="font-medium text-xl mb-3 lg:px-14 text-darken lg:h-14 pt-3"
+          >
+            Rental Management
+          </h1>
+          <p class="px-4 text-gray-500">
+            Monitors your renter's payment and charges. Applicable for property rental, car rental and rental services. 
+          </p>
+          <button type="button" class="px-3 py-2 mt-2 bg-gray-200 rounded-xl text-sm font-semibold">Coming Soon!</button>
         </div>
         <div
           data-aos="fade-up"
           data-aos-delay="150"
-          class="bg-white shadow-xl p-6 text-center rounded-xl aos-init aos-animate"
+          class="bg-white shadow-xl mt-8 p-6 text-center rounded-xl aos-init aos-animate"
         >
           <div
             class="rounded-full w-16 h-16 flex items-center justify-center mx-auto shadow-lg transform -translate-y-12"
@@ -300,4 +326,12 @@
   </div>
 </template>
 <script setup>
+import { useSubscriptionStore } from '@/store/subscription';
+
+const subscriptionStore = useSubscriptionStore()
+
+function tryPlan(planID){
+  subscriptionStore.setSelectedPlanID(planID);
+  navigateTo('/company/register')
+}
 </script>

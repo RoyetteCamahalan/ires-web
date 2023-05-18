@@ -82,7 +82,7 @@ export default {
               if(response.data.company.isexpired)
                 navigateTo('/billing')
               else
-                navigateTo('/surveys')
+                navigateTo('/dashboard')
           }catch(error){
               state.isPageLoading = false
               state.error = error.message

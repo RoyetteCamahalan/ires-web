@@ -89,7 +89,7 @@ async function submit(){
                 response = await expenseService.createVendor(state.data)
             else
                 response = await expenseService.updateVendor(state.data)
-            emit('modalClose', response.data.vendorid)
+            emit('modalClose', response.data.vendorid, state.data.vendorname)
         }catch(error){
             state.error = error.message
         }

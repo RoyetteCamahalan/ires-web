@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div class="bg-white rounded-b-lg">
         <button 
             type="button"
-            class="w-full flex items-center py-2.5 px-4 text-base font-normal text-dark-500 bg-white rounded-lg hover:bg-gray-200 group transition-all duration-200"
+            class="w-full flex items-center py-2.5 px-4 text-base font-normal text-dark-500 rounded-lg hover:bg-gray-200 group transition-all duration-200"
             @click="state.toggleOpen = !state.toggleOpen">
                 <div
                   class="bg-white shadow-lg shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center"

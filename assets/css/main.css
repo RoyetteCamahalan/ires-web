@@ -14,3 +14,13 @@
 .slide-right {
     animation: slideRight 1s ease-in 1s 1 normal
 }
+
+.anim-delay-1{
+    animation-delay: 0.1s;
+}
+.anim-delay-2{
+    animation-delay: 0.2s;
+}
+.anim-delay-3{
+    animation-delay: 0.3s;
+}

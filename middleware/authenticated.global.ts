@@ -12,7 +12,7 @@ export default defineNuxtRouteMiddleware((to) => {
                 return navigateTo('/billing')
             }
             else if (to.path === '/login') {
-                return navigateTo('/surveys')
+                return navigateTo('/dashboard')
             }
         }
     }
