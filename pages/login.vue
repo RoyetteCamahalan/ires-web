@@ -90,11 +90,21 @@ export default {
         }
       }
 
+      async function test(){
+        try{
+          const response = await $fetch('https://catfact.ninja/fact')
+          console.log(response)
+        }catch(error){
+          console.log(error)
+        }
+      }
+
       return {
         runtimeConfig,
         state,
         v$,
-        login
+        login,
+        test
       }
     }
 }

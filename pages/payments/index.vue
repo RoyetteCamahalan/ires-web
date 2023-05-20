@@ -11,13 +11,14 @@
                         <FormLabel label="To" class="my-auto mr-2 ml-0 sm:ml-2"></FormLabel>
                         <FormDateField name="enddate" placeholder="Start Date" class="py-1"
                             v-model="state.endDate"></FormDateField>
-                        <div>
-                        <button type="button" class="inline-flex items-center py-2 px-2 text-xs font-medium text-center text-white rounded-lg bg-blue-500 shadow-md shadow-gray-300 hover:scale-[1.02] transition-transform"
-                            @click="createNew">
-                            <Icon name="material-symbols:add" class="-ml-1 w-4 h-4"></Icon>
-                            Create New
-                        </button>
-                        </div>
+                        <MenuDropDown2 class="ml-0 sm:ml-2 my-auto" label="Print" :has-icon="true">
+                            <MenuItem>
+                                <button
+                                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                    Print Collection Report
+                                </button>
+                            </MenuItem>
+                        </MenuDropDown2>
                     </div>
                     <button type="button" class="inline-flex items-center py-2 px-2 text-xs font-medium text-center text-white rounded-lg bg-blue-500 shadow-md shadow-gray-300 hover:scale-[1.02] transition-transform"
                         @click="createNew">

@@ -25,5 +25,10 @@ export default defineNuxtConfig({
       sounds: {
         scan: true
       }
+    },
+    nitro: {
+      prerender: {
+        crawlLinks: true
+      }
     }
 })

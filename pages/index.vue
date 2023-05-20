@@ -1,5 +1,8 @@
 <template>
   <div>
+    <Head>
+      <Meta name="google-site-verification" content="vASMY3wXjH9V5IZWyeeAX_TFXpHpGBSh8ePkkiavjNc"></Meta>
+    </Head>
       <LandingHeader></LandingHeader>
     <div class="bg-blue-100" >
       <div
@@ -240,10 +243,13 @@
           </p>
           <button type="button" class="px-3 py-2 mt-2 bg-gray-200 rounded-xl text-sm font-semibold">Coming Soon!</button>
         </div>
+      </div>
+      <div class="grid md:grid-cols-3 gap-14 md:gap-5 mt-14">
+        <div></div>
         <div
           data-aos="fade-up"
           data-aos-delay="150"
-          class="bg-white shadow-xl mt-8 p-6 text-center rounded-xl aos-init aos-animate"
+          class="bg-white shadow-xl p-6 text-center rounded-xl aos-init aos-animate"
         >
           <div
             class="rounded-full w-16 h-16 flex items-center justify-center mx-auto shadow-lg transform -translate-y-12"
@@ -255,7 +261,7 @@
             Real Estate Management
           </h1>
           <p class="px-4 text-gray-500">
-            Integrated software for property sale (Lot or House and Lot) with agent management and automatic commission generatior
+            Integrated software for property sale (Lot or House and Lot) with agent management and automatic commission generator
           </p>
           <button type="button" class="px-3 py-2 mt-2 bg-gray-200 rounded-xl text-sm font-semibold">Coming Soon!</button>
         </div>
@@ -323,6 +329,7 @@
       <LandingPricing></LandingPricing>
       <LandingContact></LandingContact>
     </div>
+    <LandingFooter></LandingFooter>
   </div>
 </template>
 <script setup>

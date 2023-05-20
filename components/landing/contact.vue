@@ -1,6 +1,6 @@
 <template>
     
-    <div id="contactus" class="mt-28">
+    <div id="contactus" class="mt-16">
         <div
           data-aos="flip-up"
           class="text-center max-w-screen-md mx-auto aos-init aos-animate"
