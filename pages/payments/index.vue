@@ -14,6 +14,7 @@
                         <MenuDropDown2 class="ml-0 sm:ml-2 my-auto" label="Print" :has-icon="true">
                             <MenuItem>
                                 <button
+                                    @click="printCollection"
                                     class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
                                     Print Collection Report
                                 </button>
@@ -68,7 +69,7 @@
                                                 </MenuItem> -->
                                                 <MenuItem v-if="data.receipttype != receiptType.OR">
                                                     <button
-                                                        @click="navigateTo('/payments/receipt/' + data.paymentid)"
+                                                        @click="navigateTo('/payments/receipt?id=' + data.paymentid)"
                                                         class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
                                                         Print Receipt
                                                     </button>
@@ -100,12 +101,14 @@
 import { MenuItem } from '@headlessui/vue'
 import { paymentService } from '@/components/api/PaymentService'
 import { usePrefStore } from '@/store/pref'
+import { usePaymentStore } from '@/store/payment'
 import moment from 'moment'
 import { paymentStatus, receiptType } from '@/contants/consts'
 
 
 const { $toastNotification } = useNuxtApp()
 const prefStore = usePrefStore()
+const paymentStore = usePaymentStore();
 
 const currentDate = new Date();
 const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
@@ -177,7 +180,6 @@ const updateRecord = (value) => {
 const voidPayment = (paymentID) => {
     state.selectedPaymentID = paymentID
     state.modalIsShowOverride = true
-    console.log(state.selectedPaymentID)
 }
 
 const modalCloseOverride = async (success) =>{
@@ -193,6 +195,16 @@ const modalCloseOverride = async (success) =>{
         }
         state.isPageLoading = false
         loadList(prefStore.getSearchString)
+    }
+}
+
+function printCollection(){
+    console.log(state.payments)
+    if(state.payments && state.payments.data && state.payments.data.length > 0){
+        paymentStore.setDateRange(state.startDate, state.endDate)
+        window.open('/reports/collection', '_blank')        
+    }else{
+        $toastNotification('error', '', 'Collection Report is empty')
     }
 }
 </script>

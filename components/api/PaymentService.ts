@@ -11,6 +11,9 @@ class PaymentService extends BaseAPIService{
     async getPayments(params: object): Promise<any> {
         return await this.request(`/payment`, 'GET', params)
     }
+    async getCollectionReport(params: object): Promise<any> {
+        return await this.request(`/payment/getcollection`, 'GET', params)
+    }
     async getDetails(id: number): Promise<any> {
         return await this.request(`/payment/${id}`, 'GET')
     }

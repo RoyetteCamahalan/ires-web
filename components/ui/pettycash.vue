@@ -15,7 +15,7 @@
                                 <div class="col-span-6 sm:col-span-2">
                                     <FormLabel for="currentbalance" label="Current Balance" />
                                     <LoadingSpinner :isActive="state.isFetchingBalance">
-                                        <FormNumberField name="currentbalance" placeholder="Current Balance" class="text-right cursor-not-allowed" v-model="state.currentBalance" readonly></FormNumberField>
+                                        <FormNumberField name="currentbalance" placeholder="Current Balance" class="text-right cursor-not-allowed bg-blue-50" v-model="state.currentBalance" readonly></FormNumberField>
                                     </LoadingSpinner>
                                     <FormError :error="v$.currentBalance && v$.currentBalance.$errors && v$.currentBalance.$errors.length > 0 ? v$.currentBalance.$errors[0].$message : null "/>
                                 </div>

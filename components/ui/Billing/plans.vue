@@ -100,7 +100,8 @@ import moment from 'moment';
 
 const { $toastNotification } = useNuxtApp()
 
-const user = useUserStore().getUser
+const userStore = useUserStore()
+const user = userStore.getUser
 
 const state = reactive({
     plans: [],
@@ -132,7 +133,7 @@ async function getPlans(){
         if(state.plans.data && state.plans.data.length > 0){
             state.currentPlanID = state.plans.data[0].planid
             if(state.plans.data[0].isexpired != user.company.isexpired){
-                localStorage.removeItem("_token")
+                userStore.resetUser()
                 navigateTo('/login')
             }
         }

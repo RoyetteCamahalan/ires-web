@@ -30,9 +30,9 @@
 <script setup>
 
 const route = useRoute()
-const paymentID = route.params.id
+const paymentID = route.query.id ? route.query.id : 0
 
 function print(){
-    window.open('/payments/print/' + paymentID, '_blank')
+    window.open('/payments/print?id=' + paymentID, '_blank')
 }
 </script>

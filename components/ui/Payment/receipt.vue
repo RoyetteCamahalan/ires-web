@@ -2,9 +2,7 @@
     <div>
         <LoadingSpinner :isActive="state.isPageLoading">
             <div id="divPrint" class="mx-2 mt-3 p-3" :class="!props.isPrint && 'shadow-lg bg-white rounded-lg'">
-                <p class="text-lg font-semibold">{{ user.company.name }}</p>
-                <p class="text-sm">{{ user.company.address }}</p>
-                <p class="text-sm">{{ user.company.contactno }}</p>
+                <ReportsHeader></ReportsHeader>
                 <div class="mt-2 text-lg font-semibold text-center">
                     {{ state.payment.receipttype === 1 ? 'TRUST RECEIPT' : state.payment.receipttype === 1 ? 'PROBATIONARY RECEIPT' : 'ACKNOWLEDGEMENT RECEIPT' }}
                 </div>
@@ -31,30 +29,30 @@
                 <div class="w-full my-4 overflow-hidden rounded-lg shadow-xs">
                 <div class="w-full overflow-x-auto">
                     <table class="w-full whitespace-no-wrap">
-                    <thead>
-                        <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-                        <th class="px-4 py-3">Particulars</th>
-                        <th class="px-4 py-3 text-center">Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-                        <tr v-for="(data, index) in state.payment.payables" :key="index" class="text-gray-700 dark:text-gray-400">
-                            <td class="px-4 py-3 text-sm">
-                                {{ data.description}}
-                            </td>
-                            <td class="px-4 py-3 text-sm w-48 text-right">
-                                {{ $formatAmount(data.paymentAmount) }}
-                            </td>
+                        <thead>
+                            <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+                            <th class="px-4 py-3">Particulars</th>
+                            <th class="px-4 py-3 text-center">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+                            <tr v-for="(data, index) in state.payment.payables" :key="index" class="text-gray-700 dark:text-gray-400">
+                                <td class="px-4 py-3 text-sm">
+                                    {{ data.description}}
+                                </td>
+                                <td class="px-4 py-3 text-sm w-48 text-right">
+                                    {{ $formatAmount(data.paymentAmount) }}
+                                </td>
                             </tr>
                             <tr class="text-gray-700">
-                            <td class="px-4 py-3 text-sm text-right font-semibold">
-                                Total Payment:
-                            </td>
-                            <td class="px-4 py-3 text-sm text-right font-semibold">
-                                {{ $formatAmount(state.payment.totalamount) }}
-                            </td>
-                        </tr>
-                    </tbody>
+                                <td class="px-4 py-3 text-sm text-right font-semibold">
+                                    Total Payment:
+                                </td>
+                                <td class="px-4 py-3 text-sm text-right font-semibold">
+                                    {{ $formatAmount(state.payment.totalamount) }}
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
                 </div>
@@ -84,10 +82,7 @@
 
 <script setup>
 import { paymentService } from '@/components/api/PaymentService';
-import { useUserStore } from '@/store/user';
 import moment from 'moment'
-
-const user = useUserStore().getUser
 
 const props = defineProps({
     paymentID:{

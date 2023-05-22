@@ -9,6 +9,5 @@
 <script setup>
 
 const route = useRoute()
-const paymentID = route.params.id
-
+const paymentID = route.query.id ? route.query.id : 0
 </script>

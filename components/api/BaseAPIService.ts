@@ -1,8 +1,11 @@
 import APIError from './APIError'
+import { useUserStore, useUserStore } from '@/store/user'
 
 class BaseAPIService{
     async request(url: string, method: string, params: object = null): Promise<any> {
         const runtimeConfig = useRuntimeConfig()
+        const userStore = useUserStore()
+        const _token = userStore.getToken
         let config = null
         if (method === 'GET') {
             // GET
@@ -10,7 +13,7 @@ class BaseAPIService{
                 baseURL: runtimeConfig.public.apiBaseURL + '/api',
                 method: method,
                 headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('_token'),
+                    Authorization: 'Bearer ' + _token,
                 },
                 async onRequest({ request, options }) {
                     options.params = params
@@ -22,7 +25,7 @@ class BaseAPIService{
                 baseURL: runtimeConfig.public.apiBaseURL + '/api',
                 method: method,
                 headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('_token'),
+                    Authorization: 'Bearer ' + _token,
                 },
                 body: params,
             }
@@ -38,8 +41,10 @@ class BaseAPIService{
                     case 422:
                     case 429:
                         throw new APIError(error.response._data)
-                    case 401:
-                        this.revokeAccess()
+                    case 401:{
+                        userStore.resetUser()
+                        navigateTo('/login')
+                    }
                     case 500:
                         throw new APIError({
                             message: "Server error. Please try again. If the problem persists, contact your system administrator"
@@ -56,11 +61,6 @@ class BaseAPIService{
                 })
             }
         }
-    }
-
-    revokeAccess() {
-        localStorage.removeItem("_token")
-        navigateTo('/login')
     }
 }
 

@@ -36,7 +36,7 @@ import { billStatus } from '@/contants/consts';
 
 
 const route = useRoute()
-const slug = route.params.slug
+const slug = route.query.id ? route.query.id : 0
 
 const state = reactive({
     isPageLoading: true,

@@ -38,7 +38,7 @@ import { companyService} from '@/components/api/CompanyService'
 export default {
     setup() {
         const route = useRoute()
-        const slug = route.params.slug
+        const slug = route.query.ref ? route.query.ref : ''
 
         const state = reactive({
             isPageLoading: true,

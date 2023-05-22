@@ -40,72 +40,59 @@
   </div>
 </template>
 
-<script>
-import { reactive, computed } from 'vue'
+<script setup>
 import { useVuelidate } from '@vuelidate/core'
 import { required, helpers } from '@vuelidate/validators'
 import { authService } from '@/components/api/AuthService'
 import { useUserStore } from '@/store/user'
 
-export default {
-    setup(){
-      const userStore = useUserStore()
-      const runtimeConfig = useRuntimeConfig()
-      const state = reactive({
-        username: '',
-        password: '',
-        isPageLoading: false,
-        error: null
-      })
-      const validators = computed(()=>{
-        return{
-          username: { required: helpers.withMessage('Username or Email is required.', required) },
-          password: { required: helpers.withMessage('Password is required.', required) },
-        }
-      })
+const userStore = useUserStore()
+const runtimeConfig = useRuntimeConfig()
 
-      const v$ = useVuelidate(validators, state)
+const state = reactive({
+  username: '',
+  password: '',
+  isPageLoading: false,
+  error: null
+})
+const validators = computed(()=>{
+  return{
+    username: { required: helpers.withMessage('Username or Email is required.', required) },
+    password: { required: helpers.withMessage('Password is required.', required) },
+  }
+})
 
-      async function login(){
-        v$.value.$validate()
-        if(!v$.value.$error){
-          state.isPageLoading = true
-          const params = {
-            username: state.username,
-            password: state.password
-          }
-          try{
-            const response = await authService.login(params)
-              localStorage.setItem("_token", response.data.token)
-              userStore.setUser(response.data)
-              state.error = null
-              if(response.data.company.isexpired)
-                navigateTo('/billing')
-              else
-                navigateTo('/dashboard')
-          }catch(error){
-              state.isPageLoading = false
-              state.error = error.message
-          }
-        }
-      }
+const v$ = useVuelidate(validators, state)
 
-      async function test(){
-        try{
-          const response = await $fetch('https://catfact.ninja/fact')
-          console.log(response)
-        }catch(error){
-          console.log(error)
-        }
-      }
-
-      return {
-        runtimeConfig,
-        state,
-        v$,
-        login,
-        test
-      }
+async function login(){
+  v$.value.$validate()
+  if(!v$.value.$error){
+    state.isPageLoading = true
+    const params = {
+      username: state.username,
+      password: state.password
     }
+    try{
+      const response = await authService.login(params)
+        userStore.setUser(response.data)
+        state.error = null
+        if(response.data.company.isexpired)
+          navigateTo('/billing')
+        else
+          navigateTo('/dashboard')
+    }catch(error){
+        state.isPageLoading = false
+        state.error = error.message
+    }
+  }
+}
+
+async function test(){
+  try{
+    const response = await $fetch('https://catfact.ninja/fact')
+    console.log(response)
+  }catch(error){
+    console.log(error)
+  }
 }
 </script>

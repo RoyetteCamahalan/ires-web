@@ -3,6 +3,7 @@
     <div>
         <LoadingSpinner :isActive="state.isPageLoading">
           <div class="mx-4 mt-2">
+              <NavigationBack url="/pettycash"></NavigationBack>
               <div class="grid grid-cols-6 gap-4 p-3 mb-3 rounded-lg bg-white border">
                   <div class="col-span-6 sm:col-span-4">
                       <FormLabel for="client" label="Client" />
@@ -162,7 +163,7 @@
                   </div>
               </div>
           </div>
-          <NavigationBottom returnURL="/payments" @onSave="submit"></NavigationBottom>
+          <NavigationBottomsave returnURL="/payments" @onSave="submit"></NavigationBottomsave>
         </LoadingSpinner>
         
         <Modal title="Search Payables" :isShow="state.modalShow" @modalClose="modalClose">
@@ -420,7 +421,7 @@ async function submit(){
     try{
       const response = await paymentService.create(state.payment)
       console.log(response)
-      navigateTo('/payments/receipt/' + response.data.paymentid)
+      navigateTo('/payments/receipt?id=' + response.data.paymentid)
     }
     catch(error){
       state.error = error.message

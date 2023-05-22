@@ -570,7 +570,8 @@ export default{
   emits: ['toggleSidebar'],
   setup(){
 
-    const user = useUserStore().getUser
+    const userStore = useUserStore()
+    const user = userStore.getUser
     const prefStore = usePrefStore()
 
     const state = reactive({
@@ -586,7 +587,7 @@ export default{
     }
 
     const logOut = () =>{
-      localStorage.removeItem("_token")
+      userStore.resetUser()
       navigateTo('/login')
     }
     

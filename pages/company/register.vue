@@ -36,7 +36,18 @@
                     <FormLabel for="app" label="App" />
                     <FormSelect :options="state.plans" v-model="state.company.planid" :canClear="false"></FormSelect>
                     <FormError :error="v$.company.planid && v$.company.planid.$errors && v$.company.planid.$errors.length > 0 ? v$.company.planid.$errors[0].$message : null "/>
+                    
+                    
+                    <div class="flex mt-4">
+                        <FormCheckBox class="mt-0.5"></FormCheckBox>
+                        <span :class="['text-sm',
+                                    v$.isAgree && v$.isAgree.$errors && v$.isAgree.$errors.length > 0 ? 'text-red-600' : 'text-gray-600']">I agree to the 
+                            <a href="/terms" class="text-blue-600 underline" target="_blank">Terms & Condition</a>,
+                            <a href="/privacy" class="text-blue-600 underline" target="_blank">Privacy Policy</a> and
+                            <a href="/cookie" class="text-blue-600 underline" target="_blank">Cookies Policy</a>
 
+                        </span>
+                    </div>
                 <!-- You should use a button here, as the anchor is only used for the example  -->
                 <FormButton type="submit" buttonStyle="primary" class="block w-full">
                     Register
@@ -57,90 +68,82 @@
     </div>
 </template>
 
-<script>
-import { reactive, computed } from 'vue'
+<script setup>
 import { companyService} from '@/components/api/CompanyService'
 import { useVuelidate } from '@vuelidate/core'
 import { required, email, helpers } from '@vuelidate/validators'
 import { notify } from "@kyvg/vue3-notification"
 import { useSubscriptionStore } from '@/store/subscription'
 
+const runtimeConfig = useRuntimeConfig()
+const subscriptionStore = useSubscriptionStore()
+const state = reactive({
+    error: '',
+    company: {
+        name: '',
+        address: '',
+        contactno: '',
+        adminfirstname: '',
+        adminlastname: '',
+        email: '',
+        planid: subscriptionStore.getSelectedPlanID ? subscriptionStore.getSelectedPlanID : null
+    },
+    isAgree: false,
+    plans:[
+        { label: "Surveying Management App", value: 0},
+        { label: "Finance Monitoring App", value: 3},
+    ],
+    isPageLoading: false
+})
+// state.company.name = 'Sample Company'
+// state.company.address = 'Sample Address'
+// state.company.contactno = '09499153547'
+// state.company.adminfirstname = 'Shayne'
+// state.company.adminlastname = 'Camahalan'
+// state.company.email = 'sample@gmail.com'
 
-export default {
-    setup(){
-        const runtimeConfig = useRuntimeConfig()
-        const subscriptionStore = useSubscriptionStore()
-        const state = reactive({
-            error: '',
-            company: {
-                name: '',
-                address: '',
-                contactno: '',
-                adminfirstname: '',
-                adminlastname: '',
-                email: '',
-                planid: subscriptionStore.getSelectedPlanID ? subscriptionStore.getSelectedPlanID : null
+const isAgreeValidator = () => {
+    return state.isAgree
+  }
+const validators = computed(() =>{
+    return {
+        company:{
+            name: { required: helpers.withMessage('Company name is required.', required) },
+            address: { required: helpers.withMessage('This field is required.', required) },
+            contactno: { required: helpers.withMessage('This field is required.', required) },
+            adminfirstname: { required: helpers.withMessage('This field is required.', required) },
+            adminlastname: { required: helpers.withMessage('This field is required.', required) },
+            email: { 
+                required: helpers.withMessage('This field is required.', required),
+                email: helpers.withMessage('Please enter a valid email address.', email)
             },
-            plans:[
-                { label: "Surveying Management App", value: 0},
-                { label: "Finance Monitoring App", value: 3},
-            ],
-            isPageLoading: false
-        })
-        
-        // state.company.name = 'Sample Company'
-        // state.company.address = 'Sample Address'
-        // state.company.contactno = '09499153547'
-        // state.company.adminfirstname = 'Shayne'
-        // state.company.adminlastname = 'Camahalan'
-        // state.company.email = 'sample@gmail.com'
+            planid: { required: helpers.withMessage('Select your app.', required) },
+        },
+        isAgree: { isAgreeValidator },
+    }
+})
 
-        const validators = computed(() =>{
-            return {
-                company:{
-                    name: { required: helpers.withMessage('Company name is required.', required) },
-                    address: { required: helpers.withMessage('This field is required.', required) },
-                    contactno: { required: helpers.withMessage('This field is required.', required) },
-                    adminfirstname: { required: helpers.withMessage('This field is required.', required) },
-                    adminlastname: { required: helpers.withMessage('This field is required.', required) },
-                    email: { 
-                        required: helpers.withMessage('This field is required.', required),
-                        email: helpers.withMessage('Please enter a valid email address.', email)
-                    },
-                    planid: { required: helpers.withMessage('Select your app.', required) },
-                }
-            }
-        })
-
-        const v$ = useVuelidate(validators, state);
+const v$ = useVuelidate(validators, state);
 
 
-        const Submit = async () =>{
-            v$.value.$validate()
-            if(!v$.value.$error){
-                state.isPageLoading = true
-                await companyService.register(state.company).then(() => {
-                        state.isPageLoading = false
-                        state.error = ''
-                        notify({
-                            title: "Success!",
-                            text: "Email confirmation link sent to your email",
-                            type: 'success',
-                        })
-                        navigateTo("/login")
-                    }).catch((error) => {
-                        state.isPageLoading = false
-                        state.error = error.message
+async function Submit(){
+    v$.value.$validate()
+    if(!v$.value.$error){
+        state.isPageLoading = true
+        await companyService.register(state.company).then(() => {
+                state.isPageLoading = false
+                state.error = ''
+                notify({
+                    title: "Success!",
+                    text: "Email confirmation link sent to your email",
+                    type: 'success',
                 })
-            }
-        }
-
-        return {
-            runtimeConfig,
-            state,
-            v$,
-            Submit
-        }
+                navigateTo("/login")
+            }).catch((error) => {
+                state.isPageLoading = false
+                state.error = error.message
+        })
     }
 }
+
 </script>

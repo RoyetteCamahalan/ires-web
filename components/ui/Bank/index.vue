@@ -7,9 +7,8 @@
             <FormError :error="v$.bank.name && v$.bank.name.$errors && v$.bank.name.$errors.length > 0 ? v$.bank.name.$errors[0].$message : null "/>
                 
             <div class="flex mt-2">
-                <FormSwitch :value="state.bank.isewallet" class="my-auto"
-                    @toggleSwitch="state.bank.isewallet = !state.bank.isewallet" />
-                <FormLabel for="isactive" label="Is E-Wallet?" class="ml-2" />
+                <FormCheckBox v-model="state.bank.isewallet" class="my-auto"></FormCheckBox>
+                <FormLabel for="isactive" label="Is E-Wallet?" />
             </div>
         </div>
         <div class="px-4">

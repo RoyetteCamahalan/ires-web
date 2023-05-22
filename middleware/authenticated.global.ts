@@ -1,8 +1,9 @@
 import { useUserStore } from "@/store/user"
 
 export default defineNuxtRouteMiddleware((to) => {
-    if(to.path != '/' && to.path != '/company/register' && !to.path.includes('/company/confirmation')){
-        if (localStorage.getItem("_token") == null) {
+    const publicRoute = ['/', '/company/register', '/company/confirmation', '/terms', '/privacy', '/cookie']
+    if(!publicRoute.includes(to.path)){
+        if (useUserStore().getToken == null) {
             if (to.path !== '/login') {
                 return navigateTo('/login')
             }

@@ -2,7 +2,7 @@
     <div>
         <LoadingSpinner :isActive="state.isPageLoading">
           <div class="mx-4 mt-2">
-                
+                <NavigationBack url="/surveys"></NavigationBack>
                 <div class="grid grid-cols-6 gap-4">
                     <div class="col-span-6 sm:col-span-3">
                         <FormLabel for="client" label="Client" />
@@ -56,7 +56,7 @@
                 <FormError :error="state.error && state.error.length > 0 ? state.error : null "/>
                 
           </div>
-          <NavigationBottom :returnURL="state.returnURL" @onSave="submit"></NavigationBottom>
+          <NavigationBottomsave :returnURL="state.returnURL" @onSave="submit"></NavigationBottomsave>
         </LoadingSpinner>
     </div>
   </template>
