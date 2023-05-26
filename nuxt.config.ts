@@ -31,5 +31,10 @@ export default defineNuxtConfig({
       head:{
         title: 'HexaByt',
       }
+    },
+    nitro: {
+      prerender: {
+        routes: ['/']
+      }
     }
 })

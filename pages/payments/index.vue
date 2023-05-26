@@ -199,7 +199,6 @@ const modalCloseOverride = async (success) =>{
 }
 
 function printCollection(){
-    console.log(state.payments)
     if(state.payments && state.payments.data && state.payments.data.length > 0){
         paymentStore.setDateRange(state.startDate, state.endDate)
         window.open('/reports/collection', '_blank')        

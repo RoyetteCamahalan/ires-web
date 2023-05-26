@@ -335,6 +335,10 @@
 <script setup>
 import { useSubscriptionStore } from '@/store/subscription';
 
+definePageMeta({
+    auth: false
+})
+
 const subscriptionStore = useSubscriptionStore()
 
 function tryPlan(planID){

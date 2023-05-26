@@ -14,6 +14,9 @@ class EmployeeService extends BaseAPIService{
     async update(params: object): Promise<any> {
         return await this.request(`/employee`, 'PUT', params)
     }
+    async changePassword(params: object): Promise<any> {
+        return await this.request(`/employee/changepassword`, 'PUT', params)
+    }
 }
 
 export const employeeService = new EmployeeService()

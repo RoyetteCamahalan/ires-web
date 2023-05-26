@@ -34,33 +34,29 @@
 import { reactive } from 'vue';
 import { companyService} from '@/components/api/CompanyService'
 
+definePageMeta({
+    auth: false
+})
 
-export default {
-    setup() {
-        const route = useRoute()
-        const slug = route.query.ref ? route.query.ref : ''
+const route = useRoute()
+const slug = route.query.ref ? route.query.ref : ''
 
-        const state = reactive({
-            isPageLoading: true,
-            message: 'Verifying your account...',
-            error: ''
-        })
+const state = reactive({
+    isPageLoading: true,
+    message: 'Verifying your account...',
+    error: ''
+})
 
-        onMounted(async () =>{
-            await companyService.verify( { value: slug }).then(() => {
-                    state.isPageLoading = false
-                    state.error = ''
-                    state.message = "Your account has been verified. Click login to start using the app."
-                }).catch((error) => {
-                    console.log(error)
-                    state.isPageLoading = false
-                    state.error = "Something"
-                    state.message = "We are unable to process your request."
-            })
-        })
-        return {
-            state
-        }
-    },
-}
+onMounted(async () =>{
+    await companyService.verify( { value: slug }).then(() => {
+            state.isPageLoading = false
+            state.error = ''
+            state.message = "Your account has been verified. Click login to start using the app."
+        }).catch((error) => {
+            console.log(error)
+            state.isPageLoading = false
+            state.error = "Something"
+            state.message = "We are unable to process your request."
+    })
+})
 </script>

@@ -37,16 +37,19 @@
                 state.isToggleMenu ? 'h-full' : 'scale-y-0 transform md:transform-none']"
       >
         <a
+          v-if="!props.hideMenu"
           href="#cloudapps"
           class="px-4 py-2 mt-2 text-sm font-medium bg-transparent rounded-lg md:mt-8 md:ml-4 hover:text-gray-900 focus:outline-none focus:shadow-outline"
           >Apps
         </a>
         <a
+          v-if="!props.hideMenu"
           href="#pricing"
           class="px-4 py-2 mt-2 text-sm font-medium bg-transparent rounded-lg md:mt-8 md:ml-4 hover:text-gray-900 focus:outline-none focus:shadow-outline"
           >Pricing
         </a>
         <a
+          v-if="!props.hideMenu"
           href="#contactus"
           class="px-4 py-2 mt-2 text-sm font-medium bg-transparent rounded-lg md:mt-8 md:ml-4 hover:text-gray-900 focus:outline-none focus:shadow-outline"
           >Contact Us
@@ -67,6 +70,13 @@
 </template>
 <script setup>
 
+const props = defineProps({
+  hideMenu:{
+    type: Boolean,
+    required: false,
+    default: false
+  }
+})
 const state = reactive({
   isToggleMenu: false
 })

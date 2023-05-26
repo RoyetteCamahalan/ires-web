@@ -33,7 +33,6 @@ class BaseAPIService{
         try {
             return await $fetch(url, config)
         } catch (error) {
-            console.log(error)
             if(error.response){
                 switch (error.response.status) {
                     case 400:

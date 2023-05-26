@@ -75,6 +75,10 @@ import { required, email, helpers } from '@vuelidate/validators'
 import { notify } from "@kyvg/vue3-notification"
 import { useSubscriptionStore } from '@/store/subscription'
 
+definePageMeta({
+    auth: false
+})
+
 const runtimeConfig = useRuntimeConfig()
 const subscriptionStore = useSubscriptionStore()
 const state = reactive({

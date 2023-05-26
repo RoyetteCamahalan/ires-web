@@ -11,6 +11,15 @@
                         <FormLabel label="To" class="my-auto mr-2 ml-0 sm:ml-2"></FormLabel>
                         <FormDateField name="enddate" placeholder="Start Date" class="py-1"
                             v-model="state.endDate"></FormDateField>
+                        <MenuDropDown2 class="ml-0 sm:ml-2 my-auto" label="Print" :has-icon="true">
+                            <MenuItem>
+                                <button
+                                    @click="PrintReport(1)"
+                                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                    Expense Report
+                                </button>
+                            </MenuItem>
+                        </MenuDropDown2>
                     </div>
                     <button type="button" class="inline-flex items-center py-2 px-2 text-xs font-medium text-center text-white rounded-lg bg-blue-500 shadow-md shadow-gray-300 hover:scale-[1.02] transition-transform"
                         @click="navigateTo('/expenses/new')">
@@ -194,5 +203,15 @@ const modalCloseOverride = async (success) =>{
         state.isPageLoading = false
         loadList(prefStore.getSearchString)
     }
+}
+
+function PrintReport(type){
+    if(state.mainList && state.mainList.data && state.mainList.data.length > 0){
+        expenseStore.setDateRange(state.startDate, state.endDate)
+        if(type === 1)
+            window.open('/reports/expense', '_blank')     
+    }
+    else
+        $toastNotification('error', '', 'Report is empty')
 }
 </script>

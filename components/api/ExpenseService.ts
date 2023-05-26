@@ -8,6 +8,9 @@ class ExpenseService extends BaseAPIService{
     async getAll(params: object): Promise<any> {
         return await this.request(`/expense/getall`, 'GET', params)
     }
+    async getExpenseReport(params: object): Promise<any> {
+        return await this.request(`/expense/getexpensereport`, 'GET', params)
+    }
     async create(params: object): Promise<any> {
         return await this.request(`/expense`, 'POST', params)
     }
