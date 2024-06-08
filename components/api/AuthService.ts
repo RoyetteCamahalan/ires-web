@@ -7,8 +7,8 @@ class AuthService extends BaseAPIService{
     async systemOverride(params: object): Promise<any> {
         return await this.request(`/auth/systemoverride`, 'POST', params)
     }
-    async sendResetPasswordLink(email: string): Promise<any> {
-        return await this.request(`/auth/sendpasswordresetlink?email=${email}`, 'GET')
+    async sendResetPasswordLink(params: object): Promise<any> {
+        return await this.request(`/auth/sendpasswordresetlink`, 'POST', params)
     }
     async validatePasswordToken(token: string): Promise<any> {
         return await this.request(`/auth/validatepasswordresettoken?token=${token}`, 'GET')

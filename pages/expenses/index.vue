@@ -11,7 +11,9 @@
                         <FormLabel label="To" class="my-auto mr-2 ml-0 sm:ml-2"></FormLabel>
                         <FormDateField name="enddate" placeholder="Start Date" class="py-1"
                             v-model="state.endDate"></FormDateField>
-                        <MenuDropDown2 class="ml-0 sm:ml-2 my-auto" label="Print" :has-icon="true">
+                    </div>
+                    <div class="flex justify-between flex-1">
+                        <MenuDropDown2 class="ml-0 sm:ml-2 my-auto mt-1" label="Print" :has-icon="true" position="left-0" width="w-48">
                             <MenuItem>
                                 <button
                                     @click="PrintReport(1)"
@@ -19,18 +21,32 @@
                                     Expense Report
                                 </button>
                             </MenuItem>
+                            <MenuItem>
+                                <button
+                                    @click="PrintReport(2)"
+                                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                    Expense Report by Type
+                                </button>
+                            </MenuItem>
+                            <MenuItem>
+                                <button
+                                    @click="PrintReport(3)"
+                                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                    Expense Report by Office
+                                </button>
+                            </MenuItem>
                         </MenuDropDown2>
+                        <button type="button" class="inline-flex items-center py-2 px-2 text-xs font-medium text-center text-white rounded-lg bg-blue-500 shadow-md shadow-gray-300 hover:scale-[1.02] transition-transform"
+                            @click="navigateTo('/expenses/new')">
+                            <Icon name="material-symbols:add" class="-ml-1 w-4 h-4"></Icon>
+                            Create New
+                        </button>
                     </div>
-                    <button type="button" class="inline-flex items-center py-2 px-2 text-xs font-medium text-center text-white rounded-lg bg-blue-500 shadow-md shadow-gray-300 hover:scale-[1.02] transition-transform"
-                        @click="navigateTo('/expenses/new')">
-                        <Icon name="material-symbols:add" class="-ml-1 w-4 h-4"></Icon>
-                        Create New
-                    </button>
                 </div>
             </div>
-            <div class="flex flex-col my-3 mx-4 shadow-gray-200">
+            <div class="flex flex-col my-3 mx-4 shadow-gray-200 rounded-lg shadow-md overflow-x-hidden">
                 <div class="inline-block min-w-full align-middle">
-                    <div class="rounded-2xl shadow-lg bg-white">
+                    <div class="w-full overflow-x-auto rounded-lg bg-white">
                         <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.mainList.data"
                             class="w-full whitespace-no-wrap">
                             
@@ -68,22 +84,18 @@
                                     </td>
                                     <td class="px-4 py-3">
                                         <div v-if="data.status === 0" class="flex justify-center">
-                                            <MenuDropDown class="mt-1">
-                                                <MenuItem>
-                                                    <button 
-                                                        @click="updateRecord(data.expenseid)"
-                                                        class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
-                                                        Edit
-                                                    </button>
-                                                </MenuItem>
-                                                <MenuItem>
-                                                    <button
-                                                        @click="voidRecord(data.expenseid)"
-                                                        class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
-                                                        Void Transaction
-                                                    </button>
-                                                </MenuItem>
-                                            </MenuDropDown>
+                                            <MenuPopper icon-name="material-symbols:settings" :has-icon="true">
+                                                <button 
+                                                    @click="updateRecord(data.expenseid)"
+                                                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    @click="voidRecord(data.expenseid)"
+                                                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                                    Void Transaction
+                                                </button>
+                                            </MenuPopper>
                                         </div>
                                     </td>
                                 </tr>
@@ -210,6 +222,10 @@ function PrintReport(type){
         expenseStore.setDateRange(state.startDate, state.endDate)
         if(type === 1)
             window.open('/reports/expense', '_blank')     
+        else if(type === 2)
+            window.open('/reports/expense/byexpensetype', '_blank')    
+        else if(type === 3)
+            window.open('/reports/expense/byoffice', '_blank')   
     }
     else
         $toastNotification('error', '', 'Report is empty')

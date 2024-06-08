@@ -11,9 +11,9 @@
                     </button>
                 </div>
             </div>
-            <div class="flex flex-col my-3 mx-4 shadow-gray-200">
+            <div class="flex flex-col my-3 mx-4 shadow-gray-200 rounded-lg shadow-md">
                 <div class="inline-block min-w-full align-middle">
-                    <div class="rounded-2xl shadow-lg bg-white">
+                    <div class="w-full overflow-x-auto rounded-lg bg-white">
                         <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.surveys.data"
                             class="w-full whitespace-no-wrap">
                             
@@ -47,12 +47,35 @@
                                     </td>
                                     <td class="px-4 py-3">
                                         <div class="flex items-center">
-                                            <MenuDropDown class="mt-1">
+                                            <MenuPopper icon-name="material-symbols:settings" :has-icon="true">
+                                                <button  v-if="data.status != surveyStatus.cancelled"
+                                                    @click="updateRecord(data.id)"
+                                                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                                    Edit
+                                                </button>
+                                                <button 
+                                                    @click="showAttachment(data.id)"
+                                                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                                    View Attachments
+                                                </button>
+                                                <button v-if="data.status === surveyStatus.pending"
+                                                    @click="updateStatus(data.id, surveyStatus.surveyed)"
+                                                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                                    Tag as Surveyed
+                                                </button>
+                                                <button v-if="data.status === surveyStatus.pending"
+                                                    @click="updateStatus(data.id, surveyStatus.cancelled)"
+                                                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                                    Tag as Cancelled
+                                                </button>
+                                            </MenuPopper>
+                                            <!-- <MenuDropDown class="mt-1">
                                                 <MenuItem v-if="data.status != surveyStatus.cancelled">
-                                                    <button @click="updateRecord(data.id)"
-                                                        class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
-                                                        Edit
-                                                    </button>
+                                                    
+                                                <button @click="updateRecord(data.id)"
+                                                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                                    Edit
+                                                </button>
                                                 </MenuItem>
                                                 <MenuItem>
                                                     <button
@@ -75,14 +98,14 @@
                                                         Tag as Cancelled
                                                     </button>
                                                 </MenuItem>
-                                            </MenuDropDown>
+                                            </MenuDropDown> -->
                                         </div>
                                     </td>
                                 </tr>
                             </template>
                         </Table>
-                        <Pagination @onPageChanged="onPageChanged" :isLoading="state.isPageLoading" :data="state.surveys" :currentPage="state.currentPage"></Pagination>
                     </div>
+                    <Pagination @onPageChanged="onPageChanged" :isLoading="state.isPageLoading" :data="state.surveys" :currentPage="state.currentPage"></Pagination>
                 </div>
             </div>
             <ModalEmpty  title="" :isShow="state.modalIsShowAttachment">

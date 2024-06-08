@@ -1,12 +1,11 @@
 <template>
     <div v-if="!(isLoading || (data && data.data && data.data.length === 0))" 
-        class="rounded-b-2xl grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
-        <span class="flex items-center col-span-3">
+        class="rounded-b-lg grid grid-cols-12 px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+        <span class="w-full col-span-12 sm:col-span-4 sm:text-left text-center sm:my-auto">
             {{ data.info }}
         </span>
-        <span class="col-span-2"></span>
         <!-- Pagination -->
-        <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+        <div class="w-full col-span-12 sm:col-span-8 mt-2 sm:mt-auto sm:flex sm:justify-end text-center">
             <nav aria-label="Table navigation">
                 <ul class="inline-flex items-center">
                 <li>
@@ -20,7 +19,7 @@
                 </li>
                 <li v-for="page in state.pages" :key="page.page">
                     <button v-if="page.page != -3" class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-                        :class="currentPage == page.page ? 'text-white transition-colors duration-150 bg-purple-600 border border-r-0 border-purple-600' : '' "
+                        :class="currentPage == page.page ? 'text-white transition-colors duration-150 bg-blue-600 border border-r-0 border-blue-600' : '' "
                         @click="$emit('onPageChanged',page.page)">
                         {{ page.text }}
                     </button>
@@ -37,7 +36,7 @@
                 </li>
                 </ul>
             </nav>
-        </span>
+        </div>
     </div>
 </template>
 <script>

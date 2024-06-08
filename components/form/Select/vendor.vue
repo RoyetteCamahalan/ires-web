@@ -19,26 +19,20 @@ const props = defineProps({
         required: false,
         default: null
     },
-    newID: {
-        type: Number,
-        required: false,
-        default: 0
-    },
 })
 const state = reactive({
     options: Array(),
     isLoading: false
 })
 
-watch(() => props.defaultOption, async (newValue) => {
+onMounted(() => {
     if(props.defaultOption){
         state.options = []
         state.options.push({ value: props.defaultOption.vendorid, label: props.defaultOption.vendorname })
     }
 })
-
 watch(() => props.defaultOption, async (newValue) => {
-    if(props.newID > 0 && props.defaultOption){
+    if(props.defaultOption){
         state.options = []
         state.options.push({ value: props.defaultOption.vendorid, label: props.defaultOption.vendorname })
     }

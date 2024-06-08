@@ -115,7 +115,7 @@
     if(!v$.value.$error){
       state.isPageLoading = true
       try{
-        await authService.sendResetPasswordLink(state.email)
+        await authService.sendResetPasswordLink( { value: state.email } )
         $toastNotification('success', '', 'Password Reset link has been sent to your email!')
         state.error = null
       }catch(error){

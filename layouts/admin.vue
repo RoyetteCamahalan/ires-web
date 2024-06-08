@@ -1,9 +1,9 @@
 <template>
-    <div class="h-screen">
+    <div class="h-screen bg-gray-50">
         <LayoutHeader @toggleSidebar="toggleSidebar" :sidebarOpen="state.sidebarOpen"></LayoutHeader>
-        <div class="flex overflow-hidden bg-white pt-16">
+        <div class="flex bg-white pt-16">
             <LayoutSidebar  @toggleSidebar="toggleSidebar" @onSideBarEnter="onSideBarEnter" @onSideBarLeave="onSideBarLeave" :sidebarOpen="state.sidebarOpen" :openHoverState="state.openHoverState"></LayoutSidebar>
-            <div class="h-screen w-full bg-gray-50 relative overflow-y-auto transition-width " :class="!state.sidebarOpen && !state.openHoverState ? 'lg:ml-16' : 'lg:ml-64'">
+            <div class="w-full bg-gray-50 relative transition-width " :class="!state.sidebarOpen && !state.openHoverState ? 'lg:ml-16' : 'lg:ml-64'">
                 <main>
                     <slot></slot>
                 </main>

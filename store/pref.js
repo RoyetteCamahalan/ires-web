@@ -6,6 +6,7 @@ export const usePrefStore = defineStore('prefStore',
     state: () =>({
         sidebarOpen: true,
         searchString: '',
+        appVersion: null
     }),
     actions:{
         setSideBarStatus(value){
@@ -16,7 +17,10 @@ export const usePrefStore = defineStore('prefStore',
         },
         resetSearchString(){
             this.searchString = ''
-        }
+        },
+        setAppVersion(value){
+            this.searchString = value
+        },
     },
     getters:{
         getSideBarStatus: (state) => state.sidebarOpen,

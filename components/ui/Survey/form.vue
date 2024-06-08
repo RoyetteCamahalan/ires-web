@@ -6,14 +6,15 @@
                 <div class="grid grid-cols-6 gap-4">
                     <div class="col-span-6 sm:col-span-3">
                         <FormLabel for="client" label="Client" />
-                        <Multiselect v-on:search-change="searchClient" 
-                          :searchable="true" 
-                          :options="state.clients" 
-                          :loading="state.isClientLoading"
-                          v-model="state.survey.custid"
-                          noOptionsText="Type to search clients"
-                          class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus-:border-blue-400 focus:ring-2"></Multiselect>
-                          <FormError :error="v$.survey.custid && v$.survey.custid.$errors && v$.survey.custid.$errors.length > 0 ? v$.survey.custid.$errors[0].$message : null "/>
+                        <div class="relative">
+                          <FormSelectClient :default-option="state.client" v-model="state.survey.custid" class="pr-16"></FormSelectClient>
+                            <button 
+                                @click="state.isShowClientModal = true"
+                                class="absolute inset-y-0 right-0 px-3 text-sm font-medium text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-r-md hover:bg-blue-700">
+                                Create
+                            </button>
+                        </div>
+                        <FormError :error="v$.survey.custid && v$.survey.custid.$errors && v$.survey.custid.$errors.length > 0 ? v$.survey.custid.$errors[0].$message : null "/>
   
                     </div>
                     <div class="col-span-6 sm:col-span-3">
@@ -41,11 +42,19 @@
                         <FormNumberField name="contractprice" placeholder="Contract Price" v-model="state.survey.contractprice"/>
                     </div>
                 </div>
-                
-                <FormLabel for="propertyname" label="Property Name" />
-                <FormTextField name="propertyname" placeholder="Property Name" v-model="state.survey.propertyname"/>
-                <FormError :error="v$.survey.propertyname && v$.survey.propertyname.$errors && v$.survey.propertyname.$errors.length > 0 ? v$.survey.propertyname.$errors[0].$message : null "/>
-                
+                <div class="grid grid-cols-6 gap-4">
+                    <div class="col-span-6 sm:col-span-3">
+                        <FormLabel for="propertyname" label="Property Name" />
+                        <FormTextField name="propertyname" placeholder="Property Name" v-model="state.survey.propertyname"/>
+                        <FormError :error="v$.survey.propertyname && v$.survey.propertyname.$errors && v$.survey.propertyname.$errors.length > 0 ? v$.survey.propertyname.$errors[0].$message : null "/>
+                    </div>
+                    <div class="col-span-6 sm:col-span-3">
+                        <FormLabel for="landarea" label="Land Area (Sqm)"/>
+                        <FormNumberField name="landarea" placeholder="in square meters" v-model="state.survey.landarea"/>
+                        <FormError :error="v$.survey.landarea && v$.survey.landarea.$errors && v$.survey.landarea.$errors.length > 0 ? v$.survey.landarea.$errors[0].$message : null "/>
+                    </div>
+                </div>
+                                
                 <FormLabel for="address" label="Location" />
                 <FormTextField name="address" placeholder="Location" v-model="state.survey.address"/>
                 <FormError :error="v$.survey.address && v$.survey.address.$errors && v$.survey.address.$errors.length > 0 ? v$.survey.address.$errors[0].$message : null "/>
@@ -58,16 +67,16 @@
           </div>
           <NavigationBottomsave :returnURL="state.returnURL" @onSave="submit"></NavigationBottomsave>
         </LoadingSpinner>
+        <Modal title="Add New Record" :isShow="state.isShowClientModal" @modalClose="CloseClientModal">
+            <UiClientForm @modalClose="CloseClientModal" :formStatusEdit="0" :selectedClientID="null"></UiClientForm>
+        </Modal>
     </div>
   </template>
   
   <script setup>
-  import Multiselect from '@vueform/multiselect'
-  import '@vueform/multiselect/themes/default.css'
   import { reactive, computed } from 'vue'
   import { useVuelidate } from '@vuelidate/core'
   import { required, minValue, helpers, numeric } from '@vuelidate/validators'
-  import { clientService } from '@/components/api/ClientService'
   import { surveyService } from '@/components/api/SurveyService'
   import { useUserStore } from '@/store/user'
   import { useSurveyStore } from '@/store/survey'
@@ -97,6 +106,7 @@
           surveyno: '',
           surveydate: moment(currentDate).format('YYYY-MM-DD'),
           propertyname: '',
+          landarea: null,
           address: '',
           details: '',
           contractprice: null,
@@ -106,8 +116,9 @@
           createdbyid: user.employeeid,
           updatedbyid: user.employeeid
       },
-      clients:[],
-      isClientLoading: false
+      client: null,
+      isClientLoading: false,
+      isShowClientModal: false
   })
 
   onMounted(() =>{
@@ -136,20 +147,6 @@
     state.isPageLoading = false
   }
   
-  const searchClient = async (query) =>{
-    state.isClientLoading = true
-    try{
-      const response = await clientService.get(1,query)
-      state.clients = []
-      response.data.data.forEach(element => {
-        state.clients.push({ value: element.custid, label: element.fname + ' ' + element.lname })
-      });
-    }catch(error){
-      state.clients = []
-    }
-    state.isClientLoading = false
-  }
-  
   const validators = computed(() =>{
     return {
       survey: {
@@ -160,12 +157,26 @@
         propertyname: { required: helpers.withMessage('This field is required.', required) },
         address: { required: helpers.withMessage('This field is required.', required) },
         contractprice: { numeric: helpers.withMessage('Invalid input.', numeric) },
+        landarea: { 
+          required: helpers.withMessage('This field is required.', required),
+          numeric: helpers.withMessage('Invalid input.', numeric) },
       }
     }
   })
   
   const v$ = useVuelidate(validators, state)
   
+  const CloseClientModal = (value, data) =>{
+      state.isShowClientModal = false
+      if(value)
+      {
+        state.survey.custid = data.custid;
+        state.client = {
+          value: data.custid,
+          label: data.fname + ' ' + data.lname
+        }
+      }
+  }
   const submit = async () => {
     v$.value.$validate()
     if(!v$.value.$error){

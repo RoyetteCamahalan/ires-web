@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="flex flex-col my-2 shadow-gray-200">
-            <div class="inline-block min-w-full align-middle overflow-hidden rounded-2xl bg-white">
+        <div class="flex flex-col my-2 shadow-gray-200 rounded-lg shadow-md overflow-x-hidden">
+            <div class="inline-block min-w-full align-middle overflow-hidden rounded-lg bg-white">
                 <div class="w-full overflow-x-auto">
                     <div class="text-sm font-semibold text-gray-700 px-3 pt-3">Latest Expense</div>
                     <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.mainList.data"

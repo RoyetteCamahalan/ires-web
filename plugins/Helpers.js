@@ -1,13 +1,37 @@
 import { defineNuxtPlugin } from '#app';
 
 export default defineNuxtPlugin(() => {
+    const base64Encode = (data) => {
+      return btoa(data);
+    }
+    const base64Decode = (data) => {
+        return atob(encodedId);
+    }
     const numberWithCommas = (number) => {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
     const formatAmount = (amount, decimal = 2) =>{
         return numberWithCommas(parseFloat(amount).toFixed(2).toLocaleString('en-US', { maximumFractionDigits: decimal }))
     }
-    const PaymentModeDescription = (mode) => {
+    const dateInterVal = (date1, date2) =>{
+      if(!date2)
+        date2 = new Date()
+      var hours = parseInt(Math.abs(date1 - date2) / 36e5);
+      if(hours < 1)
+        return 'a few minutes ago'
+      else if(hours === 1)
+        return `${hours} hour ago`
+      else if(hours < 24)
+        return `${hours} hours ago`
+      else{
+        var days = parseInt(Math.abs(date1 - date2) / (60 * 60 * 1000 * 24));
+        if(days === 1)
+          return `Yesterday`
+        else
+          return `${days} days ago`
+      }
+    }
+    const PaymentModeDescription = (mode) => {  
       if(mode == 1)
           return 'Check'
       else if(mode == 2)
@@ -43,7 +67,10 @@ export default defineNuxtPlugin(() => {
         formatAmount: formatAmount,
         PaymentModeDescription: PaymentModeDescription,
         ReceiptTypeDesc: ReceiptTypeDesc,
-        PettyCashTransTypeDesc: PettyCashTransTypeDesc
+        PettyCashTransTypeDesc: PettyCashTransTypeDesc,
+        dateInterVal: dateInterVal,
+        base64Encode: base64Encode,
+        base64Decode: base64Decode
       }
     }
   })

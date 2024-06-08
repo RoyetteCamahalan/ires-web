@@ -30,8 +30,7 @@
         </div>
 </template>
 
-<script>
-import { reactive } from 'vue';
+<script setup>
 import { companyService} from '@/components/api/CompanyService'
 
 definePageMeta({

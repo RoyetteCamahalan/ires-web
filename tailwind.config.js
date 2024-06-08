@@ -13,7 +13,11 @@ module.exports = {
       "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"],
       serif: ["ui-serif","Georgia"],
     },
-    extend: {},
+    extend: {
+      gridTemplateRows:{
+        '7': 'repeat(7, minmax(0, 1fr))',
+      }
+    },
   },
   plugins: [],
 }

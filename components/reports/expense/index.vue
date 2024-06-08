@@ -4,7 +4,7 @@
             <div id="divPrint" class="mx-2 mt-3 p-3" :class="!props.isPrint && 'shadow-lg bg-white rounded-lg'">
                 <ReportsHeader></ReportsHeader>
                 <div class="mt-2 text-lg font-semibold text-center">
-                    Collection Report
+                    Expense Report
                 </div>
                 <div class="mt-1 text-sm text-center">
                     From: {{ moment(startDate).format('MM/DD/YYYY') }}  To: {{ moment(endDate).format('MM/DD/YYYY') }}

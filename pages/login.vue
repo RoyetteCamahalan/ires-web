@@ -23,11 +23,11 @@
                       <FormError :error="state.error && state.error != '' ? state.error : null "/>
                 </div>
 
-                <div class="flex items-end">
+                <div class="flex justify-between flex-col sm:flex-row">
                   <div class="text-sm font-medium text-gray-500">
                       Not registered? <NuxtLink to="/company/register" class="text-blue-600 hover:underline">Create Account</NuxtLink>
                   </div>
-                  <a href="/resetpassword" class="ml-auto text-sm text-blue-600 hover:underline">Lost Password?</a>
+                  <a href="/resetpassword" class="mt-2 sm:mt-0 text-sm text-blue-600 hover:underline">Lost Password?</a>
                 </div>
                 <button type="submit" class="py-2 px-4 w-full text-base font-medium text-center text-white bg-blue-500 hover:scale-[1.02] shadow-md shadow-gray-300 transition-transform rounded-lg sm:w-auto">Login to your account</button>
                 

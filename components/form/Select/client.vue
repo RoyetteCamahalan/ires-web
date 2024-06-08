@@ -13,10 +13,31 @@ import Multiselect from '@vueform/multiselect'
 import '@vueform/multiselect/themes/default.css'
 import { clientService } from '~~/components/api/ClientService';
 
+const props = defineProps({
+    defaultOption:{
+        type: Object,
+        required: false,
+        default: null
+    }
+})
 const state = reactive({
     options: Array(),
     isLoading: false
 })
+
+onMounted(() => {
+    loadDefaultOption()
+})
+watch(() => props.defaultOption, async (newValue) => {
+    loadDefaultOption()
+})
+
+function loadDefaultOption(){
+    if(props.defaultOption){
+        state.options = []
+        state.options.push({ value: props.defaultOption.value, label: props.defaultOption.label })
+    }
+}
 
 async function searchChange(query: string){
     state.isLoading = true

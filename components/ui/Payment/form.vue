@@ -420,7 +420,6 @@ async function submit(){
     state.isPageLoading = true
     try{
       const response = await paymentService.create(state.payment)
-      console.log(response)
       navigateTo('/payments/receipt?id=' + response.data.paymentid)
     }
     catch(error){

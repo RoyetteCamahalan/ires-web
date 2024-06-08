@@ -12,16 +12,19 @@
                         <FormDateField name="enddate" placeholder="Start Date" class="py-1"
                             v-model="state.endDate"></FormDateField>
                     </div>
-                    <button type="button" class="inline-flex items-center py-2 px-2 text-xs font-medium text-center text-white rounded-lg bg-blue-500 shadow-md shadow-gray-300 hover:scale-[1.02] transition-transform"
-                        @click="navigateTo('/accountspayable/new')">
-                        <Icon name="material-symbols:add" class="-ml-1 w-4 h-4"></Icon>
-                        Create New
-                    </button>
+                    <div class="flex justify-between flex-1">
+                        <div></div>
+                        <button type="button" class="inline-flex items-center py-2 px-2 text-xs font-medium text-center text-white rounded-lg bg-blue-500 shadow-md shadow-gray-300 hover:scale-[1.02] transition-transform"
+                            @click="navigateTo('/accountspayable/new')">
+                            <Icon name="material-symbols:add" class="-ml-1 w-4 h-4"></Icon>
+                            Create New
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="flex flex-col my-3 mx-4 shadow-gray-200">
+            <div class="flex flex-col my-3 mx-4 shadow-gray-200 rounded-lg shadow-md overflow-x-hidden">
                 <div class="inline-block min-w-full align-middle">
-                    <div class="rounded-2xl shadow-lg bg-white">
+                    <div class="w-full overflow-x-auto rounded-lg bg-white">
                         <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.mainList.data"
                             class="w-full whitespace-no-wrap">
                             
@@ -53,29 +56,25 @@
                                     </td>
                                     <td class="px-4 py-3">
                                         <div v-if="data.status === 0" class="flex justify-center">
-                                            <MenuDropDown class="mt-1">
-                                                <MenuItem>
-                                                    <button 
-                                                        @click="updateRecord(data.chargeid)"
-                                                        class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
-                                                        Edit
-                                                    </button>
-                                                </MenuItem>
-                                                <MenuItem>
-                                                    <button
-                                                        @click="voidRecord(data.chargeid)"
-                                                        class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
-                                                        Void Transaction
-                                                    </button>
-                                                </MenuItem>
-                                            </MenuDropDown>
+                                            <MenuPopper icon-name="material-symbols:settings" :has-icon="true">
+                                                <button 
+                                                    @click="updateRecord(data.chargeid)"
+                                                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    @click="voidRecord(data.chargeid)"
+                                                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                                    Void Transaction
+                                                </button>
+                                            </MenuPopper>
                                         </div>
                                     </td>
                                 </tr>
                             </template>
                         </Table>
-                        <Pagination @onPageChanged="onPageChanged" :isLoading="state.isPageLoading" :data="state.mainList" :currentPage="state.currentPage"></Pagination>
                     </div>
+                    <Pagination @onPageChanged="onPageChanged" :isLoading="state.isPageLoading" :data="state.mainList" :currentPage="state.currentPage"></Pagination>
                 </div>
             </div>
             <ModalEmpty title="" :isShow="state.modalIsShowOverride">

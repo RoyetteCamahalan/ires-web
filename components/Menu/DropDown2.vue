@@ -20,7 +20,7 @@
           leave-to-class="transform scale-95 opacity-0"
         >
           <MenuItems
-            class="absolute right-0 z-10 mt-1 w-44 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+            :class=" 'absolute z-1000 mt-1 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ' + props.position + ' ' + props.width"
           >
             <div class="px-1 py-1">
               <slot></slot>
@@ -48,6 +48,16 @@
         type: String,
         required: false,
         default: 'material-symbols:print'
+    },
+    position:{
+      type: String,
+      required: false,
+      default: 'right-0'
+    },
+    width:{
+      type: String,
+      required: false,
+      default: 'w-44'
     }
   })
   </script>

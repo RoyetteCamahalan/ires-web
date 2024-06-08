@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    ssr: false,
+    ssr: true,
     css: [
       '~/assets/css/main.css',
   ],
@@ -35,6 +35,7 @@ export default defineNuxtConfig({
     nitro: {
       prerender: {
         routes: ['/']
-      }
+      },
+      preset: 'node-server'
     }
 })

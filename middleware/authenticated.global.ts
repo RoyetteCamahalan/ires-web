@@ -2,8 +2,6 @@ import { useUserStore } from "@/store/user"
 
 export default defineNuxtRouteMiddleware((to) => {
     
-    console.log(to.path)
-    console.log(to.meta.auth)
     if (to.meta.auth !== false){
         if (useUserStore().getToken == null) {
             if (to.path !== '/login') {

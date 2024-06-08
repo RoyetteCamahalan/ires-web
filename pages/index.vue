@@ -241,7 +241,9 @@
           <p class="px-4 text-gray-500">
             Monitors your renter's payment and charges. Applicable for property rental, car rental and rental services. 
           </p>
-          <button type="button" class="px-3 py-2 mt-2 bg-gray-200 rounded-xl text-sm font-semibold">Coming Soon!</button>
+          <button
+            @click="tryPlan(6)"
+            type="button" class="px-4 py-2 mt-2 bg-blue-600 text-white rounded-full text-sm font-semibold">Try for Free</button>
         </div>
       </div>
       <div class="grid md:grid-cols-3 gap-14 md:gap-5 mt-14">

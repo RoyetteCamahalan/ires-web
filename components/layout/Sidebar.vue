@@ -1,7 +1,7 @@
 <template>
   <aside
     id="sidebar"
-    class="flex fixed top-0 left-0 z-20 flex-col flex-shrink-0 pt-16 w-64 h-full duration-200 lg:flex transition-width" :class="!sidebarOpen && !openHoverState ? 'lg:w-16' : 'lg:w-64'"
+    class="flex fixed top-0 left-0 flex-col flex-shrink-0 pt-16 w-64 h-full duration-200 lg:flex transition-width" :class="!sidebarOpen && !openHoverState ? 'lg:w-16' : ' z-20 lg:w-64'"
     aria-label="Sidebar"
     @mouseenter="$emit('onSideBarEnter')"
     @mouseleave="$emit('onSideBarLeave')"
@@ -12,7 +12,7 @@
           <ul class="pb-2 pt-1">
             <li>
               <form action="#" method="GET" class="lg:hidden">
-                <label for="mobile-search" class="sr-only">Search</label>
+                <label for="topbar-search" class="sr-only">Search</label>
                 <div class="relative">
                   <div
                     class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none"
@@ -34,7 +34,7 @@
                   class="flex items-center py-2.5 px-4 text-base font-normal text-dark-500 rounded-lg hover:bg-gray-200 group transition-all duration-200"
                   sidebar-toggle-collapse="">
                   <div class="bg-white shadow-lg shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="material-symbols:home" class="w-4 h-4"></Icon>
+                    <Icon name="material-symbols:home-outline-rounded" class="w-4 h-4"></Icon>
                   </div>
                   <span class="ml-3 text-dark-500 text-sm">Dashboard</span>
                 </a>
@@ -52,19 +52,43 @@
                 </a>
               </div>
             </li>
-            <li v-if="state.isSurveying">
+            <li v-if="state.isRental">
+              <div class="bg-white">
+                <a href="/rentals"
+                  class="flex items-center py-2.5 px-4 text-base font-normal text-dark-500 rounded-lg hover:bg-gray-200 group transition-all duration-200"
+                  sidebar-toggle-collapse="">
+                  <div class="bg-white shadow-lg shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
+                    <Icon name="tabler:contract" class="w-4 h-4"></Icon>
+                  </div>
+                  <span class="ml-3 text-dark-500 text-sm">Rental Contracts</span>
+                </a>
+              </div>
+            </li>
+            <li v-if="state.isRental">
+              <div class="bg-white">
+                <a href="/properties"
+                  class="flex items-center py-2.5 px-4 text-base font-normal text-dark-500 rounded-lg hover:bg-gray-200 group transition-all duration-200"
+                  sidebar-toggle-collapse="">
+                  <div class="bg-white shadow-lg shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
+                    <Icon name="material-symbols:home-work-outline-rounded" class="w-4 h-4"></Icon>
+                  </div>
+                  <span class="ml-3 text-dark-500 text-sm">Properties</span>
+                </a>
+              </div>
+            </li>
+            <li v-if="state.isSurveying || state.isRental">
               <div class="bg-white">
                 <a href="/payments"
                   class="flex items-center py-2.5 px-4 text-base font-normal text-dark-500 rounded-lg hover:bg-gray-200 group transition-all duration-200"
                   sidebar-toggle-collapse="">
                   <div class="bg-white shadow-lg shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="material-symbols:payments" class="w-4 h-4"></Icon>
+                    <Icon name="material-symbols:payments-outline" class="w-4 h-4"></Icon>
                   </div>
                   <span class="ml-3 text-dark-500 text-sm">Payments</span>
                 </a>
               </div>
             </li>
-            <li v-if="state.isSurveying">
+            <li v-if="state.isSurveying || state.isRental">
               <div class="bg-white">
                 <a href="/clients"
                   class="flex items-center py-2.5 px-4 text-base font-normal text-dark-500 rounded-lg hover:bg-gray-200 group transition-all duration-200"
@@ -117,14 +141,14 @@
             </li>
             <li v-if="user.isappsysadmin">
               <LayoutSidebarToggleMenu title="Master Files" iconname="material-symbols:file-copy-outline">
-                <li v-if="state.isSurveying">
+                <li v-if="state.isSurveying || state.isRental">
                   <a
                     href="/masterfiles/banks"
                     class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
                     ><span>Banks</span></a
                   >
                 </li>
-                <li v-if="state.isSurveying">
+                <li v-if="state.isSurveying || state.isRental">
                   <a
                     href="/masterfiles/bankaccounts"
                     class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
@@ -189,7 +213,8 @@ const props = defineProps({
 
 const state = reactive({
   searchString: '',
-  isSurveying: (user.company.planid >= 0 && user.company.planid <= 3)
+  isSurveying: (user.company.planid >= 0 && user.company.planid <= 3),
+  isRental: (user.company.planid >= 6 && user.company.planid <= 9)
 })
 
 watch(() => state.searchString, (data)=>{

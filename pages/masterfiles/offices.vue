@@ -11,9 +11,9 @@
                     </button>
                 </div>
             </div>
-            <div class="flex flex-col my-3 mx-4 shadow-gray-200">
+            <div class="flex flex-col my-3 mx-4 shadow-gray-200 rounded-lg shadow-md overflow-x-hidden">
                 <div class="inline-block min-w-full align-middle">
-                    <div class="rounded-2xl shadow-lg bg-white">
+                    <div class="w-full overflow-x-auto rounded-lg bg-white">
                         <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.mainList.data"
                             class="w-full whitespace-no-wrap">
                             
@@ -44,8 +44,8 @@
                                 </tr>
                             </template>
                         </Table>
-                        <Pagination @onPageChanged="onPageChanged" :isLoading="state.isPageLoading" :data="state.mainList" :currentPage="state.currentPage"></Pagination>
                     </div>
+                    <Pagination @onPageChanged="onPageChanged" :isLoading="state.isPageLoading" :data="state.mainList" :currentPage="state.currentPage"></Pagination>
                 </div>
             </div>
             <Modal :title="state.modalTitle" :isShow="state.modalShow" @modalClose="modalClose">

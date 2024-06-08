@@ -3,7 +3,7 @@
         <NuxtLayout name="admin">
             
             <div class="flex flex-col mt-2 mx-4">
-                <div class="w-full flex justify-between flex-col sm:flex-row">
+                <div class="w-full flex flex-col sm:flex-row">
                     <div class="flex flex-col sm:flex-row my-auto mb-2 sm:mb-0">
                         <FormLabel label="From" class="my-auto mr-2"></FormLabel>
                         <FormDateField name="startdate" placeholder="Start Date" class="py-1"
@@ -11,7 +11,9 @@
                         <FormLabel label="To" class="my-auto mr-2 ml-0 sm:ml-2"></FormLabel>
                         <FormDateField name="enddate" placeholder="Start Date" class="py-1"
                             v-model="state.endDate"></FormDateField>
-                        <MenuDropDown2 class="ml-0 sm:ml-2 my-auto" label="Print" :has-icon="true">
+                    </div>
+                    <div class="flex justify-between flex-1">
+                        <MenuDropDown2 class="ml-0 sm:ml-2 my-auto mt-1" label="Print" :has-icon="true" position="left-0">
                             <MenuItem>
                                 <button
                                     @click="printCollection"
@@ -20,17 +22,17 @@
                                 </button>
                             </MenuItem>
                         </MenuDropDown2>
+                        <button type="button" class="inline-flex items-center py-1 px-2 text-xs font-medium text-center text-white rounded-lg bg-blue-500 shadow-md shadow-gray-300 hover:scale-[1.02] transition-transform"
+                            @click="createNew">
+                            <Icon name="material-symbols:add" class="-ml-1 w-4 h-4"></Icon>
+                            Create New
+                        </button>
                     </div>
-                    <button type="button" class="inline-flex items-center py-2 px-2 text-xs font-medium text-center text-white rounded-lg bg-blue-500 shadow-md shadow-gray-300 hover:scale-[1.02] transition-transform"
-                        @click="createNew">
-                        <Icon name="material-symbols:add" class="-ml-1 w-4 h-4"></Icon>
-                        Create New
-                    </button>
                 </div>
             </div>
-            <div class="flex flex-col my-3 mx-4 shadow-gray-200">
-                <div class="inline-block min-w-full align-middle overflow-hidden">
-                    <div class="w-full overflow-x-auto rounded-2xl bg-white">
+            <div class="flex flex-col my-3 mx-4 shadow-gray-200 rounded-lg shadow-md overflow-x-hidden">
+                <div class="inline-block min-w-full align-middle">
+                    <div class="w-full overflow-x-auto rounded-lg bg-white">
                         <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.payments.data"
                             class="w-full whitespace-no-wrap">
                             
@@ -60,35 +62,27 @@
                                     </td>
                                     <td class="px-4 py-3">
                                         <div class="flex justify-center">
-                                            <MenuDropDown class="mt-1">
-                                                <!-- <MenuItem>
-                                                    <button @click="updateRecord(data.paymentid)"
-                                                        class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
-                                                        Edit
-                                                    </button>
-                                                </MenuItem> -->
-                                                <MenuItem v-if="data.receipttype != receiptType.OR">
-                                                    <button
-                                                        @click="navigateTo('/payments/receipt?id=' + data.paymentid)"
-                                                        class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
-                                                        Print Receipt
-                                                    </button>
-                                                </MenuItem>
-                                                <MenuItem v-if="data.status === paymentStatus.paid">
-                                                    <button
-                                                        @click="voidPayment(data.paymentid)"
-                                                        class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
-                                                        Void Payment
-                                                    </button>
-                                                </MenuItem>
-                                            </MenuDropDown>
+                                            <MenuPopper icon-name="material-symbols:settings" :has-icon="true">
+                                                <button
+                                                    v-if="data.receipttype != receiptType.OR"
+                                                    @click="navigateTo('/payments/receipt?id=' + data.paymentid)"
+                                                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                                    Print Receipt
+                                                </button>
+                                                <button
+                                                    v-if="data.status === paymentStatus.paid"
+                                                    @click="voidPayment(data.paymentid)"
+                                                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                                    Void Payment
+                                                </button>
+                                            </MenuPopper>
                                         </div>
                                     </td>
                                 </tr>
                             </template>
                         </Table>
-                        <Pagination @onPageChanged="onPageChanged" :isLoading="state.isPageLoading" :data="state.payments" :currentPage="state.currentPage"></Pagination>
                     </div>
+                    <Pagination @onPageChanged="onPageChanged" :isLoading="state.isPageLoading" :data="state.payments" :currentPage="state.currentPage"></Pagination>
                 </div>
             </div>
             <ModalEmpty title="" :isShow="state.modalIsShowOverride">
