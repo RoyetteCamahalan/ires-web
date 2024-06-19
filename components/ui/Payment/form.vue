@@ -109,7 +109,7 @@
                                 
                             </div>
                             <div v-if="state.payment.paymentmode === 2">
-                              <FormLabel for="banks" label="Bank Account" />
+                              <FormLabel for="banks" label="Company Bank Account" />
                               <div class="relative">
                                 <FormSelectBankaccounts 
                                   :newAccountID="state.newBankAccountID"
@@ -291,7 +291,6 @@ const checkValidators = computed(() =>{
     }
   }
 })
-
 const bankTransferValidators = computed(() =>{
   return {
     payment: {

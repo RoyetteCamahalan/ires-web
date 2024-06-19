@@ -197,7 +197,7 @@
             Simple app for survey record keeping. Survey scheduling and payment management. Also comes with expense management for monitoring
           </p>
           <button 
-            @click="tryPlan(0)"
+            @click="tryPlan(1)"
             type="button" class="px-4 py-2 mt-2 bg-blue-600 text-white rounded-full text-sm font-semibold">Try for Free</button>
         </div>
         <div
@@ -220,7 +220,7 @@
             Track your company's expenses, petty cash funds and accounts payable 
           </p>
           <button
-            @click="tryPlan(3)"
+            @click="tryPlan(4)"
             type="button" class="px-4 py-2 mt-2 bg-blue-600 text-white rounded-full text-sm font-semibold">Try for Free</button>
         </div>
         <div
@@ -336,6 +336,7 @@
 </template>
 <script setup>
 import { useSubscriptionStore } from '@/store/subscription';
+
 
 definePageMeta({
     auth: false

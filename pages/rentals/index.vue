@@ -27,7 +27,7 @@
                                 
                                 <tr v-for="(data, index) in state.mainList.data" :key="index" class="text-gray-700">
                                     <td class="px-4 py-3 text-sm text-center">
-                                        <a :href="'rentals/' + data.contractno" class="text-blue-600">{{ data.contractno }}</a>
+                                        <a :href="'rentals/contract?ref=' + data.contractno" class="text-blue-600">{{ data.contractno }}</a>
                                     </td>
                                     <td class="px-4 py-3 text-sm">
                                         {{ data.client.fname + ' ' + data.client.lname }}
@@ -52,7 +52,7 @@
                                         <div class="flex items-center">
                                             <MenuPopper icon-name="material-symbols:settings" :has-icon="true">
                                                 <button
-                                                    @click="updateRecord(data.contractid)"
+                                                    @click="navigateTo('rentals/contract?ref=' + data.contractno)"
                                                     class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
                                                     View
                                                 </button>
@@ -85,14 +85,14 @@
 <script setup>
 import { rentalService } from '@/components/api/RentalService'
 import { usePrefStore } from '@/store/pref'
-import { useSurveyStore } from '@/store/survey'
+import { useRentalStore } from '@/store/rental'
 import moment from 'moment'
 import { rentalContractStatus } from '@/contants/consts'
 
 const { $toastNotification } = useNuxtApp()
 const prefStore = usePrefStore()
 
-const surveyStore = useSurveyStore()
+const rentalStore = useRentalStore()
 
 const state = reactive({
     mainList: [],
@@ -116,7 +116,8 @@ const state = reactive({
     filterOptions: [
         { value: 2, label: 'View All'},
         { value: 1, label: 'Active'},
-        { value: 0, label: 'Inactive'}
+        { value: 0, label: 'Inactive'},
+        { value: 3, label: 'With Due'}
     ]
 })
 
@@ -153,12 +154,12 @@ const createNew = () => {
     navigateTo('/rentals/new')
 }
 const updateRecord = (value) => {
-    surveyStore.setSelectedSurvey(value)
+    rentalStore.setSelectedID(value)
     navigateTo('/rentals/edit')
 }
 
-function showAttachment (surveyID){
-    state.selectedContractID = surveyID
+function showAttachment (id){
+    state.selectedContractID = id
     state.modalIsShowAttachment = true
 }
 function closeAttachment (){

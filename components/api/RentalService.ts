@@ -8,6 +8,18 @@ class RentalService extends BaseAPIService{
     async getDetails(id: number): Promise<any> {
         return await this.request(`/rental/${id}`, 'GET')
     }
+    async getContractDetails(id: number): Promise<any> {
+        return await this.request(`/rental/getdetails/${id}`, 'GET')
+    }
+    async reCompute(id: number): Promise<any> {
+        return await this.request(`/rental/recompute/${id}`, 'GET')
+    }
+    async getHistory(id: number): Promise<any> {
+        return await this.request(`/rental/getaccounthistory/${id}`, 'GET')
+    }
+    async getSOA(id: number): Promise<any> {
+        return await this.request(`/rental/getsoa/${id}`, 'GET')
+    }
     async create(params: object): Promise<any> {
         return await this.request(`/rental`, 'POST', params)
     }
@@ -16,6 +28,20 @@ class RentalService extends BaseAPIService{
     }
     async updateStatus(params: object): Promise<any> {
         return await this.request(`/rental/updatestatus`, 'PUT', params)
+    }
+
+    
+    async getRentalCharge(id: number): Promise<any> {
+        return await this.request(`/rental/getrentalcharge/${id}`, 'GET')
+    }
+    async postOtherCharge(params: object): Promise<any> {
+        return await this.request(`/rental/postothercharge`, 'POST', params)
+    }
+    async updateOtherCharge(params: object): Promise<any> {
+        return await this.request(`/rental/updateothercharge`, 'PUT', params)
+    }
+    async deleteOtherCharge(id: number): Promise<any> {
+        return await this.request(`/rental/deleteothercharge/${id}`, 'DELETE')
     }
 }
 

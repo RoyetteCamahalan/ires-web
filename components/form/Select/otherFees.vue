@@ -1,0 +1,54 @@
+<template>
+    <Multiselect :close-on-select="true" :searchable="true" :options="state.options"
+        :canClear="true" 
+        :loading="state.isLoading"
+        noOptionsText="Other fees list is empty"
+        placeholder="Select Other Fee"
+        v-on:search-change="searchChange"
+        class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus-:border-blue-400 focus:ring-2"/>
+</template>
+
+<script setup lang="ts">
+import Multiselect from '@vueform/multiselect'
+import '@vueform/multiselect/themes/default.css'
+import { otherChargeService } from '@/components/api/OtherChargeService'
+
+const props = defineProps({
+    defaultOption:{
+        type: Object,
+        required: false,
+        default: null
+    }
+})
+const state = reactive({
+    options: Array(),
+    isLoading: false
+})
+
+onMounted(async () => {
+    loadDefaultOption()
+})
+watch(() => props.defaultOption, async (newValue) => {
+    await loadDefaultOption()
+})
+
+async function loadDefaultOption(){
+    if(props.defaultOption){
+        state.options = []
+        state.options.push({ value: props.defaultOption.value, label: props.defaultOption.label })
+    }
+    else
+        await searchChange('')
+}
+async function searchChange(query: string){
+    state.isLoading = true
+    try{
+        const response = await otherChargeService.GetOtherFees(1, false, query)
+        state.options = []
+        response.data.data.forEach((element: any) => {
+            state.options.push({ value: element.id, label: element.name })
+        });
+    }catch(error){}
+    state.isLoading = false
+}
+</script>

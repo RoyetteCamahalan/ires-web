@@ -131,7 +131,7 @@
     try{
       const response = await surveyService.getDetails(selectedSurvey)
       state.survey.id = selectedSurvey;
-      state.clients.push({ value: response.data.custid, label: response.data.client.fname + ' ' + response.data.client.lname })
+      state.client.push({ value: response.data.custid, label: response.data.client.fname + ' ' + response.data.client.lname })
       state.survey.custid = response.data.custid
       state.survey.owner = response.data.owner
       state.survey.titleno = response.data.titleno

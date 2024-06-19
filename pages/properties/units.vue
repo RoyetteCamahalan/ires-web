@@ -27,7 +27,7 @@
                                 
                                 <tr v-for="(data, index) in state.mainList.data" :key="index" class="text-gray-700">
                                     <td class="px-4 py-3 text-sm">
-                                        <a @click="SelectProperty(data.propertyid)" class="text-blue-600">{{ data.propertyname}}</a>
+                                        {{ data.propertyname}}
                                     </td>
                                     <td class="px-4 py-3 text-sm">
                                         {{ data.area}}
@@ -160,9 +160,5 @@ const modalClose = (value: any) =>{
         state.currentPage = 1
         loadList('')
     }
-}
-const SelectProperty = (value: number) => {
-    propertyStore.setSelectedID(value)
-    navigateTo('/properties/units')
 }
 </script>

@@ -75,7 +75,7 @@ const emit = defineEmits(['modalClose'])
 
 const props = defineProps({
     formStatusEdit:{
-        type: Number,
+        type: Boolean,
         required: false,
         default: 0
     },
@@ -114,7 +114,7 @@ const state = reactive({
         updatedbyid: user.employeeid
     }
 })
-const FirstNameValidator = (value) => !helpers.req(value) || state.isCompany
+const FirstNameValidator = (value) => helpers.req(value) || state.isCompany
 const validators = computed(()=>{
     return{
         client: {
@@ -139,6 +139,7 @@ onMounted(async () =>{
             state.client.contactno = response.data.contactno
             state.client.tinnumber = response.data.tinnumber
             state.client.email = response.data.email
+            state.isCompany = response.data.fname === ''
         }
         catch(error){
             state.error = error.message
@@ -150,6 +151,11 @@ const submitForm = async () => {
     v$.value.$validate()
     if(!v$.value.$error){
         try{
+            if(state.isCompany){
+                state.client.fname = ''
+                state.client.mname = ''
+            }
+
             let response
             if(props.formStatusEdit)
                 response = await clientService.update(state.client)

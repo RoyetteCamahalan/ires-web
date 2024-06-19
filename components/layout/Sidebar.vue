@@ -145,7 +145,7 @@
                   <a
                     href="/masterfiles/banks"
                     class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
-                    ><span>Banks</span></a
+                    ><span>Banks/e-Wallets</span></a
                   >
                 </li>
                 <li v-if="state.isSurveying || state.isRental">
@@ -166,6 +166,13 @@
                     href="/masterfiles/offices"
                     class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
                     ><span>Offices</span></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/masterfiles/otherfees"
+                    class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
+                    ><span>Other Fees</span></a
                   >
                 </li>
                 <li v-if="user.isappsysadmin">

@@ -130,9 +130,9 @@ const state = reactive({
     },
     isAgree: false,
     plans:[
-        { label: "Surveying Management App", value: 0},
+        { label: "Surveying Management App", value: 1},
         { label: "Rental App", value: 6},
-        { label: "Finance Monitoring App", value: 3},
+        { label: "Finance Monitoring App", value: 4},
     ],
     newCompanyID: 0,
     isPageLoading: false

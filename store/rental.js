@@ -8,7 +8,7 @@ export const useRentalStore = defineStore('rentalStore',
         }),
         actions: {
             setSelectedID(id) {
-                this.selectedRentalID = id
+                this.selectedID = id
             }
         },
         getters: {

@@ -10,7 +10,7 @@
 <script setup lang="ts">
 import Multiselect from '@vueform/multiselect'
 import '@vueform/multiselect/themes/default.css'
-import { paymentService } from '~~/components/api/PaymentService';
+import { bankService } from '@/components/api/BankService';
 
 const state = reactive({
     options: Array(),
@@ -22,7 +22,7 @@ onMounted(() =>{
 async function searchChange(query: string){
     state.isLoading = true
     try{
-        const response = await paymentService.getWallets(1, query)
+        const response = await bankService.getWallets(1, query)
         state.options = []
         response.data.data.forEach((element: any) => {
             state.options.push({ value: element.bankid, label: element.name })

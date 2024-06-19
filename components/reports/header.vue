@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="mx-2">
         <p class="text-lg font-semibold">{{ user.company.name }}</p>
         <p class="text-sm">{{ user.company.address }}</p>
         <p class="text-sm">{{ user.company.contactno }}</p>

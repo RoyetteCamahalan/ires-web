@@ -4,7 +4,7 @@
           <div class="mx-4 mt-2">
                 <NavigationBack url="/rentals"></NavigationBack>
                 <div class="grid grid-cols-6 gap-4">
-                    <div class="col-span-6 sm:col-span-3">
+                    <div class="col-span-6 sm:col-span-6">
                         <FormLabel for="client" label="Client" />
                         <div class="relative">
                           <FormSelectClient :default-option="state.client" v-model="state.contract.custid" class="pr-16"></FormSelectClient>
@@ -17,12 +17,12 @@
                         <FormError :error="v$.contract.custid && v$.contract.custid.$errors && v$.contract.custid.$errors.length > 0 ? v$.contract.custid.$errors[0].$message : null "/>
   
                     </div>
-                    <div class="col-span-6 sm:col-span-3">
+                </div>
+                <div class="grid grid-cols-6 gap-4">
+                    <div class="col-span-6 sm:col-span-2">
                         <FormLabel for="contractdate" label="Contract Date" />
                         <FormDateField name="contractdate" placeholder="Contract Date" v-model="state.contract.contractdate" />
                     </div>
-                </div>
-                <div class="grid grid-cols-6 gap-4">
                     <div class="col-span-6 sm:col-span-2">
                         <FormLabel for="contractdate" label="Billing Start Date" />
                         <FormDateField name="contractdate" placeholder="Contract Date" v-model="state.contract.billingstart" />
@@ -37,10 +37,22 @@
                         <FormNumberField name="term" placeholder="# of Months" v-model="state.contract.term" :disabled="state.isContractOpen"/>
                         <FormError :error="v$.contract.term && v$.contract.term.$errors && v$.contract.term.$errors.length > 0 ? v$.contract.term.$errors[0].$message : null "/>
                     </div>
+                </div>
+                <div class="grid grid-cols-6 gap-4">
                     <div class="col-span-6 sm:col-span-2">
-                        <FormLabel for="monthlyrent" label="Monthly Rent (Gross)"/>
+                        <FormLabel for="monthlyrent" label="Monthly Rent"/>
                         <FormNumberField name="monthlyrent" placeholder="Monthly Rent" v-model="state.contract.montlyrent"/>
                         <FormError :error="v$.contract.montlyrent && v$.contract.montlyrent.$errors && v$.contract.montlyrent.$errors.length > 0 ? v$.contract.montlyrent.$errors[0].$message : null "/>
+                    </div>
+                    <div class="col-span-6 sm:col-span-2">
+                        <FormLabel for="deposit" label="Deposit Amount"/>
+                        <FormNumberField name="deposit" placeholder="Deposit Amount" v-model="state.contract.deposit"/>
+                        <FormError :error="v$.contract.deposit && v$.contract.deposit.$errors && v$.contract.deposit.$errors.length > 0 ? v$.contract.deposit.$errors[0].$message : null "/>
+                    </div>
+                    <div class="col-span-6 sm:col-span-2">
+                        <FormLabel for="" label="Advance Rent (# of Months)" />
+                        <FormNumberField name="noofmonthadvance" placeholder="Advance Rent % (e.g. 2 months)" v-model="state.contract.noofmonthadvance"/>
+                        <FormError :error="v$.contract.noofmonthadvance && v$.contract.noofmonthadvance.$errors && v$.contract.noofmonthadvance.$errors.length > 0 ? v$.contract.noofmonthadvance.$errors[0].$message : null "/>
                     </div>
                 </div>
                 <div class="grid grid-cols-6 gap-4">
@@ -99,7 +111,7 @@
           <NavigationBottomsave :returnURL="state.returnURL" @onSave="submit"></NavigationBottomsave>
         </LoadingSpinner>
         <Modal title="Add New Record" :isShow="state.isShowClientModal" @modalClose="CloseClientModal">
-            <UiClientForm @modalClose="CloseClientModal" :formStatusEdit="0" :selectedClientID="null"></UiClientForm>
+            <UiClientForm @modalClose="CloseClientModal" :formStatusEdit="false" :selectedClientID="null"></UiClientForm>
         </Modal>
         <Modal title="Search Property/Unit" :isShow="state.isShowSearchUnitModal" @modalClose="CloseSearchUnitModal">
             <SearchAvailableUnits @modalClose="CloseSearchUnitModal"></SearchAvailableUnits>
@@ -111,7 +123,6 @@
   import { reactive, computed } from 'vue'
   import { useVuelidate } from '@vuelidate/core'
   import { required, requiredIf, minValue, helpers, numeric, integer } from '@vuelidate/validators'
-  import { useUserStore } from '@/store/user'
   import { useRentalStore } from '@/store/rental'
   import { useSearchStore } from '@/store/search';
   import { rentalService } from '@/components/api/RentalService'
@@ -120,16 +131,15 @@ const { $toastNotification } = useNuxtApp()
 
   import moment from 'moment'
   
-  const user = useUserStore().getUser
   const searchStore = useSearchStore()
         
   const selectedID = useRentalStore().getSelectedID
   const currentDate = new Date();
   const props = defineProps({
-    formStatus:{
-      type: Number,
+    isFormEdit:{
+      type: Boolean,
       required: false,
-      default: 0   
+      default: false   
     }
   })
   const state = reactive({
@@ -146,6 +156,8 @@ const { $toastNotification } = useNuxtApp()
           term: null,
           monthlypenalty: null,
           penaltyextension: null,
+          deposit: null,
+          noofmonthadvance: null,
           rentalContractDetails: []
       },
     columnHeaders: [
@@ -161,14 +173,31 @@ const { $toastNotification } = useNuxtApp()
   })
 
   onMounted(() =>{
-    if(props.formStatus === 1)
+    if(props.isFormEdit)
         loadRecord()
   })
 
   async function loadRecord(){
     state.isPageLoading = true
     try{
-      // const response = await rentalService.getDetails(selectedID)
+      var response = await rentalService.getDetails(selectedID)
+      state.contract.contractid = selectedID
+      state.client = { value: response.data.custid, label: response.data.client.fname + ' ' + response.data.client.lname }
+      state.contract.custid = response.data.custid
+      state.contract.contractdate = moment(response.data.contractdate).format('YYYY-MM-DD')
+      state.contract.billingstart = moment(response.data.billingstart).format('YYYY-MM-DD')
+      state.contract.term = response.data.term
+      if(response.data.term === 0){
+        state.isContractOpen = true
+        state.contract.term = null
+      }
+      state.contract.montlyrent = response.data.montlyrent
+      state.contract.monthlypenalty = response.data.monthlypenalty === 0 ? null : response.data.monthlypenalty
+      state.contract.penaltyextension = response.data.penaltyextension === 0 ? null : response.data.penaltyextension
+      state.contract.deposit = response.data.deposit === 0 ? null : response.data.deposit
+      state.contract.noofmonthadvance = response.data.noofmonthadvance === 0 ? null : response.data.noofmonthadvance
+      response = await rentalService.getContractDetails(selectedID)
+      state.contract.rentalContractDetails = response.data
       // state.rental.id = selectedID;
       // state.clients.push({ value: response.data.custid, label: response.data.client.fname + ' ' + response.data.client.lname })
     }catch(error){
@@ -265,7 +294,7 @@ function removeItem(item, remove = true) {
         state.isPageLoading = true;
         try{
             console.log(state.contract)
-            if(props.formStatus == 1)
+            if(props.isFormEdit)
                 await rentalService.update(state.contract)
             else
                 await rentalService.create(state.contract)

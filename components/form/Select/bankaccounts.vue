@@ -3,7 +3,7 @@
         :canClear="true" 
         :loading="state.isLoading"
         noOptionsText="Bank account list is empty"
-        placeholder="Select Bank Account"
+        placeholder="You Company's Bank Account"
         class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus-:border-blue-400 focus:ring-2"/>
 </template>
 

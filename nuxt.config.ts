@@ -15,6 +15,7 @@ export default defineNuxtConfig({
       '@pinia-plugin-persistedstate/nuxt',
       '@vueuse/sound/nuxt',
       'nuxt-icon',
+      '@productdevbook/chatwoot',
     ],
     runtimeConfig: {
         public: {
@@ -37,5 +38,18 @@ export default defineNuxtConfig({
         routes: ['/']
       },
       preset: 'node-server'
+    },
+    chatwoot: {
+      init: {
+        websiteToken: 'UdjpiuCkqCHURfn2498Hc5HK'
+      },
+      settings: {
+        locale: 'en',
+        position: 'right',
+        launcherTitle: 'Chat With Us',
+        // ... and more settings
+      },
+      // If this is loaded you can make it true, https://github.com/nuxt-modules/partytown
+      partytown: false,
     }
 })
