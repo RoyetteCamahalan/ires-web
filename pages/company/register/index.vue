@@ -30,7 +30,7 @@
                                 <FormTextField name="lastname" placeholder="Last Name" v-model="state.company.adminlastname"/>
                                 <FormError :error="v$.company.adminlastname && v$.company.adminlastname.$errors && v$.company.adminlastname.$errors.length > 0 ? v$.company.adminlastname.$errors[0].$message : null "/>
                                 
-                                <FormLabel for="email" label="Email" />
+                                <div class="flex"><FormLabel for="email" label="Email" /><span class="block text-xs mt-2.5 ml-1 text-gray-500">(Verification email will be sent here)</span></div>
                                 <FormTextField name="email" placeholder="Email" v-model="state.company.email"/>
                                 <FormError :error="v$.company.email && v$.company.email.$errors && v$.company.email.$errors.length > 0 ? v$.company.email.$errors[0].$message : null "/>
                                         

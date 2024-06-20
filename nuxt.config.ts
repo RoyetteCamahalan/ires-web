@@ -15,12 +15,14 @@ export default defineNuxtConfig({
       '@pinia-plugin-persistedstate/nuxt',
       '@vueuse/sound/nuxt',
       'nuxt-icon',
-      '@productdevbook/chatwoot',
+      //'@productdevbook/chatwoot',
     ],
     runtimeConfig: {
         public: {
           apiBaseURL: process.env.API_BASE_URL || 'https://api.example.com/',
           appName: process.env.APP_NAME || 'HexaByt',
+          CHATWOOT_URL: process.env.CHATWOOT_URL,
+          CHATWOOT_TOKEN: process.env.CHATWOOT_TOKEN,
         },
     },
     sound: {
@@ -39,17 +41,17 @@ export default defineNuxtConfig({
       },
       preset: 'node-server'
     },
-    chatwoot: {
-      init: {
-        websiteToken: 'UdjpiuCkqCHURfn2498Hc5HK'
-      },
-      settings: {
-        locale: 'en',
-        position: 'right',
-        launcherTitle: 'Chat With Us',
-        // ... and more settings
-      },
-      // If this is loaded you can make it true, https://github.com/nuxt-modules/partytown
-      partytown: false,
-    }
+    // chatwoot: {
+    //   init: {
+    //     websiteToken: 'UdjpiuCkqCHURfn2498Hc5HK'
+    //   },
+    //   settings: {
+    //     locale: 'en',
+    //     position: 'right',
+    //     launcherTitle: 'Chat With Us',
+    //     // ... and more settings
+    //   },
+    //   // If this is loaded you can make it true, https://github.com/nuxt-modules/partytown
+    //   partytown: false,
+    // }
 })

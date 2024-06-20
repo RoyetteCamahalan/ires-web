@@ -22,109 +22,35 @@
             </div>
         </div>
         <div class="space-y-4 lg:grid lg:grid-cols-2 sm:gap-2 xl:gap-6 lg:space-y-0">
-            <!-- Pricing Card -->
-            <div data-aos="zoom-in" class="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white aos-init aos-animate">
-                <h3 class="mb-4 text-2xl font-semibold">Surveying Pro</h3>
-                <p class="font-light text-gray-500 sm:text-lg dark:text-gray-400">Relevant for start up professionals</p>
-                <div class="flex justify-center items-baseline my-8">
-                    <span class="mr-2 text-3xl text-blue-700 font-extrabold">P 400</span>
-                    <span class="text-gray-500 dark:text-gray-400">/month</span>
-                </div>
-                <!-- List -->
-                <ul role="list" class="mb-8 space-y-4 text-left">
-                    <li class="flex items-center space-x-3">
-                        <!-- Icon -->
-                        <Icon name="ic:baseline-check" class="flex-shrink-0 w-5 h-5 text-green-500"></Icon>
-                        <span>Unlimited Surveys</span>
-                    </li>
-                    <li class="flex items-center space-x-3">
-                        <!-- Icon -->
-                        <Icon name="ic:baseline-check" class="flex-shrink-0 w-5 h-5 text-green-500"></Icon>
-                        <span>Expense & Petty Cash Monitoring</span>
-                    </li>
-                    <li class="flex items-center space-x-3">
-                        <!-- Icon -->
-                        
-                        <Icon name="ic:baseline-check" class="flex-shrink-0 w-5 h-5 text-green-500"></Icon>
-                        <span>Unlimited Users</span>
-                    </li>
-                    <li class="flex items-center space-x-3">
-                        <!-- Icon -->
-                        
-                        <Icon name="ic:baseline-check" class="flex-shrink-0 w-5 h-5 text-green-500"></Icon>
-                        <span>Attachment Storage: <span class="font-semibold">1GB</span></span>
-                    </li>
-                    <li class="flex items-center space-x-3">
-                        <!-- Icon -->
-                        
-                        <Icon name="ic:baseline-check" class="flex-shrink-0 w-5 h-5 text-green-500"></Icon>
-                        <span>Free updates: <span class="font-semibold">Lifetime</span></span>
-                    </li>
-                    <li class="flex items-center space-x-3">
-                        <!-- Icon -->
-                        
-                        <Icon name="ic:baseline-check" class="flex-shrink-0 w-5 h-5 text-green-500"></Icon>
-                        <span>No setup, or hidden fees</span>
-                    </li>
-                </ul>
-                <button class="px-3 py-2 bg-blue-600 text-white text-sm rounded-xl" :class="props.currentPlanID >= 1 && 'opacity-50 cursor-not-allowed'"
-                    @click="$emit('upgradePlan', 1)">Select Plan</button>
-            </div>
-            <div data-aos="zoom-in" class="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white aos-init aos-animate">
-                <h3 class="mb-4 text-2xl font-semibold">Surveying Enterprise</h3>
-                <p class="font-light text-gray-500 sm:text-lg dark:text-gray-400">Perfect for medium to large companies</p>
-                <div class="flex justify-center items-baseline my-8">
-                    <span class="mr-2 text-3xl text-blue-700 font-extrabold">P 700</span>
-                    <span class="text-gray-500 dark:text-gray-400">/month</span>
-                </div>
-                <!-- List -->
-                <ul role="list" class="mb-8 space-y-4 text-left">
-                    <li class="flex items-center space-x-3">
-                        <!-- Icon -->
-                        <Icon name="ic:baseline-check" class="flex-shrink-0 w-5 h-5 text-green-500"></Icon>
-                        <span>Unlimited Surveys</span>
-                    </li>
-                    <li class="flex items-center space-x-3">
-                        <!-- Icon -->
-                        <Icon name="ic:baseline-check" class="flex-shrink-0 w-5 h-5 text-green-500"></Icon>
-                        <span>Expense & Petty Cash Monitoring</span>
-                    </li>
-                    <li class="flex items-center space-x-3">
-                        <!-- Icon -->
-                        
-                        <Icon name="ic:baseline-check" class="flex-shrink-0 w-5 h-5 text-green-500"></Icon>
-                        <span>Unlimited Users</span>
-                    </li>
-                    <li class="flex items-center space-x-3">
-                        <!-- Icon -->
-                        
-                        <Icon name="ic:baseline-check" class="flex-shrink-0 w-5 h-5 text-green-500"></Icon>
-                        <span>Attachment Storage: <span class="font-semibold">5GB</span></span>
-                    </li>
-                    <li class="flex items-center space-x-3">
-                        <!-- Icon -->
-                        
-                        <Icon name="ic:baseline-check" class="flex-shrink-0 w-5 h-5 text-green-500"></Icon>
-                        <span>Free updates: <span class="font-semibold">Lifetime</span></span>
-                    </li>
-                    <li class="flex items-center space-x-3">
-                        <!-- Icon -->
-                        
-                        <Icon name="ic:baseline-check" class="flex-shrink-0 w-5 h-5 text-green-500"></Icon>
-                        <span>No setup, or hidden fees</span>
-                    </li>
-                </ul>
-                <button class="px-3 py-2 bg-blue-600 text-white text-sm rounded-xl" :class="props.currentPlanID >= 2 && 'opacity-50 cursor-not-allowed'"
-                    @click="$emit('upgradePlan', 2)">Select Plan</button>
-            </div>
+            <LandingPricingRentalPro v-if="props.selectedModuleID === appModules.rentals">
+                <button class="w-full px-3 py-2 bg-blue-600 text-white text-sm rounded-xl" :class="props.selectedPlanID >= plan.rental_pro && 'opacity-50 cursor-not-allowed'"
+                    @click="$emit('upgradePlan', plan.rental_pro)">Select Plan</button>
+            </LandingPricingRentalPro>
+            <LandingPricingRentalEnterprise v-if="props.selectedModuleID === appModules.rentals">
+                <button class="w-full px-3 py-2 bg-blue-600 text-white text-sm rounded-xl" :class="props.selectedPlanID >= plan.rental_enterprise && 'opacity-50 cursor-not-allowed'"
+                    @click="$emit('upgradePlan', plan.rental_enterprise)">Select Plan</button>
+            </LandingPricingRentalEnterprise>
+            <LandingPricingSurveyPro v-if="props.selectedModuleID === appModules.survey">
+                <button class="w-full px-3 py-2 bg-blue-600 text-white text-sm rounded-xl" :class="props.selectedPlanID >= plan.survey_pro && 'opacity-50 cursor-not-allowed'"
+                    @click="$emit('upgradePlan', plan.survey_pro)">Select Plan</button>
+            </LandingPricingSurveyPro>
+            <LandingPricingSurveyEnterprise v-if="props.selectedModuleID === appModules.survey">
+                <button class="w-full px-3 py-2 bg-blue-600 text-white text-sm rounded-xl" :class="props.selectedPlanID >= plan.survey_enterprise && 'opacity-50 cursor-not-allowed'"
+                    @click="$emit('upgradePlan', plan.survey_enterprise)">Select Plan</button>
+            </LandingPricingSurveyEnterprise>
         </div>
     </div>
     </section>
 </template>
 <script setup>
+import { appModules, plan } from '@/contants/consts';
 
 const props = defineProps({
-    currentPlanID:{
+    selectedPlanID:{
+        type: Number,
+        required: true
+    },
+    selectedModuleID:{
         type: Number,
         required: true
     }

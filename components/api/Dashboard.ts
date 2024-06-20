@@ -8,6 +8,9 @@ class DashboardService extends BaseAPIService{
     async getSurvey(): Promise<any> {
         return await this.request(`/main/getsurveydashboard`, 'GET')
     }
+    async getRental(): Promise<any> {
+        return await this.request(`/main/getrentaldashboard`, 'GET')
+    }
     async getNotifications(): Promise<any> {
         return await this.request(`/main/getnotifications`, 'GET')
     }

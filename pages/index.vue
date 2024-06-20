@@ -16,7 +16,7 @@
             data-aos-once="true"
             class="my-4 text-4xl font-bold leading-tight text-darken aos-init aos-animate"
           >
-            <span class="text-blue-600">Office/Business</span> management is now much
+            <span class="text-blue-600">Business</span> management is now made
             easier
           </h1>
           <p
@@ -176,10 +176,33 @@
           One <span class="text-blue-600">Cloud Software.</span>
         </h1>
         <p class="leading-relaxed text-gray-500">
-          HexaByt is one platform for office automation with scalable apps to help you run your business with ease.
+          HexaByt is one platform for automation with scalable apps to help you run your business with ease.
         </p>
       </div>
       <div class="grid md:grid-cols-3 gap-14 md:gap-5 mt-20">
+        <div
+          data-aos="fade-up"
+          data-aos-delay="300"
+          class="bg-white shadow-xl p-6 text-center rounded-xl aos-init aos-animate"
+        >
+          <div
+            class="rounded-full w-16 h-16 flex items-center justify-center mx-auto shadow-lg bg-teal-500 transform -translate-y-12"
+          >
+            <Icon name="ion:ios-pricetags" class="w-6 h-6 text-white"></Icon>
+          </div>
+          <h1
+            class="font-medium text-xl lg:px-14 text-darken lg:h-14 pt-3"
+          >
+            Rental Management
+          </h1>
+          <p class="text-sm text-gray-500 italic mb-3 ">(For Real Estate)</p>
+          <p class="px-4 text-gray-500">
+            Monitors your renter's payment and charges. Applicable for property rental and rental services. 
+          </p>
+          <button
+            @click="tryPlan(6)"
+            type="button" class="px-4 py-2 mt-2 bg-blue-600 text-white rounded-full text-sm font-semibold">Try for Free</button>
+        </div>
         <div
           data-aos="fade-up"
           class="bg-white shadow-xl p-6 text-center rounded-xl aos-init aos-animate"
@@ -223,6 +246,8 @@
             @click="tryPlan(4)"
             type="button" class="px-4 py-2 mt-2 bg-blue-600 text-white rounded-full text-sm font-semibold">Try for Free</button>
         </div>
+      </div>
+      <div class="grid md:grid-cols-3 gap-14 md:gap-5 mt-14">
         <div
           data-aos="fade-up"
           data-aos-delay="300"
@@ -231,23 +256,18 @@
           <div
             class="rounded-full w-16 h-16 flex items-center justify-center mx-auto shadow-lg bg-teal-500 transform -translate-y-12"
           >
-            <Icon name="ion:ios-pricetags" class="w-6 h-6 text-white"></Icon>
+            <Icon name="material-symbols:car-tag-sharp" class="w-6 h-6 text-white"></Icon>
           </div>
           <h1
-            class="font-medium text-xl mb-3 lg:px-14 text-darken lg:h-14 pt-3"
+            class="font-medium text-xl lg:px-14 mb-3 text-darken lg:h-14 pt-3"
           >
-            Rental Management
+            Car Rental Management
           </h1>
           <p class="px-4 text-gray-500">
-            Monitors your renter's payment and charges. Applicable for property rental, car rental and rental services. 
+            Manage car bookings, payment, charges. 
           </p>
-          <button
-            @click="tryPlan(6)"
-            type="button" class="px-4 py-2 mt-2 bg-blue-600 text-white rounded-full text-sm font-semibold">Try for Free</button>
+          <button type="button" class="px-3 py-2 mt-2 bg-gray-200 rounded-xl text-sm font-semibold">Coming Soon!</button>
         </div>
-      </div>
-      <div class="grid md:grid-cols-3 gap-14 md:gap-5 mt-14">
-        <div></div>
         <div
           data-aos="fade-up"
           data-aos-delay="150"
@@ -337,9 +357,15 @@
 <script setup>
 import { useSubscriptionStore } from '@/store/subscription';
 
+const runtimeConfig = useRuntimeConfig()
 
 definePageMeta({
     auth: false
+})
+
+
+onMounted(() =>{
+  initChatWoot(document,'script')
 })
 
 const subscriptionStore = useSubscriptionStore()
@@ -347,5 +373,20 @@ const subscriptionStore = useSubscriptionStore()
 function tryPlan(planID){
   subscriptionStore.setSelectedPlanID(planID);
   navigateTo('/company/register')
+}
+
+function initChatWoot(d,t) {
+  var BASE_URL="https://app.chatwoot.com";
+  var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+  g.src=BASE_URL+"/packs/js/sdk.js";
+  g.defer = true;
+  g.async = true;
+  s.parentNode.insertBefore(g,s);
+  g.onload=function(){
+    window.chatwootSDK.run({
+      websiteToken: 'UdjpiuCkqCHURfn2498Hc5HK',
+      baseUrl: BASE_URL
+    })
+  }
 }
 </script>

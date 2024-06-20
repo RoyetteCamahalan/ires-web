@@ -72,7 +72,7 @@
                   <div class="bg-white shadow-lg shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
                     <Icon name="material-symbols:home-work-outline-rounded" class="w-4 h-4"></Icon>
                   </div>
-                  <span class="ml-3 text-dark-500 text-sm">Properties</span>
+                  <span class="ml-3 text-dark-500 text-sm">Building/Properties</span>
                 </a>
               </div>
             </li>

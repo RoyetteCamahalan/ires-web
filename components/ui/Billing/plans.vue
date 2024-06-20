@@ -6,34 +6,37 @@
         <div class="flex flex-col mb-3 mx-4 rounded-2xl shadow-xl shadow-gray-200">
             <div class="inline-block min-w-full align-middle">
                 <div class="rounded-2xl shadow-lg bg-white">
-                    <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.plans.data"
+                    <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.plans"
                         class="w-full whitespace-no-wrap">
                         
                         <template #body
-                            v-if="!(state.isPageLoading || (state.plans.data && state.plans.data.length === 0))">
+                            v-if="!(state.isPageLoading || (state.plans && state.plans.length === 0))">
                             
-                            <tr v-for="(plan, index) in state.plans.data" :key="index" class="text-gray-700">
+                            <tr v-for="(data, index) in state.plans" :key="index" class="text-gray-700">
                                 <td class="px-4 py-3">
                                     <div class="flex">
-                                        <p class="underline font-semibold">{{ plan.subscriptionPlan.name }}</p>
-                                        <button v-if="state.currentPlanID < 2" class="ml-2 px-2 py-1 text-xs bg-purple-600 text-white rounded-lg" @click="state.showPlanUpgrade = true">Upgrade</button>
+                                        <p class="underline font-semibold">{{ data.subscriptionPlan.name }}</p>
+                                        <button v-if="data.subscriptionPlan.moduleid === appModules.rentals && data.planid < plan.rental_enterprise" class="ml-2 px-2 py-1 text-xs bg-blue-600 text-white rounded-lg" @click="showPlanUpgrade(data.subscriptionPlan)">Upgrade</button>
+                                        <button v-if="data.subscriptionPlan.moduleid === appModules.survey && data.planid < plan.survey_enterprise" class="ml-2 px-2 py-1 text-xs bg-blue-600 text-white rounded-lg" @click="showPlanUpgrade(data.subscriptionPlan)">Upgrade</button>
                                     </div>
                                 </td>
                                 <td class="px-4 py-3 text-sm">
-                                    <p>Storage: {{ plan.storage }}/{{ plan.subscriptionPlan.storage }} MB</p>
-                                    <p>Survey Limit: Unlimited</p>
+                                    <p>Storage: {{ data.storage }}/{{ data.subscriptionPlan.storage }} MB</p>
+                                    <p v-if="data.subscriptionPlan.moduleid === appModules.rentals">property Limit: {{ data.surveylimit ? data.surveylimit : 'Unlimited' }}</p>
+                                    <p v-if="data.subscriptionPlan.moduleid === appModules.survey">Survey Limit: {{ data.surveylimit ? data.surveylimit : 'Unlimited' }}</p>
                                 </td>
-                                <td class="px-4 py-3 text-sm">
-                                    {{ moment(plan.subscriptionexpiry).format('YYYY-MM-DD') }}
+                                <td class="px-4 py-3 text-sm text-center">
+                                    {{ moment(data.subscriptionexpiry).format('MM/DD/YYYY') }}
                                 </td>
-                                <td class="px-4 py-3 text-sm">
-                                    <div class="relative inline-block">
+                                <td class="px-4 py-3 text-sm text-center">
+                                    {{ data.billingcycle === 1 ? 'Monthly' : 'Yearly' }}
+                                    <!-- <div class="relative inline-block">
                                         <Menu as="div" class="relative inline-block text-left">
                                         <div>
-                                            <MenuButton
+                                        <MenuButton
                                             class="flex items-center justify-between px-2 py-2 leading-5 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                                             > 
-                                                {{ plan.billingcycle === 1 ? 'Monthly' : 'Yearly' }}
+                                                {{ data.billingcycle === 1 ? 'Monthly' : 'Yearly' }}
                                                 <Icon name="material-symbols:edit" class="ml-2 w-4 h-4 text-purple-600"></Icon>
                                             </MenuButton>
                                         </div>
@@ -54,7 +57,7 @@
                                                     <button
                                                         @click="updateCycle(plan, 1)"
                                                         class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
-                                                        <Icon v-if="plan.billingcycle === 1" name="ic:baseline-check" class="flex-shrink-0 w-5 h-5 text-purple-600 mr-2"></Icon>
+                                                        <Icon v-if="data.billingcycle === 1" name="ic:baseline-check" class="flex-shrink-0 w-5 h-5 text-purple-600 mr-2"></Icon>
                                                         Monthly
                                                     </button>
                                                 </MenuItem>
@@ -62,7 +65,7 @@
                                                     <button
                                                         @click="updateCycle(plan, 2)"
                                                         class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
-                                                        <Icon v-if="plan.billingcycle === 2" name="ic:baseline-check" class="flex-shrink-0 w-5 h-5 text-purple-600 mr-2"></Icon>
+                                                        <Icon v-if="data.billingcycle === 2" name="ic:baseline-check" class="flex-shrink-0 w-5 h-5 text-purple-600 mr-2"></Icon>
                                                         Yearly
                                                     </button>
                                                 </MenuItem>
@@ -70,13 +73,13 @@
                                             </MenuItems>
                                         </transition>
                                         </Menu>
-                                    </div>
+                                    </div> -->
                                 </td>
                                 <td class="px-4 py-3 text-sm text-right">
-                                    {{ $formatAmount(plan.amount) }}
+                                    {{ $formatAmount(data.amount) }}
                                 </td>
                                 <td class="px-4 py-3 text-xs">
-                                    <span v-if="plan.isexpired" class="px-2 py-1 font-semibold leading-tight rounded-full text-red-700 bg-red-100">Expired</span>
+                                    <span v-if="data.isexpired" class="px-2 py-1 font-semibold leading-tight rounded-full text-red-700 bg-red-100">Expired</span>
                                     <span v-else class="px-2 py-1 font-semibold leading-tight rounded-full text-green-700 bg-green-100">Active</span>
                                 </td>
                             </tr>
@@ -85,9 +88,9 @@
                 </div>
             </div>
         </div>
-        <ModalEmpty :isShow="state.showPlanUpgrade">
+        <ModalEmpty :isShow="state.isShowPlanUpgrade">
             <LoadingSpinner :isActive="state.isUpgrading">
-                <LandingPlanupgrade :currentPlanID="state.currentPlanID" @upgradePlan="upgradePlan"></LandingPlanupgrade>
+                <LandingPlanupgrade :selectedPlanID="state.selectedPlanID" :selectedModuleID="state.selectedModuleID" @upgradePlan="upgradePlan"></LandingPlanupgrade>
             </LoadingSpinner>
         </ModalEmpty>
     </div>
@@ -96,6 +99,7 @@
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import { billingService } from '@/components/api/BillingService'
 import { useUserStore } from '@/store/user';
+import { appModules, plan } from '@/contants/consts';
 import moment from 'moment';
 
 const { $toastNotification } = useNuxtApp()
@@ -106,17 +110,18 @@ const user = userStore.getUser
 const state = reactive({
     plans: [],
     error: '',
-    isPageLoading: false,
+    isPageLoading: true,
     columnHeaders: [
         { name: 'Plan'},
         { name: 'Description'},
-        { name: 'Expiry'},
-        { name: 'Billing Cycle'},
-        { name: 'Total'},
-        { name: 'Status'}
+        { name: 'Expiry', textAlign: 'center'},
+        { name: 'Billing Cycle', textAlign: 'center'},
+        { name: 'Subscription', textAlign: 'center'},
+        { name: 'Status', textAlign: 'center'}
     ],
-    currentPlanID: 0,
-    showPlanUpgrade: false,
+    selectedPlanID: 0,
+    selectedModuleID: 0,
+    isShowPlanUpgrade: false,
     isUpgrading: false,
     isexpired: false,
     
@@ -130,9 +135,9 @@ async function getPlans(){
     try{
         const response = await billingService.getPlans()
         state.plans = response.data
-        if(state.plans.data && state.plans.data.length > 0){
-            state.currentPlanID = state.plans.data[0].planid
-            if(state.plans.data[0].isexpired != user.company.isexpired){
+        if(state.plans && state.plans.length > 0){
+            state.selectedPlanID = state.plans[0].planid
+            if(state.plans[0].isexpired != user.company.isexpired){
                 userStore.resetUser()
                 navigateTo('/login')
             }
@@ -144,15 +149,15 @@ async function getPlans(){
 }
 
 async function updateCycle(plan, billingcycle){
-    if(plan.billingcycle != billingcycle){
+    if(data.billingcycle != billingcycle){
         state.isPageLoading = true
         try{
             const params = {
-                id: plan.id,
+                id: data.id,
                 billingcycle: billingcycle
             }
             const response = await billingService.updateBillingCycle(params)
-            plan.billingcycle = billingcycle
+            data.billingcycle = billingcycle
             console.log(response)
         }catch(error){
             state.error = error
@@ -161,11 +166,16 @@ async function updateCycle(plan, billingcycle){
     }
 }
 
+function showPlanUpgrade(subscriptionPlan){
+    state.selectedModuleID = subscriptionPlan.moduleid
+    state.selectedPlanID = subscriptionPlan.id
+    state.isShowPlanUpgrade = true
+}
 async function upgradePlan(planID){
     console.log(planID)
     if(planID == 0)
-        state.showPlanUpgrade = false
-    else if(planID > state.currentPlanID){
+        state.isShowPlanUpgrade = false
+    else if(planID > state.selectedPlanID){
         state.isUpgrading = true
         try{
             const params = {
@@ -173,12 +183,12 @@ async function upgradePlan(planID){
             }
             await billingService.upgradePlan(params)
             $toastNotification('success', '', 'Plan has been updated. We will email you when bill is available. Thank you!')
-            getPlans()
+            location.reload()
         }catch(error){
             $toastNotification('error', '', error.message)
         }
         state.isUpgrading = false
-        state.showPlanUpgrade = false
+        state.isShowPlanUpgrade = false
     }
 }
 </script>

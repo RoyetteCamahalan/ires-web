@@ -20,10 +20,13 @@
                                     {{ bill.id }}
                                 </td>
                                 <td class="px-4 py-3 text-sm">
-                                    {{ bill.particular }}
+                                    <div class="flex flex-col">
+                                        <p>{{ bill.particular }}</p>
+                                        <span v-if="bill.datepaid" class="text-xs">Date Paid: {{ moment(bill.datepaid).format('MM/DD/YYYY') }} via {{ bill.paymentmode }}</span>
+                                    </div>
                                 </td>
                                 <td class="px-4 py-3 text-sm">
-                                    {{ moment(bill.duedate).format('YYYY-MM-DD') }}
+                                    {{ moment(bill.duedate).format('MM/DD/YYYY') }}
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     {{ $formatAmount(bill.amount) }}
@@ -36,7 +39,7 @@
                                 <td class="px-4 py-3 text-xs text-center">
                                     <button v-if="bill.status === billStatus.open" 
                                         @click="payBill(bill.id)"
-                                        type="button" class="px-2 py-1 text-sm bg-blue-600 text-white rounded-lg text-xs">Pay Now</button>
+                                        type="button" class="px-2 py-1 bg-blue-600 text-white rounded-lg text-xs">Pay Now</button>
                                 </td>
                             </tr>
                         </template>
@@ -57,7 +60,7 @@ const state = reactive({
     bills: [],
     error: '',
     currentPage: 1,
-    isPageLoading: false,
+    isPageLoading: true,
     columnHeaders: [
         { name: 'Bill #'},
         { name: 'Particular'},
@@ -66,7 +69,7 @@ const state = reactive({
         { name: 'Status'},
         { name: 'Action', textAlign: 'center'}
     ],
-    selectedFilter: 0,
+    selectedFilter: 2,
     filters:[
         { label: "Open", value: 0},
         { label: "Paid", value: 1},
