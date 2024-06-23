@@ -62,6 +62,20 @@ export default defineNuxtPlugin(() => {
       else
         return ''
     }
+
+    const downloadFile = async (url) => {
+      try {    
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'test.pdf'); // Update with the actual file name
+        link.target = '_blank'
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (err) {
+        console.error('Failed to download file:', err);
+      }
+    };
     return {
       provide: {
         formatAmount: formatAmount,
@@ -70,7 +84,8 @@ export default defineNuxtPlugin(() => {
         PettyCashTransTypeDesc: PettyCashTransTypeDesc,
         dateInterVal: dateInterVal,
         base64Encode: base64Encode,
-        base64Decode: base64Decode
+        base64Decode: base64Decode,
+        downloadFile: downloadFile
       }
     }
   })

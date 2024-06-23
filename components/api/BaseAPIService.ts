@@ -1,5 +1,5 @@
 import APIError from './APIError'
-import { useUserStore, useUserStore } from '@/store/user'
+import { useUserStore } from '@/store/user'
 
 class BaseAPIService{
     async request(url: string, method: string, params: object = null): Promise<any> {

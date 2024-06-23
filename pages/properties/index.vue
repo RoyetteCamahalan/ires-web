@@ -34,6 +34,9 @@
                                         {{ data.noofoccupiedunits}} / {{ data.noofunits}}
                                     </td>
                                     <td class="px-4 py-3 w-1/5 text-center">
+                                        <button @click="SelectProperty(data.propertyid)" type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded-lg">
+                                            Manage
+                                        </button>
                                         <button class="px-2 py-2 text-sm font-medium leading-5 text-blue-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray" 
                                             aria-label="Edit"
                                             @click="updateRecord(data.propertyid)">

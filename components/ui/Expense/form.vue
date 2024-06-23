@@ -67,8 +67,15 @@
                             <FormLabel for="remarks" label="Remarks" />
                             <FormTextField name="remarks" placeholder="Remarks" v-model="state.data.memo"/>
                         </div>
-                    </div>                
+                    </div>
                     <FormError :error="state.error && state.error.length > 0 ? state.error : null "/>
+                    
+                    <div class="mt-4 text-sm text-gray-600">
+                      * You can manage 
+                        <a href="/masterfiles/vendors" class="text-blue-500">Vendor/Supplier</a>, 
+                        <a href="/masterfiles/offices" class="text-blue-500">Offices</a> and 
+                        <a href="/masterfiles/expensetypes" class="text-blue-500">Expense Types</a> in `Master Files Menu`
+                    </div>
                 </div>               
           </div>
           <NavigationBottomsave returnURL="state.returnURL" @onSave="submit"></NavigationBottomsave>

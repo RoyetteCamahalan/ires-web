@@ -20,6 +20,10 @@ class BillingService extends BaseAPIService{
     async upgradePlan(params: Object): Promise<any> {
         return await this.request(`/billing/upgradeplan`, 'PUT', params)
     }
+    async generateInvoice(id: number): Promise<any> {
+        return await this.request(`/billing/getinvoicedocument/${id}`, 'POST')
+    }
+    
 
 }
 

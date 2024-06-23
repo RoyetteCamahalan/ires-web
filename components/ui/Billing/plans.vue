@@ -22,7 +22,7 @@
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     <p>Storage: {{ data.storage }}/{{ data.subscriptionPlan.storage }} MB</p>
-                                    <p v-if="data.subscriptionPlan.moduleid === appModules.rentals">property Limit: {{ data.surveylimit ? data.surveylimit : 'Unlimited' }}</p>
+                                    <p v-if="data.subscriptionPlan.moduleid === appModules.rentals">Property Limit: {{ data.surveylimit ? data.surveylimit : 'Unlimited' }}</p>
                                     <p v-if="data.subscriptionPlan.moduleid === appModules.survey">Survey Limit: {{ data.surveylimit ? data.surveylimit : 'Unlimited' }}</p>
                                 </td>
                                 <td class="px-4 py-3 text-sm text-center">
@@ -107,6 +107,14 @@ const { $toastNotification } = useNuxtApp()
 const userStore = useUserStore()
 const user = userStore.getUser
 
+const props = defineProps({
+    isUpgrade:{
+        type: Boolean,
+        required: false,
+        default: false
+    }
+})
+
 const state = reactive({
     plans: [],
     error: '',
@@ -140,6 +148,9 @@ async function getPlans(){
             if(state.plans[0].isexpired != user.company.isexpired){
                 userStore.resetUser()
                 navigateTo('/login')
+            }
+            if(state.plans.length == 1 && props.isUpgrade){
+                showPlanUpgrade(state.plans[0].subscriptionPlan)
             }
         }
     }catch(error){
@@ -183,7 +194,10 @@ async function upgradePlan(planID){
             }
             await billingService.upgradePlan(params)
             $toastNotification('success', '', 'Plan has been updated. We will email you when bill is available. Thank you!')
-            location.reload()
+            if(props.isUpgrade)
+                location.replace('/billing');   
+            else
+                location.reload();
         }catch(error){
             $toastNotification('error', '', error.message)
         }

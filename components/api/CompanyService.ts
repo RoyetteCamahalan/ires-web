@@ -14,6 +14,9 @@ class CompanyService extends BaseAPIService{
     async get(): Promise<any> {
         return await this.request(`/company`, 'GET')
     }
+    async completeTour(id: int): Promise<any> {
+        return await this.request(`/company/completetour/${id}`, 'POST')
+    }
 }
 
 export const companyService = new CompanyService()

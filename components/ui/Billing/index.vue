@@ -37,9 +37,15 @@
                                         <span v-else class="px-2 py-1 font-semibold leading-tight rounded-full text-gray-700 bg-gray-100">Cancelled</span>
                                 </td>
                                 <td class="px-4 py-3 text-xs text-center">
-                                    <button v-if="bill.status === billStatus.open" 
+                                    <button v-if="bill.status === billStatus.open && bill.paymentid && bill.paymentid.length > 0" 
+                                        @click="verifyPayment(bill.id)"
+                                        type="button" class="px-2 py-1 bg-green-600 text-white rounded-lg text-xs">Verify Payment</button>
+                                    <button v-else-if="bill.status === billStatus.open" 
                                         @click="payBill(bill.id)"
                                         type="button" class="px-2 py-1 bg-blue-600 text-white rounded-lg text-xs">Pay Now</button>
+                                    <button @click="getInvoiceFile(bill.id)" type="button" class="ml-1">
+                                        <Icon name="material-symbols:download" class="w-5 h-5 text-blue-600"></Icon>
+                                    </button>
                                 </td>
                             </tr>
                         </template>
@@ -56,13 +62,15 @@ import { billingService } from '~~/components/api/BillingService'
 import { billStatus } from '@/contants/consts'
 import moment from 'moment';
 
+const { $toastNotification, $downloadFile } = useNuxtApp()
+
 const state = reactive({
     bills: [],
     error: '',
     currentPage: 1,
     isPageLoading: true,
     columnHeaders: [
-        { name: 'Bill #'},
+        { name: 'Invoice #'},
         { name: 'Particular'},
         { name: 'Due Date'},
         { name: 'Total'},
@@ -109,6 +117,31 @@ async function payBill(billID){
         }
     }catch(error){
         state.error = error
+    }
+    state.isPageLoading = false
+}
+async function verifyPayment(slug){
+    state.isPageLoading = true
+    try{
+        const response = await billingService.completePayment( { id: slug })
+        if(response.data && response.data.status == billStatus.paid){
+            $toastNotification('success', '', 'Payment has been verified.')
+        }
+        else
+            $toastNotification('error', '', 'Payment verification failed.')
+    }catch(error){
+        $toastNotification('error', '', 'Payment verification failed.')
+    }
+    await loadData()
+    state.isPageLoading = false
+}
+async function getInvoiceFile(id){
+    state.isPageLoading = true
+    try{
+        const response = await billingService.generateInvoice(id)
+        $downloadFile(response.data)
+    }catch(error){
+        $toastNotification('error', '', 'Failed to download invoice')
     }
     state.isPageLoading = false
 }

@@ -1,9 +1,13 @@
 class APIError extends Error {
 	errors?: Record<string, string[]>
+	code?: string
 
 	constructor(error: any) {
 		super(error.message)
 		Object.setPrototypeOf(this, APIError.prototype)
+		if(error.errorCode){
+			this.code = error.errorCode
+		}
 		if (error.errors) {
 			this.errors = error.errors
 		}

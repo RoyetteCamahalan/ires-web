@@ -18,6 +18,9 @@ export const useUserStore = defineStore('userStore',
                 this.user = null
                 this.token = null
             },
+            completeTour() {
+                this.user.company.apptour = 100
+            },
         },
         getters: {
             getUser: (state) => state.user,

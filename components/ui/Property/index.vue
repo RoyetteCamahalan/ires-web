@@ -2,7 +2,7 @@
     <div>
         <LoadingSpinner :isActive="state.isPageLoading">
           <div class="mx-4 mt-2">
-            <FormLabel for="name" label="Name" />
+            <FormLabel for="name" label="Building Name" />
             <FormTextField name="name" placeholder="Name" v-model="state.data.propertyname"></FormTextField>
             <FormError :error="v$.data.propertyname && v$.data.propertyname.$errors && v$.data.propertyname.$errors.length > 0 ? v$.data.propertyname.$errors[0].$message : null "/>
 
@@ -12,7 +12,8 @@
         </div>
         <div class="px-4">
             <FormError :error="state.error && state.error.length > 0 ? state.error : null "/>
-            <div class="flex flex-row-reverse">
+            <div :class="'flex ' + (props.isOnBoarding ? 'justify-between' : 'flex-row-reverse')">
+                <FormButton v-if="props.isOnBoarding" buttonStyle="default" class="text-sm" @click="$emit('onSkipTour')">Skip Tutorial</FormButton>
                 <FormButton buttonStyle="primary" class="text-sm" @click="submit">Submit</FormButton>
             </div>
         </div>
@@ -26,7 +27,7 @@ import { required, helpers, minValue } from '@vuelidate/validators'
 import { projectService } from '@/components/api/ProjectService'
 import { useUserStore } from '@/store/user'
 
-const emit = defineEmits(['modalClose'])
+const emit = defineEmits(['modalClose','onSkipTour'])
 
 const user = useUserStore().getUser
 
@@ -40,6 +41,11 @@ const props = defineProps({
         type: Number,
         required: false,
         default: 0
+    },
+    isOnBoarding:{
+        type: Boolean,
+        required: false,
+        default: false
     }
 })
 const state = reactive({
@@ -74,11 +80,12 @@ async function submit(){
     v$.value.$validate()
     if(!v$.value.$error){
         try{
+            let response
             if(props.formStatus === 0)
-                await projectService.CreateRentalProperty(state.data)
+                response = await projectService.CreateRentalProperty(state.data)
             else
-                await projectService.UpdateRentalProperty(state.data)
-            emit('modalClose', true)
+                response = await projectService.UpdateRentalProperty(state.data)
+            emit('modalClose', response.data)
         }catch(error){
             state.error = error.message
         }
