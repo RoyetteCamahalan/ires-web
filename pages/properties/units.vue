@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NuxtLayout name="admin">
+        <NuxtLayout name="admin" title="Doors/Rooms">
             
             <div class="flex flex-col my-2 mx-4">
                 <div class="w-full flex justify-between flex-col sm:flex-row">
@@ -75,7 +75,7 @@ const state = reactive({
     currentPage: 1,
     isPageLoading: false,
     columnHeaders: [
-        { name: 'Unit/Room'},
+        { name: 'Door/Room Name'},
         { name: 'Area'},
         { name: 'Tenant'},
         { name: 'Status', textAlign: 'center'},

@@ -3,7 +3,7 @@
     <div>
         <LoadingSpinner :isActive="state.isPageLoading">
           <div class="mx-4 mt-2">
-              <NavigationBack url="/pettycash"></NavigationBack>
+              <NavigationBack url="/payments"></NavigationBack>
               <div class="grid grid-cols-6 gap-4 p-3 mb-3 rounded-lg bg-white border">
                   <div class="col-span-6 sm:col-span-4">
                       <FormLabel for="client" label="Client" />
@@ -319,6 +319,9 @@ const v$ = useVuelidate(validators, state)
 const vCheck$ = useVuelidate(checkValidators, state)
 const vbankTransfer$ = useVuelidate(bankTransferValidators, state)
 
+onMounted(() =>{
+  searchStore.resetSelectedData
+})
 watch(() => state.payment.custid, async (newValue) => {
   state.payment.payables = []
 })
@@ -342,9 +345,9 @@ const totalPayment = computed(() =>{
   return state.payment.payables.reduce( (Sum, payable) => payable.paymentAmount + Sum,0)
 })
 
-function modalClose(){
+function modalClose(value){
   state.modalShow = false
-  if(searchStore.getSelectedData && searchStore.getSelectedData.length > 0){
+  if(value && searchStore.getSelectedData && searchStore.getSelectedData.length > 0){
     searchStore.getSelectedData.forEach(data => {
       if(removeItem(data, false) < 0){
         data.paymentAmount = data.balance

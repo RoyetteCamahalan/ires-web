@@ -117,7 +117,7 @@ function removeObjectWithId(id) {
 function submit(){
     if(state.selectedItems && state.selectedItems.length > 0){
         searchStore.setSelectedData(state.selectedItems)
-        emit('modalClose')
+        emit('modalClose', true)
     }
     else
         state.error = "Please select record."

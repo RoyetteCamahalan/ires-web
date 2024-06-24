@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NuxtLayout name="admin">
+        <NuxtLayout name="admin" title="My Calendar">
             <div class="m-2">
                 <div class="w-full mt-5 rounded-lg border border-gray-300 bg-white">
                     <div class="w-full px-4 py-3 flex justify-between bg-blue-50 rounded-t-lg">

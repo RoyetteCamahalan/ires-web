@@ -24,7 +24,7 @@
                 <div class="flex flex-col text-right">
                     <span class="text-md font-semibold">{{ 'Contract #' + props.contract.contractno }}</span>
                     <span class="text-sm">Contract Date: {{ moment(props.contract.contractdate).format('MM/DD/YYYY') }}</span>
-                    <span class="text-sm">Billing Start: {{ moment(props.contract.billingstart).format('MM/DD/YYYY') }}</span>
+                    <span class="text-sm">Billing Sched: Every {{ $getNumberRank(props.contract.billingsched) }}</span>
                     <span class="text-sm">Term: {{ (props.contract.term && props.contract.term > 0) ? (props.contract.term + ' Months') : 'Open' }}</span>
                     <span class="text-sm">Status: 
                                         <span v-if="props.contract.status === rentalContractStatus.active" class="px-2 py-1 font-semibold leading-tight rounded-full text-green-700 bg-green-100">Active</span>

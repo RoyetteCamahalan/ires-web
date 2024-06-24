@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NuxtLayout name="admin">
+        <NuxtLayout name="admin" title="Payments">
             <div class="p-3 h-screen bg-gray-50">
                 <div class="m-2 py-1 px-2 shadow-lg bg-white rounded-lg">
                     <div class="flex justify-between">

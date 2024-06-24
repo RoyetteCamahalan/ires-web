@@ -9,7 +9,7 @@
             <FormLabel for="area" label="Area" />
             <FormTextField name="area" placeholder="Area" v-model="state.data.area"></FormTextField>
 
-            <FormLabel for="monthlyrent" label="Monthly Rent" />
+            <FormLabel for="monthlyrent" label="Suggested Monthly Rent" />
             <FormNumberField name="monthlyrent" placeholder="Monthly Rent" v-model="state.data.monthlyrent"></FormNumberField>
             <FormError :error="v$.data.monthlyrent && v$.data.monthlyrent.$errors && v$.data.monthlyrent.$errors.length > 0 ? v$.data.monthlyrent.$errors[0].$message : null "/>
                 

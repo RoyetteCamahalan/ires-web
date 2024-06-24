@@ -24,9 +24,9 @@
                         <FormDateField name="contractdate" placeholder="Contract Date" v-model="state.contract.contractdate" />
                     </div>
                     <div class="col-span-6 sm:col-span-2">
-                        <FormLabel for="contractdate" label="Billing Start Date" />
-                        <FormDateField name="contractdate" placeholder="Contract Date" v-model="state.contract.billingstart" />
-                        <FormError :error="v$.contract.billingstart && v$.contract.billingstart.$errors && v$.contract.billingstart.$errors.length > 0 ? v$.contract.billingstart.$errors[0].$message : null "/>
+                        <FormLabel for="billingsched" label="Billing Schedule" />
+                        <FormSelect :options="state.daysOfMonth" v-model="state.contract.billingsched"></FormSelect>
+                        <FormError :error="v$.contract.billingsched && v$.contract.billingsched.$errors && v$.contract.billingsched.$errors.length > 0 ? v$.contract.billingsched.$errors[0].$message : null "/>
                     </div>
                     <div class="col-span-6 sm:col-span-2">
                         <div class="flex items-center">
@@ -65,6 +65,11 @@
                         <FormLabel for="penaltyextension" label="Penalty Extension (# of days)" />
                         <FormNumberField name="penaltyextension" placeholder="Penalty Extension (e.g. 10)" v-model="state.contract.penaltyextension"/>
                         <FormError :error="v$.contract.penaltyextension && v$.contract.penaltyextension.$errors && v$.contract.penaltyextension.$errors.length > 0 ? v$.contract.penaltyextension.$errors[0].$message : null "/>
+                    </div>
+                    <div class="col-span-6 sm:col-span-2">
+                        <FormLabel for="remarks" label="Remarks" />
+                        <FormTextField name="remarks" placeholder="Remarks" v-model="state.contract.remarks"/>
+                        <FormError :error="v$.contract.remarks && v$.contract.remarks.$errors && v$.contract.remarks.$errors.length > 0 ? v$.contract.remarks.$errors[0].$message : null "/>
                     </div>
                 </div>
                 <div class="flex justify-between m-3 pt-2 border-t-2 border-blue-500">
@@ -151,25 +156,27 @@ const { $toastNotification } = useNuxtApp()
           contractid: 0,
           custid: null,
           contractdate: moment(currentDate).format('YYYY-MM-DD'),
-          billingstart: moment(currentDate).format('YYYY-MM-DD'),
+          billingsched: currentDate.getDay,
           montlyrent: null,
           term: null,
           monthlypenalty: null,
           penaltyextension: null,
           deposit: null,
           noofmonthadvance: null,
+          remarks: '',
           rentalContractDetails: []
       },
-    columnHeaders: [
-        { name: 'Unit/Room'},
-        { name: 'Property/Building'},
-        { name: 'Area'},
-        { name: ''}
-    ],
+      columnHeaders: [
+          { name: 'Unit/Room'},
+          { name: 'Property/Building'},
+          { name: 'Area'},
+          { name: ''}
+      ],
       client: null,
       isClientLoading: false,
       isShowClientModal: false,
-      isShowSearchUnitModal: false
+      isShowSearchUnitModal: false,
+      daysOfMonth: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
   })
 
   onMounted(() =>{
@@ -181,16 +188,18 @@ const { $toastNotification } = useNuxtApp()
     state.isPageLoading = true
     try{
       var response = await rentalService.getDetails(selectedID)
+      console.log(response.data)
       state.contract.contractid = selectedID
       state.client = { value: response.data.custid, label: response.data.client.fname + ' ' + response.data.client.lname }
       state.contract.custid = response.data.custid
       state.contract.contractdate = moment(response.data.contractdate).format('YYYY-MM-DD')
-      state.contract.billingstart = moment(response.data.billingstart).format('YYYY-MM-DD')
+      state.contract.billingsched = response.data.billingsched
       state.contract.term = response.data.term
       if(response.data.term === 0){
         state.isContractOpen = true
         state.contract.term = null
       }
+      state.contract.remarks = response.data.remarks
       state.contract.montlyrent = response.data.montlyrent
       state.contract.monthlypenalty = response.data.monthlypenalty === 0 ? null : response.data.monthlypenalty
       state.contract.penaltyextension = response.data.penaltyextension === 0 ? null : response.data.penaltyextension
@@ -211,10 +220,6 @@ const { $toastNotification } = useNuxtApp()
           state.contract.term = 0
       }
   })
-
-  const IsValidBillingStart = (value) =>{
-    return value >= state.contract.contractdate
-  }
   
   const validators = computed(() =>{
     return {
@@ -224,9 +229,7 @@ const { $toastNotification } = useNuxtApp()
           minValue: helpers.withMessage('This field is required.', minValue(1)) 
         },
         contractdate: { required: helpers.withMessage('This field is required.', required) },
-        billingstart: { required: helpers.withMessage('This field is required.', required),
-            minValue: helpers.withMessage('Date must be greater than or equal to the contract date', IsValidBillingStart)
-         },
+        billingsched: { required: helpers.withMessage('This field is required.', required) },
         term: { required: helpers.withMessage('This field is required.', 
                         requiredIf(function() {
                              return !state.isContractOpen

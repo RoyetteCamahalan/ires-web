@@ -58,7 +58,7 @@ const state = reactive({
     columnHeaders: [
                 { name: '', width: '40'},
                 { name: 'Building/Unit'},
-                { name: 'Monthly Rent', width: '30%', textAlign: 'center'}
+                { name: 'Suggested Monthly Rent', width: '30%', textAlign: 'center'}
             ],
     selectedItems: []
 })

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NuxtLayout name="admin">
+        <NuxtLayout name="admin" title="Expense Types">
             
             <div class="flex flex-col my-2 mx-4">
                 <div class="w-full flex flex-row-reverse">

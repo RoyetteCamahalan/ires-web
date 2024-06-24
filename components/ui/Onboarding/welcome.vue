@@ -1,7 +1,7 @@
 <template>
     <div class="w-full bg-white rounded-lg">
         <div class="w-full flex justify-center pt-8">
-            <img class="w-20 h-20" src="img/logo.png"/>
+            <img class="w-20 h-20" src="/img/logo.png"/>
         </div>
         <div class="w-full flex justify-center pt-6">
             <h2 class="text-2xl font-bold text-blue-500">Welcome to {{ runtimeConfig.public.appName }}!</h2>

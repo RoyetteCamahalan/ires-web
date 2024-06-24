@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NuxtLayout name="admin">
+        <NuxtLayout name="admin" title="Billing">
             <UiBillingPlans :isUpgrade="state.isUpgrade"></UiBillingPlans>
             <UiBilling class="mt-8"></UiBilling>
         </NuxtLayout>

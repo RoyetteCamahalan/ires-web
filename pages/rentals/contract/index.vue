@@ -99,7 +99,7 @@ const state = reactive({
     contract:{
         contractno: null,
         contractdate: null,
-        billingstart: null,
+        billingsched: 0,
         montlyrent: null,
         advancerent: null,
         deposit: null,

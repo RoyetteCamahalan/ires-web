@@ -75,7 +75,19 @@ export default defineNuxtPlugin(() => {
       } catch (err) {
         console.error('Failed to download file:', err);
       }
-    };
+    }
+    const getNumberRank = (data) =>{
+      var lastChar = data.toString().slice(-1); 
+      var last2Char = data.toString().slice(-2); 
+      if(lastChar == '1' && last2Char != '11')
+        return data + 'st'
+      else if(lastChar == '2' && last2Char != '12')
+        return data + 'nd'
+      else if(lastChar == '2' && last2Char != '13')
+        return data + 'nd'
+      else
+        return data + 'th'
+    }
     return {
       provide: {
         formatAmount: formatAmount,
@@ -85,7 +97,8 @@ export default defineNuxtPlugin(() => {
         dateInterVal: dateInterVal,
         base64Encode: base64Encode,
         base64Decode: base64Decode,
-        downloadFile: downloadFile
+        downloadFile: downloadFile,
+        getNumberRank: getNumberRank
       }
     }
   })

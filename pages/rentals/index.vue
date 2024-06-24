@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NuxtLayout name="admin">
+        <NuxtLayout name="admin" title="Rental Contracts">
             
             <div class="flex flex-col my-2 mx-4">
                 <div class="w-full flex justify-between flex-col sm:flex-row">

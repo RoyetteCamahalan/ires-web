@@ -1,6 +1,6 @@
 <template>
     <div>
-      <NuxtLayout name="admin">
+      <NuxtLayout name="admin" title="Expenses">
           <UiExpenseForm :formStatus="0"></UiExpenseForm>
       </NuxtLayout>
     </div>

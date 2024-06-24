@@ -60,6 +60,7 @@
                 ></FormTextField>
               </div>
             </form>
+            <h1 class="ml-2 text-lg font-bold text-blue-600">{{ props.title }}</h1>
           </div>
           <div class="flex items-center">
             <button
@@ -217,6 +218,11 @@ const props = defineProps({
   sidebarOpen:{
     type: Boolean,
     required: true,
+  },
+  title:{
+    type: String,
+    required: false,
+    default: ''
   }
 })
 

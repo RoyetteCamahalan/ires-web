@@ -37,6 +37,8 @@ function loadDefaultOption(){
         state.options = []
         state.options.push({ value: props.defaultOption.value, label: props.defaultOption.label })
     }
+    else
+        searchChange('')
 }
 
 async function searchChange(query: string){

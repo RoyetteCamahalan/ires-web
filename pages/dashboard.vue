@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NuxtLayout name="admin">
+        <NuxtLayout name="admin" title="Dashboard">
             <DashboardSurveying v-if="state.planID >= plan.survey_trial && state.planID <=  plan.survey_enterprise" class="my-5"></DashboardSurveying>
             <DashboardRental v-if="state.planID >= plan.rental_trial && state.planID <=  plan.rental_enterprise" class="my-5"></DashboardRental>
             <DashboardFinance class="my-5"></DashboardFinance>

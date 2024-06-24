@@ -29,72 +29,78 @@
               </form>
             </li>
             <li>
-              <div class="bg-white rounded-t-lg">
+              <div class="bg-white rounded-t-lg text-dark-500">
                 <a href="/dashboard"
-                  class="flex items-center py-2.5 px-4 text-base font-normal text-dark-500 rounded-lg hover:bg-gray-200 group transition-all duration-200"
+                  :class="route.path === '/dashboard' ? activeMenu : 'hover:bg-gray-100'"
+                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200 "
                   sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-lg shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="material-symbols:home-outline-rounded" class="w-4 h-4"></Icon>
+                  <div class="bg-white shadow-md shadow-gray-300 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
+                    <Icon name="material-symbols:home-outline-rounded" class="w-4 h-4 text-gray-800"></Icon>
                   </div>
                   <span class="ml-3 text-dark-500 text-sm">Dashboard</span>
                 </a>
               </div>
             </li>
             <li v-if="state.isSurveying">
-              <div class="bg-white">
+              <div class="bg-white rounded-t-lg text-dark-500">
                 <a href="/surveys"
-                  class="flex items-center py-2.5 px-4 text-base font-normal text-dark-500 rounded-lg hover:bg-gray-200 group transition-all duration-200"
+                  :class="route.path === '/surveys' ? activeMenu : 'hover:bg-gray-100'"
+                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
                   sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-lg shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="icon-park-outline:land-surveying" class="w-4 h-4"></Icon>
+                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
+                    <Icon name="icon-park-outline:land-surveying" class="w-4 h-4 text-gray-800"></Icon>
                   </div>
                   <span class="ml-3 text-dark-500 text-sm">Surveys</span>
                 </a>
               </div>
             </li>
             <li v-if="state.isRental">
-              <div class="bg-white">
+              <div class="bg-white rounded-t-lg text-dark-500">
                 <a href="/rentals"
-                  class="flex items-center py-2.5 px-4 text-base font-normal text-dark-500 rounded-lg hover:bg-gray-200 group transition-all duration-200"
+                  :class="route.path === '/rentals' ? activeMenu : 'hover:bg-gray-100'"
+                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
                   sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-lg shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="tabler:contract" class="w-4 h-4"></Icon>
+                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
+                    <Icon name="tabler:contract" class="w-4 h-4 text-gray-800"></Icon>
                   </div>
                   <span class="ml-3 text-dark-500 text-sm">Rental Contracts</span>
                 </a>
               </div>
             </li>
             <li v-if="state.isRental">
-              <div class="bg-white">
+              <div class="bg-white rounded-t-lg text-dark-500">
                 <a href="/properties"
-                  class="flex items-center py-2.5 px-4 text-base font-normal text-dark-500 rounded-lg hover:bg-gray-200 group transition-all duration-200"
+                  :class="route.path === '/properties' ? activeMenu : 'hover:bg-gray-100'"
+                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
                   sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-lg shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="material-symbols:home-work-outline-rounded" class="w-4 h-4"></Icon>
+                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
+                    <Icon name="material-symbols:home-work-outline-rounded" class="w-4 h-4 text-gray-800"></Icon>
                   </div>
                   <span class="ml-3 text-dark-500 text-sm">Buildings</span>
                 </a>
               </div>
             </li>
             <li v-if="state.isSurveying || state.isRental">
-              <div class="bg-white">
+              <div class="bg-white rounded-t-lg text-dark-500">
                 <a href="/payments"
-                  class="flex items-center py-2.5 px-4 text-base font-normal text-dark-500 rounded-lg hover:bg-gray-200 group transition-all duration-200"
+                  :class="route.path === '/payments' ? activeMenu : 'hover:bg-gray-100'"
+                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
                   sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-lg shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="material-symbols:payments-outline" class="w-4 h-4"></Icon>
+                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
+                    <Icon name="material-symbols:payments-outline" class="w-4 h-4 text-gray-800"></Icon>
                   </div>
                   <span class="ml-3 text-dark-500 text-sm">Payments</span>
                 </a>
               </div>
             </li>
             <li v-if="state.isSurveying || state.isRental">
-              <div class="bg-white">
+              <div class="bg-white rounded-t-lg text-dark-500">
                 <a href="/clients"
-                  class="flex items-center py-2.5 px-4 text-base font-normal text-dark-500 rounded-lg hover:bg-gray-200 group transition-all duration-200"
+                  :class="route.path === '/clients' ? activeMenu : 'hover:bg-gray-100'"
+                  class="flex items-center py-2.5 px-4 text-base font-normal text-dark-500 rounded-lg group transition-all duration-200"
                   sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-lg shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="ph:users-three" class="w-4 h-4"></Icon>
+                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
+                    <Icon name="ph:users-three" class="w-4 h-4 text-gray-800"></Icon>
                   </div>
                   <span class="ml-3 text-dark-500 text-sm">Clients</span>
                 </a>
@@ -104,36 +110,39 @@
               <div class="bg-white text-sm pl-2 pt-4">Finance</div>
             </li>
             <li>
-              <div class="bg-white">
+              <div class="bg-white rounded-t-lg text-dark-500">
                 <a href="/expenses"
-                  class="flex items-center py-2.5 px-4 text-base font-normal text-dark-500 rounded-lg hover:bg-gray-200 group transition-all duration-200"
+                  :class="route.path === '/expenses' ? activeMenu : 'hover:bg-gray-100'"
+                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
                   sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-lg shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="solar:bill-check-outline" class="w-4 h-4"></Icon>
+                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
+                    <Icon name="solar:bill-check-outline" class="w-4 h-4 text-gray-800"></Icon>
                   </div>
                   <span class="ml-3 text-dark-500 text-sm">Expenses</span>
                 </a>
               </div>
             </li>
             <li>
-              <div class="bg-white">
+              <div class="bg-white rounded-t-lg text-dark-500">
                 <a href="/accountspayable"
-                  class="flex items-center py-2.5 px-4 text-base font-normal text-dark-500 rounded-lg hover:bg-gray-200 group transition-all duration-200"
+                  :class="route.path === '/accountspayable' ? activeMenu : 'hover:bg-gray-100'"
+                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
                   sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-lg shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="solar:bill-broken" class="w-4 h-4"></Icon>
+                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
+                    <Icon name="solar:bill-broken" class="w-4 h-4 text-gray-800"></Icon>
                   </div>
                   <span class="ml-3 text-dark-500 text-sm">Accounts Payable</span>
                 </a>
               </div>
             </li>
             <li>
-              <div class="bg-white">
+              <div class="bg-white rounded-t-lg text-dark-500">
                 <a href="/pettycash"
-                  class="flex items-center py-2.5 px-4 text-base font-normal text-dark-500 rounded-lg hover:bg-gray-200 group transition-all duration-200"
+                  :class="route.path === '/pettycash' ? activeMenu : 'hover:bg-gray-100'"
+                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
                   sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-lg shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="streamline:money-cash-bag-dollar-bag-payment-cash-money-finance" class="w-4 h-4"></Icon>
+                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
+                    <Icon name="streamline:money-cash-bag-dollar-bag-payment-cash-money-finance" class="w-4 h-4 text-gray-800"></Icon>
                   </div>
                   <span class="ml-3 text-dark-500 text-sm">Petty Cash</span>
                 </a>
@@ -206,6 +215,10 @@ import { usePrefStore } from '@/store/pref'
 const userStore = useUserStore();
 const user = userStore.getUser
 const prefStore = usePrefStore()
+
+const route = useRoute()
+
+const activeMenu = 'bg-blue-500 text-white'
 
 const props = defineProps({
   sidebarOpen:{
