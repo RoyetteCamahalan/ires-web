@@ -78,33 +78,28 @@
                             <FormLabel for="paymentmode" label="Payment Mode" />
                             <FormSelect :options="state.paymentModes" :searchable="false" :canClear="false" v-model="state.payment.paymentmode"></FormSelect>
                             <div v-if="state.payment.paymentmode === 1">
-                              
-                              <FormLabel for="checkbank" label="Issuing Bank" />
-                              <FormSelectBanks
-                                v-model="state.payment.paymentCheckRequestDto.bankid"></FormSelectBanks>
-                              <FormError :error="vCheck$.payment.paymentCheckRequestDto.bankid && vCheck$.payment.paymentCheckRequestDto.bankid.$errors && vCheck$.payment.paymentCheckRequestDto.bankid.$errors.length > 0 ? vCheck$.payment.paymentCheckRequestDto.bankid.$errors[0].$message : null "/>
-                              
                               <div class="grid grid-cols-6 gap-4">
                                 <div class="col-span-6 sm:col-span-3">
-                                  <FormLabel for="checkno" label="Check No" />
-                                  <FormTextField name="checkno" placeholder="Check No" v-model="state.payment.paymentCheckRequestDto.checkno"></FormTextField>
-                                  <FormError :error="vCheck$.payment.paymentCheckRequestDto.checkno && vCheck$.payment.paymentCheckRequestDto.checkno.$errors && vCheck$.payment.paymentCheckRequestDto.checkno.$errors.length > 0 ? vCheck$.payment.paymentCheckRequestDto.checkno.$errors[0].$message : null "/>
+                                    <FormLabel for="checkbank" label="Issuing Bank" />
+                                    <FormSelectBanks
+                                      v-model="state.payment.paymentCheckRequestDto.bankid"></FormSelectBanks>
+                                    <FormError :error="vCheck$.payment.paymentCheckRequestDto.bankid && vCheck$.payment.paymentCheckRequestDto.bankid.$errors && vCheck$.payment.paymentCheckRequestDto.bankid.$errors.length > 0 ? vCheck$.payment.paymentCheckRequestDto.bankid.$errors[0].$message : null "/>
                                 </div>
                                 <div class="col-span-6 sm:col-span-3">
-                                  <FormLabel for="checkdate" label="Check Date"/>
-                                  <FormDateField name="checkdate" placeholder="Check Date" v-model="state.payment.paymentCheckRequestDto.checkdate"/>
+                                    <FormLabel for="checkno" label="Check No" />
+                                    <FormTextField name="checkno" placeholder="Check No" v-model="state.payment.paymentCheckRequestDto.checkno"></FormTextField>
+                                    <FormError :error="vCheck$.payment.paymentCheckRequestDto.checkno && vCheck$.payment.paymentCheckRequestDto.checkno.$errors && vCheck$.payment.paymentCheckRequestDto.checkno.$errors.length > 0 ? vCheck$.payment.paymentCheckRequestDto.checkno.$errors[0].$message : null "/>
                                 </div>
                               </div>
                               <div class="grid grid-cols-6 gap-4">
-                                <div class="col-span-6 sm:col-span-3">
-                                  <FormLabel for="checkamount" label="Check Amount" />
-                                  <FormNumberField name="checkamount" placeholder="Check Amount" v-model="state.payment.paymentCheckRequestDto.amount" class="text-right"></FormNumberField>
-                                  <FormError :error="vCheck$.payment.paymentCheckRequestDto.amount && vCheck$.payment.paymentCheckRequestDto.amount.$errors && vCheck$.payment.paymentCheckRequestDto.amount.$errors.length > 0 ? vCheck$.payment.paymentCheckRequestDto.amount.$errors[0].$message : null "/>
-                                </div>
-                                <div class="col-span-6 sm:col-span-3">
-                                  <FormLabel for="accno" label="Account #"/>
-                                  <FormTextField name="accno" placeholder="Account #" v-model="state.payment.paymentCheckRequestDto.accountnumber"></FormTextField>
-                                </div>
+                                  <div class="col-span-6 sm:col-span-3">
+                                    <FormLabel for="checkdate" label="Check Date"/>
+                                    <FormDateField name="checkdate" placeholder="Check Date" v-model="state.payment.paymentCheckRequestDto.checkdate"/>
+                                  </div>
+                                  <div class="col-span-6 sm:col-span-3">
+                                    <FormLabel for="accno" label="Account #"/>
+                                    <FormTextField name="accno" placeholder="Account #" v-model="state.payment.paymentCheckRequestDto.accountnumber"></FormTextField>
+                                  </div>
                               </div>
                                 
                             </div>
@@ -134,14 +129,11 @@
                                   <FormDateField name="transdate" placeholder="Transaction Date" v-model="state.payment.bankTransfer.paymentdate"/>
                                 </div>
                                 <div class="col-span-6 sm:col-span-3">
-                                  <FormLabel for="transferamount" label="Amount" />
-                                  <FormNumberField name="transferamount" placeholder="Amount" v-model="state.payment.bankTransfer.amount" class="text-right"></FormNumberField>
-                                  <FormError :error="vbankTransfer$.payment.bankTransfer.amount && vbankTransfer$.payment.bankTransfer.amount.$errors && vbankTransfer$.payment.bankTransfer.amount.$errors.length > 0 ? vbankTransfer$.payment.bankTransfer.amount.$errors[0].$message : null "/>
+                                  <FormLabel for="refno" label="Reference #"/>
+                                  <FormTextField name="refno" placeholder="Reference #" v-model="state.payment.bankTransfer.refno"></FormTextField>
+                                  <FormError :error="vbankTransfer$.payment.bankTransfer.refno && vbankTransfer$.payment.bankTransfer.refno.$errors && vbankTransfer$.payment.bankTransfer.refno.$errors.length > 0 ? vbankTransfer$.payment.bankTransfer.refno.$errors[0].$message : null "/>
                                 </div>
                               </div>
-                              <FormLabel for="refno" label="Reference #"/>
-                              <FormTextField name="refno" placeholder="Reference #" v-model="state.payment.bankTransfer.refno"></FormTextField>
-                                  <FormError :error="vbankTransfer$.payment.bankTransfer.refno && vbankTransfer$.payment.bankTransfer.refno.$errors && vbankTransfer$.payment.bankTransfer.refno.$errors.length > 0 ? vbankTransfer$.payment.bankTransfer.refno.$errors[0].$message : null "/>
                             </div>
                             <FormLabel for="remarks" label="Remarks"/>
                             <FormTextField name="remarks" placeholder="Remarks" v-model="state.payment.remarks"></FormTextField>
@@ -220,14 +212,12 @@ const state = reactive({
       checkno: '',
       checkdate: moment(currentDate).format('YYYY-MM-DD'),
       accountnumber: '',
-      amount: 0,
       memo: ''
     },
     bankTransfer:{
       bankid: 0,
       accountid: 0,
       paymentdate: moment(currentDate).format('YYYY-MM-DD'),
-      amount: 0,
       refno: '',
       memo: ''
     }
@@ -282,11 +272,7 @@ const checkValidators = computed(() =>{
         },
         checkno:{ 
           required: helpers.withMessage('This field is required.', required),
-        },
-        amount:{ 
-          required: helpers.withMessage('This field is required.', required),
-          minValue: helpers.withMessage('Invalid input.', minValue(1)) 
-        },
+        }
       },
     }
   }
@@ -303,10 +289,6 @@ const bankTransferValidators = computed(() =>{
         },
         refno:{ 
           required: helpers.withMessage('This field is required.', required),
-        },
-        amount:{ 
-          required: helpers.withMessage('This field is required.', required),
-          minValue: helpers.withMessage('Invalid input.', minValue(1)) 
         },
       },
     }

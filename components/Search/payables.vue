@@ -5,7 +5,7 @@
         </div>
         <div class="flex flex-col my-3 mx-4 rounded-2xl">
             <div class="overflow-x-auto rounded-2xl">
-                <div class="inline-block min-w-full align-middle">
+                <div class="inline-block min-w-full max-h-96 align-middle">
                     <div class="overflow-hidden shadow-lg">
                         <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.payables"
                             class="w-full whitespace-no-wrap">

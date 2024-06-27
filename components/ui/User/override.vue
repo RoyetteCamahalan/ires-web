@@ -27,7 +27,7 @@
                     </svg>
                     </button>
                 </div>
-                <form class="px-10 pb-10 space-y-6" method="POST" @submit.prevent="login">
+                <form class="px-10 pb-10 space-y-4" method="POST" @submit.prevent="login">
                   <div>
                       <FormTextField name="username" placeholder="Username or Email" v-model="state.username"/>
                       <FormError :error="v$.username && v$.username.$errors && v$.username.$errors.length > 0 ? v$.username.$errors[0].$message : null "/>
@@ -36,6 +36,11 @@
                     <FormPasswordField name="password" placeholder="Password" v-model="state.password"></FormPasswordField>
                         <FormError :error="v$.password && v$.password.$errors && v$.password.$errors.length > 0 ? v$.password.$errors[0].$message : null "/>
                         <FormError :error="state.error && state.error != '' ? state.error : null "/>
+                  </div>
+                  <div v-if="props.hasRemarks">
+                      <FormLabel for="remarks" label="Remarks"/>
+                      <FormTextField name="remarks" placeholder="Remarks" v-model="state.remarks"/>
+                      <FormError :error="v$.remarks && v$.remarks.$errors && v$.remarks.$errors.length > 0 ? v$.remarks.$errors[0].$message : null "/>
                   </div>
                   <button type="submit" class="py-2 px-4 w-full text-base font-medium text-center text-white bg-blue-500 hover:scale-[1.02] shadow-md shadow-gray-300 transition-transform rounded-lg sm:w-auto">Override</button>
                   
@@ -49,7 +54,7 @@
   
   <script setup>
   import { useVuelidate } from '@vuelidate/core'
-  import { required, helpers } from '@vuelidate/validators'
+  import { required, helpers, requiredIf } from '@vuelidate/validators'
   import { authService } from '@/components/api/AuthService'
   
 const props = defineProps({
@@ -57,6 +62,11 @@ const props = defineProps({
         type: String,
         required: false,
         default: ''
+    },
+    hasRemarks:{
+      type: Boolean,
+      required: false,
+      default: false
     }
 })
 
@@ -65,6 +75,7 @@ const emit = defineEmits(['AfterOverride'])
 const state = reactive({
     username: '',
     password: '',
+    remarks: '',
     isPageLoading: false,
     error: null
 })
@@ -73,6 +84,11 @@ const validators = computed(()=>{
     return{
     username: { required: helpers.withMessage('Username or Email is required.', required) },
     password: { required: helpers.withMessage('Password is required.', required) },
+    remarks: { required: helpers.withMessage('This field is required.', 
+                        requiredIf(function() {
+                             return props.hasRemarks
+                        }))
+              },
     }
 })
   
@@ -91,7 +107,7 @@ const v$ = useVuelidate(validators, state)
       try{
         await authService.systemOverride(params)
         state.error = null
-        emit('AfterOverride', true)
+        emit('AfterOverride', { success: true, remarks: state.remarks })
       }catch(error){
           state.isPageLoading = false
           state.error = error.message

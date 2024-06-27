@@ -111,19 +111,19 @@
                   <div class="py-2 text-xs italic text-gray-500 text-center">Your notification is empty!</div>
                 </div>
                 <div v-for="(notification, index) in state.notifications" :key="index">
-                  <a :href="notification.url + `?notif_id=${notification.id}`" class="flex py-3 px-4 hover:bg-gray-100">
+                  <button @click="selectNotif(notification)" class="flex py-3 px-4 hover:bg-gray-100">
                     <div class="flex-shrink-0">
                       <Icon :name="notification.typeid === 0 ? 'icon-park-outline:bill' : 'material-symbols:info-outline' " class="w-10 h-10 p-2 bg-gray-50 rounded-full"></Icon>
                     </div>
                     <div class="pl-3 w-full">
-                      <div class="text-gray-600 font-normal text-sm mb-1.5">
+                      <div class="text-gray-600 font-normal text-left text-sm mb-1.5">
                         {{ notification.details }}
                       </div>
                       <div class="text-xs font-medium text-blue-500">
                         {{ $dateInterVal(moment(notification.datecreated), null) }}
                       </div>
                     </div>
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -153,19 +153,17 @@
                       href="/billing"
                       class="flex items-center gap-x-3 px-4 py-3 text-sm text-gray-700 cursor-pointer hover:bg-gray-200"
                     >
-                      <svg
-                        class="w-5 h-5"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M5 2a2 2 0 00-2 2v14l3.5-2 3.5 2 3.5-2 3.5 2V4a2 2 0 00-2-2H5zm2.5 3a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm6.207.293a1 1 0 00-1.414 0l-6 6a1 1 0 101.414 1.414l6-6a1 1 0 000-1.414zM12.5 10a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"
-                          clip-rule="evenodd"
-                        ></path>
-                      </svg>
+                      <Icon name="solar:bill-check-linear" class="w-5 h-5"></Icon>
                       Billing
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      @click="state.modalIsShowCompanyProfile = true"
+                      class="flex items-center gap-x-3 px-4 py-3 text-sm text-gray-700 cursor-pointer hover:bg-gray-200"
+                    >
+                      <Icon name="material-symbols:settings-account-box-outline-rounded" class="w-5 h-5"></Icon>
+                      Company Profile
                     </a>
                   </li>
                   <li>
@@ -197,6 +195,9 @@
     </nav>
     <ModalEmpty title="" :isShow="state.modalIsShowChangeProfile">
         <UiUserChangepassword @on-close="onCloseChangePass"></UiUserChangepassword>
+    </ModalEmpty>
+    <ModalEmpty title="" :isShow="state.modalIsShowCompanyProfile">
+      <UiCompanyProfile @on-close="onCloseCompanyProfile"></UiCompanyProfile>
     </ModalEmpty>
   </div>
 </template>
@@ -231,7 +232,8 @@ const state = reactive({
   isOpenNotification: false,
   searchString: '',
   modalIsShowChangeProfile: false,
-  notifications: []
+  notifications: [],
+  modalIsShowCompanyProfile: false,
 })
 
 const emit = defineEmits(['toggleSidebar'])
@@ -251,13 +253,10 @@ const closeProfileMenu = () =>{
 }
 
 const openNotifications = () =>{
-  console.log(state.isOpenNotification)
   state.isOpenNotification = !state.isOpenNotification
-  console.log(state.isOpenNotification)
   state.isOpenProfile = false
 }
 const closeNotifications = () =>{
-  console.log('fired')
   state.isOpenNotification = false
 }
 
@@ -272,6 +271,9 @@ watch(() => state.searchString, (data)=>{
 
 function onCloseChangePass(){
   state.modalIsShowChangeProfile= false
+}
+function onCloseCompanyProfile(){
+  state.modalIsShowCompanyProfile= false
 }
 
 async function fetchNotifications(){
@@ -295,5 +297,11 @@ function viewNotification(id){
   catch(error){
 
   }
+}
+function selectNotif(data){
+  if(data.url == route.path)
+    location.replace(data.url + `?notif_id=${data.id}`)
+  else
+    navigateTo(data.url + `?notif_id=${data.id}`)
 }
 </script>

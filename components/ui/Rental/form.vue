@@ -24,7 +24,7 @@
                         <FormDateField name="contractdate" placeholder="Contract Date" v-model="state.contract.contractdate" />
                     </div>
                     <div class="col-span-6 sm:col-span-2">
-                        <FormLabel for="billingsched" label="Billing Schedule" />
+                        <FormLabel for="billingsched" label="Billing Schedule (Every nth of the month)" />
                         <FormSelect :options="state.daysOfMonth" v-model="state.contract.billingsched"></FormSelect>
                         <FormError :error="v$.contract.billingsched && v$.contract.billingsched.$errors && v$.contract.billingsched.$errors.length > 0 ? v$.contract.billingsched.$errors[0].$message : null "/>
                     </div>
@@ -195,10 +195,9 @@ const { $toastNotification } = useNuxtApp()
       state.contract.contractdate = moment(response.data.contractdate).format('YYYY-MM-DD')
       state.contract.billingsched = response.data.billingsched
       state.contract.term = response.data.term
-      if(response.data.term === 0){
-        state.isContractOpen = true
+      state.isContractOpen = response.data.term === 0
+      if(state.isContractOpen)
         state.contract.term = null
-      }
       state.contract.remarks = response.data.remarks
       state.contract.montlyrent = response.data.montlyrent
       state.contract.monthlypenalty = response.data.monthlypenalty === 0 ? null : response.data.monthlypenalty

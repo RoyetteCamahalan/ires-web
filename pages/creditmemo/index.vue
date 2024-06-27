@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NuxtLayout name="admin" title="Payments">
+        <NuxtLayout name="admin" title="Credit Memo">
             
             <div class="flex flex-col mt-2 mx-4">
                 <div class="w-full flex flex-col sm:flex-row">
@@ -12,8 +12,8 @@
                         <FormDateField name="enddate" placeholder="Start Date" class="py-1"
                             v-model="state.endDate"></FormDateField>
                     </div>
-                    <div class="flex justify-between flex-1">
-                        <MenuDropDown2 class="ml-0 sm:ml-2 my-auto mt-1" label="Print" :has-icon="true" position="left-0">
+                    <div class="flex flex-row-reverse flex-1">
+                        <!-- <MenuDropDown2 class="ml-0 sm:ml-2 my-auto mt-1" label="Print" :has-icon="true" position="left-0">
                             <MenuItem>
                                 <button
                                     @click="printCollection"
@@ -21,7 +21,7 @@
                                     Print Collection Report
                                 </button>
                             </MenuItem>
-                        </MenuDropDown2>
+                        </MenuDropDown2> -->
                         <button type="button" class="inline-flex items-center py-1 px-2 text-xs font-medium text-center text-white rounded-lg bg-blue-500 shadow-md shadow-gray-300 hover:scale-[1.02] transition-transform"
                             @click="createNew">
                             <Icon name="material-symbols:add" class="-ml-1 w-4 h-4"></Icon>
@@ -44,7 +44,7 @@
                                         <p class="text-sm font-semibold">{{ data.client.fname + ' ' + data.client.lname }}</p>
                                         <div class="flex text-xs">
                                             <p class="text-gray-600 dark:text-gray-300 my-auto">
-                                                {{ $ReceiptTypeDesc(data.receipttype) + '-' + data.orno }}
+                                                {{ 'CN' + '-' + data.orno }}
                                             </p>
                                             <span v-if="data.status === paymentStatus.void" class="px-2 py-1 ml-1 font-semibold leading-tight rounded-full text-red-700 bg-red-100">Void</span>
                                             <span v-else-if="data.status === paymentStatus.refunded" class="px-2 py-1 ml-1 font-semibold leading-tight rounded-full text-gray-700 bg-gray-100">Refunded</span>
@@ -55,7 +55,7 @@
                                         {{ moment(data.paymentdate).format('YYYY/MM/DD') }}
                                     </td>
                                     <td class="px-4 py-3 text-sm">
-                                        {{ $PaymentModeDescription(data.paymentmode) }}
+                                        {{ data.remarks }}
                                     </td>
                                     <td class="px-4 py-3 text-sm text-right">
                                         {{ $formatAmount(data.totalamount) }}
@@ -63,17 +63,17 @@
                                     <td class="px-4 py-3">
                                         <div class="flex justify-center">
                                             <MenuPopper icon-name="material-symbols:settings" :has-icon="true">
-                                                <button
+                                                <!-- <button
                                                     v-if="data.receipttype != receiptType.OR"
                                                     @click="navigateTo('/payments/receipt?id=' + data.paymentid)"
                                                     class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
                                                     Print Receipt
-                                                </button>
+                                                </button> -->
                                                 <button
                                                     v-if="data.status === paymentStatus.paid"
                                                     @click="voidPayment(data.paymentid)"
                                                     class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
-                                                    Void Payment
+                                                    Void Credit Memo
                                                 </button>
                                             </MenuPopper>
                                         </div>
@@ -86,7 +86,7 @@
                 </div>
             </div>
             <ModalEmpty title="" :isShow="state.modalIsShowOverride">
-                <UiUserOverride :action="'Void Payment: ' + state.selectedPaymentID" @AfterOverride="modalCloseOverride" :has-remarks="true"></UiUserOverride>
+                <UiUserOverride :action="'Void Payment: ' + state.selectedPaymentID" @AfterOverride="modalCloseOverride"></UiUserOverride>
             </ModalEmpty>
         </NuxtLayout>
     </div>
@@ -115,9 +115,9 @@ const state = reactive({
     columnHeaders: [
         { name: 'Client Name'},
         { name: 'Date'},
-        { name: 'Mode'},
-        { name: 'Amount'},
-        { name: 'Action', textAlign: 'center'}
+        { name: 'Remarks'},
+        { name: 'Amount', textAlign: 'center'},
+        { name: ''}
     ],
     startDate: moment(firstDay).format('YYYY-MM-DD'),
     endDate: moment(currentDate).format('YYYY-MM-DD'),
@@ -135,7 +135,7 @@ const loadList = async (search) =>{
             startDate: state.startDate,
             endDate: state.endDate
         }
-        const response = await paymentService.getPayments(params)
+        const response = await paymentService.getCreditNotes(params)
         state.payments = response.data
     }catch(error){
         console.log(error)
@@ -164,11 +164,7 @@ const onPageChanged = (value) => {
 }
 
 const createNew = () => {
-    navigateTo('/payments/new')
-}
-const updateRecord = (value) => {
-    //surveyStore.setSelectedSurvey(value)
-    //navigateTo('/payments/edit')
+    navigateTo('/creditmemo/new')
 }
 
 const voidPayment = (paymentID) => {
@@ -176,12 +172,13 @@ const voidPayment = (paymentID) => {
     state.modalIsShowOverride = true
 }
 
-const modalCloseOverride = async (data) =>{
+const modalCloseOverride = async (success) =>{
     state.modalIsShowOverride = false
-    if(data && data.success){
+    if(success){
         state.isPageLoading = true
         try{
-            await paymentService.voidPayment( { paymentid: state.selectedPaymentID, voidremarks: data.remarks })
+            console.log(state.selectedPaymentID)
+            await paymentService.voidPayment( { paymentid: state.selectedPaymentID })
             $toastNotification('success', '', 'Payment has been tagged as Void.')
         }catch(error){
             $toastNotification('error', '', error.message)

@@ -13,7 +13,7 @@
                                 <FormLabel for="name" label="Company Name" />
                                 <FormTextField name="name" placeholder="Company Name" v-model="state.company.name"/>
                                 <FormError :error="v$.company.name && v$.company.name.$errors && v$.company.name.$errors.length > 0 ? v$.company.name.$errors[0].$message : null "/>
-                                
+<!--                                 
                                 <FormLabel for="address" label="Address" />
                                 <FormTextField name="address" placeholder="Address" v-model="state.company.address"/>
                                 <FormError :error="v$.company.address && v$.company.address.$errors && v$.company.address.$errors.length > 0 ? v$.company.address.$errors[0].$message : null "/>
@@ -21,15 +21,21 @@
                                 <FormLabel for="contactno" label="Contact No" />
                                 <FormTextField name="contactno" placeholder="Contact No" v-model="state.company.contactno"/>
                                 <FormError :error="v$.company.contactno && v$.company.contactno.$errors && v$.company.contactno.$errors.length > 0 ? v$.company.contactno.$errors[0].$message : null "/>
-                                
-                                <FormLabel for="firstname" label="First Name" />
-                                <FormTextField name="firstname" placeholder="First Name" v-model="state.company.adminfirstname"/>
-                                <FormError :error="v$.company.adminfirstname && v$.company.adminfirstname.$errors && v$.company.adminfirstname.$errors.length > 0 ? v$.company.adminfirstname.$errors[0].$message : null "/>
-                                
-                                <FormLabel for="firstname" label="Last Name" />
-                                <FormTextField name="lastname" placeholder="Last Name" v-model="state.company.adminlastname"/>
-                                <FormError :error="v$.company.adminlastname && v$.company.adminlastname.$errors && v$.company.adminlastname.$errors.length > 0 ? v$.company.adminlastname.$errors[0].$message : null "/>
-                                
+                                 -->
+                                    
+                                <div class="grid grid-cols-6 gap-4">
+                                    <div class="col-span-6 sm:col-span-3">
+                                        <FormLabel for="firstname" label="Your First Name" />
+                                        <FormTextField name="firstname" placeholder="First Name" v-model="state.company.adminfirstname"/>
+                                        <FormError :error="v$.company.adminfirstname && v$.company.adminfirstname.$errors && v$.company.adminfirstname.$errors.length > 0 ? v$.company.adminfirstname.$errors[0].$message : null "/>
+                                    </div>
+                                    <div class="col-span-6 sm:col-span-3">
+                                        <FormLabel for="firstname" label="Your Last Name" />
+                                        <FormTextField name="lastname" placeholder="Last Name" v-model="state.company.adminlastname"/>
+                                        <FormError :error="v$.company.adminlastname && v$.company.adminlastname.$errors && v$.company.adminlastname.$errors.length > 0 ? v$.company.adminlastname.$errors[0].$message : null "/>
+                                    </div>
+                                </div>
+                                                                
                                 <div class="flex"><FormLabel for="email" label="Email" /><span class="block text-xs mt-2.5 ml-1 text-gray-500">(Verification email will be sent here)</span></div>
                                 <FormTextField name="email" placeholder="Email" v-model="state.company.email"/>
                                 <FormError :error="v$.company.email && v$.company.email.$errors && v$.company.email.$errors.length > 0 ? v$.company.email.$errors[0].$message : null "/>
@@ -151,8 +157,8 @@ const validators = computed(() =>{
     return {
         company:{
             name: { required: helpers.withMessage('Company name is required.', required) },
-            address: { required: helpers.withMessage('This field is required.', required) },
-            contactno: { required: helpers.withMessage('This field is required.', required) },
+            //address: { required: helpers.withMessage('This field is required.', required) },
+            //contactno: { required: helpers.withMessage('This field is required.', required) },
             adminfirstname: { required: helpers.withMessage('This field is required.', required) },
             adminlastname: { required: helpers.withMessage('This field is required.', required) },
             email: { 

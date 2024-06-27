@@ -21,6 +21,12 @@ export const useUserStore = defineStore('userStore',
             completeTour() {
                 this.user.company.apptour = 100
             },
+            updateCompany(company) {
+                this.user.company = company
+            },
+            updateCompanyProfile(filename) {
+                this.user.company.logo = filename
+            },
         },
         getters: {
             getUser: (state) => state.user,

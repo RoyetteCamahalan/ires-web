@@ -95,7 +95,7 @@ onMounted(() =>{
 })
 
 watch(() => state.data.otherfeeid, async (newValue) => {
-    if(state.formStatus === 0 && state.data.otherfeeid && state.data.otherfeeid > 0)
+    if(props.formStatus === 0 && state.data.otherfeeid && state.data.otherfeeid > 0)
         await loadDefaultAmount()
 })
 

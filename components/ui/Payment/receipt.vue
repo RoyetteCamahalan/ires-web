@@ -3,8 +3,11 @@
         <LoadingSpinner :isActive="state.isPageLoading">
             <div id="divPrint" class="mx-2 mt-3 p-3" :class="!props.isPrint && 'shadow-lg bg-white rounded-lg'">
                 <ReportsHeader></ReportsHeader>
+                <span v-if="state.payment.status === paymentStatus.void" class="absolute inset-1/2 -rotate-45 mt-10 -ml-10">
+                    <div class="text-red-500 text-6xl font-bold">VOID</div>
+                </span>
                 <div class="mt-2 text-lg font-semibold text-center">
-                    {{ state.payment.receipttype === 1 ? 'TRUST RECEIPT' : state.payment.receipttype === 1 ? 'PROBATIONARY RECEIPT' : 'ACKNOWLEDGEMENT RECEIPT' }}
+                    {{ state.payment.receipttype === 1 ? 'TRUST RECEIPT' : state.payment.receipttype === 3 ? 'PROBATIONARY RECEIPT' : 'ACKNOWLEDGEMENT RECEIPT' }}
                 </div>
                 <div class="mt-2 flex justify-between">
                     <div class="flex flex-col">
@@ -24,6 +27,8 @@
                         <span class="text-lg font-semibold">{{ $ReceiptTypeDesc(state.payment.receipttype) + ' #' + state.payment.orno }}</span>
                         <span class="text-sm">Payment Date: {{ moment(state.payment.paymentdate).format('MM/DD/YYYY') }}</span>
                         <span class="text-sm">Payment Mode: {{ $PaymentModeDescription(state.payment.paymentmode) }}</span>
+                        <span v-if="state.payment.status === paymentStatus.void" class="text-sm">Void Remarks: {{ state.payment.voidremarks }}</span>
+                        
                     </div>
                 </div>
                 <div class="w-full my-4 overflow-hidden rounded-lg shadow-xs">
@@ -82,6 +87,7 @@
 
 <script setup>
 import { paymentService } from '@/components/api/PaymentService';
+import { paymentStatus } from '@/contants/consts';
 import moment from 'moment'
 
 const props = defineProps({
@@ -103,6 +109,7 @@ const state = reactive({
         receipttype: '',
         paymentmode: 0,
         totalamount: 0,
+        status: paymentStatus.paid,
         paidby: '',
         payables: [],
         client:{
@@ -114,7 +121,8 @@ const state = reactive({
             firstname: '',
             lastname: '',
             designation: ''
-        }
+        },
+        voidremarks: ''
     }
 })
 

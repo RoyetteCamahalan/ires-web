@@ -95,6 +95,19 @@
             </li>
             <li v-if="state.isSurveying || state.isRental">
               <div class="bg-white rounded-t-lg text-dark-500">
+                <a href="/creditmemo"
+                  :class="route.path === '/creditmemo' ? activeMenu : 'hover:bg-gray-100'"
+                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
+                  sidebar-toggle-collapse="">
+                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
+                    <Icon name="ri:discount-percent-line" class="w-4 h-4 text-gray-800"></Icon>
+                  </div>
+                  <span class="ml-3 text-dark-500 text-sm">Credit Memo</span>
+                </a>
+              </div>
+            </li>
+            <li v-if="state.isSurveying || state.isRental">
+              <div class="bg-white rounded-t-lg text-dark-500">
                 <a href="/clients"
                   :class="route.path === '/clients' ? activeMenu : 'hover:bg-gray-100'"
                   class="flex items-center py-2.5 px-4 text-base font-normal text-dark-500 rounded-lg group transition-all duration-200"
@@ -162,6 +175,12 @@
                     href="/masterfiles/bankaccounts"
                     class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
                     ><span>Bank Accounts</span></a>
+                </li>
+                <li v-if="state.isSurveying || state.isRental">
+                  <a
+                    href="/masterfiles/creditmemotypes"
+                    class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
+                    ><span>Credit Types</span></a>
                 </li>
                 <li>
                   <a

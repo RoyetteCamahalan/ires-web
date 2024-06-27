@@ -20,21 +20,23 @@
                     <span class="text-sm">Monthly Rent: {{ $formatAmount(props.contract.montlyrent) }}</span>
                     <span class="text-sm">Advance Rent: ({{ props.contract.noofmonthadvance }}) {{ $formatAmount(props.contract.advancerent) }}</span>
                     <span class="text-sm">Deposit: {{ $formatAmount(props.contract.deposit) }}</span>
+                    <p class="text-sm">
+                        Property: {{  props.contract.propertyList }}
+                    </p>
+                    <p class="text-sm">
+                        Remarks: {{  props.contract.remarks }}
+                    </p>
                 </div>
                 <div class="flex flex-col text-right">
                     <span class="text-md font-semibold">{{ 'Contract #' + props.contract.contractno }}</span>
                     <span class="text-sm">Contract Date: {{ moment(props.contract.contractdate).format('MM/DD/YYYY') }}</span>
                     <span class="text-sm">Billing Sched: Every {{ $getNumberRank(props.contract.billingsched) }}</span>
                     <span class="text-sm">Term: {{ (props.contract.term && props.contract.term > 0) ? (props.contract.term + ' Months') : 'Open' }}</span>
-                    <span class="text-sm">Status: 
+                    <span v-if="props.contract.monthlypenalty && props.contract.monthlypenalty > 0" class="text-sm">Monthly: {{ props.contract.monthlypenalty }}%</span>
+                    <span class="text-sm mt-1">Status: 
                                         <span v-if="props.contract.status === rentalContractStatus.active" class="px-2 py-1 font-semibold leading-tight rounded-full text-green-700 bg-green-100">Active</span>
                                         <span v-else class="px-2 py-0.5 font-semibold leading-tight rounded-full text-red-700 bg-red-100">Inactive</span></span>
                 </div>
-            </div>
-            <div>
-                <p class="text-sm">
-                    Property: {{  props.contract.propertyList }}
-                </p>
             </div>
             <div class="w-full my-4 overflow-hidden rounded-lg shadow-xs">
             <div class="w-full overflow-x-auto">
@@ -74,7 +76,7 @@
                                 {{ data.particular }}
                             </td>
                             <td class="p-2 text-sm">
-                                {{ (data.penalty && data.penalty > 0) ? $formatAmount(data.penalty) : '' }}
+                                {{ (data.interest && data.interest > 0) ? $formatAmount(data.interest) : '' }}
                             </td>
                             <td class="p-2 text-sm text-right">
                                 {{ (data.debit && data.debit > 0) ? $formatAmount(data.debit) : '' }}

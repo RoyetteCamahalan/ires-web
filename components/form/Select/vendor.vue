@@ -30,6 +30,8 @@ onMounted(() => {
         state.options = []
         state.options.push({ value: props.defaultOption.vendorid, label: props.defaultOption.vendorname })
     }
+    else
+        searchChange('')
 })
 watch(() => props.defaultOption, async (newValue) => {
     if(props.defaultOption){
