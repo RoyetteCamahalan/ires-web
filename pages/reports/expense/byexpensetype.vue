@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="p-3 h-auto">
-            <ReportsExpenseByType :print="false"></ReportsExpenseByType>
+            <ReportsExpenseByType :isPrint="true"></ReportsExpenseByType>
         </div>
     </div>
 </template>

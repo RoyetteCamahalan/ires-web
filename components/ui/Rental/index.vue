@@ -63,7 +63,10 @@
                                 </span>
                             </td>
                             <td class="p-2 text-sm">
-                                {{ data.refno }}
+                                <a v-if="data.paymentid > 0" 
+                                    class="text-blue-700"
+                                    :href="`/payments/receipt?id=${data.paymentid}`" target="_blank" >{{ data.refno }}</a>
+                                <span v-else>{{ data.refno }}</span>
                             </td>
                             <td class="p-2 text-sm">
                                 <button
@@ -75,7 +78,7 @@
                                 </button>
                                 {{ data.particular }}
                             </td>
-                            <td class="p-2 text-sm">
+                            <td class="p-2 text-sm text-right">
                                 {{ (data.interest && data.interest > 0) ? $formatAmount(data.interest) : '' }}
                             </td>
                             <td class="p-2 text-sm text-right">

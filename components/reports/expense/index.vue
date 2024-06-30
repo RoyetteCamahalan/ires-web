@@ -9,49 +9,60 @@
                 <div class="mt-1 text-sm text-center">
                     From: {{ moment(startDate).format('MM/DD/YYYY') }}  To: {{ moment(endDate).format('MM/DD/YYYY') }}
                 </div>
-                <div class="w-full my-4 overflow-hidden rounded-lg shadow-xs">
-                    <div class="w-full overflow-x-auto">
-                        <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.data.expenses"
+                <div class="w-full my-4 rounded-lg shadow-xs">
+                    <div class="w-full">
+                        <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.data"
                             class="w-full whitespace-no-wrap">
                             
                             <template #body
-                                v-if="!(state.isPageLoading || (state.data.expenses && state.data.expenses.length === 0))">
-                                
-                                <tr v-for="(data, index) in state.data.expenses" :key="index" class="text-gray-700">
-                                    <td class="px-4 py-3 text-sm font-semibold text-center">
-                                        {{ data.expenseid}}
-                                    </td>
-                                    <td class="px-4 py-3 text-sm text-center">
-                                        {{ moment(data.transdate).format('YYYY/MM/DD') }}
-                                    </td>
-                                    <td class="px-4 py-3 text-sm text-center">
-                                        {{ moment(data.refdate).format('YYYY/MM/DD') }}
-                                    </td>
-                                    <td class="px-4 py-3 text-sm text-center">
-                                        {{ data.refno}}
-                                    </td>
-                                    <td class="px-4 py-3 text-sm">
-                                        {{ data.office.accountname}}
-                                    </td>
-                                    <td class="px-4 py-3 text-sm">
-                                        {{ data.expenseType.expensetypedesc}}
-                                    </td>
-                                    <td class="px-4 py-3 text-sm">
-                                        {{ data.vendor.vendorname}}
-                                    </td>
-                                    <td class="px-4 py-3 text-xs">
-                                        {{ data.memo}}
-                                    </td>
-                                    <td class="px-4 py-3 text-sm text-right">
-                                        {{ $formatAmount(data.amount) }}
-                                    </td>
-                                </tr>
-                                <tr class="text-gray-700">
-                                    <td class="px-4 py-3 text-sm text-right font-semibold" colspan="8">
+                                v-if="!(state.isPageLoading || (state.data && state.data.length === 0))">
+                                <template v-for="(group, i) in state.data" :key="i">
+                                    <tr class="text-gray-700 bg-gray-50">
+                                        <td class="px-4 py-3 text-sm font-semibold" colspan="8">
+                                            {{ group.name }}
+                                        </td>
+                                    </tr>
+                                    <tr v-for="(data, index) in group.data" :key="index" class="text-gray-700">
+                                        <td class="px-4 py-3 text-sm font-semibold text-center">
+                                            {{ data.expenseid}}
+                                        </td>
+                                        <td class="px-4 py-3 text-sm text-center">
+                                            {{ moment(data.transdate).format('YYYY/MM/DD') }}
+                                        </td>
+                                        <td class="px-4 py-3 text-sm text-center">
+                                            {{ moment(data.refdate).format('YYYY/MM/DD') }}
+                                        </td>
+                                        <td class="px-4 py-3 text-sm text-center">
+                                            {{ data.refno}}
+                                        </td>
+                                        <td class="px-4 py-3 text-sm">
+                                            {{ data.expenseType.expensetypedesc}}
+                                        </td>
+                                        <td class="px-4 py-3 text-sm">
+                                            {{ data.vendor.vendorname}}
+                                        </td>
+                                        <td class="px-4 py-3 text-xs">
+                                            {{ data.memo}}
+                                        </td>
+                                        <td class="px-4 py-3 text-sm text-right">
+                                            {{ $formatAmount(data.amount) }}
+                                        </td>
+                                    </tr>
+                                    <tr class="text-gray-700 bg-gray-50">
+                                        <td class="px-4 py-3 text-sm font-semibold text-right" colspan="7">
+                                            Subtotal:
+                                        </td>
+                                        <td class="px-4 py-3 text-sm font-semibold text-right">
+                                            {{ $formatAmount(group.totalamount) }}
+                                        </td>
+                                    </tr>
+                                </template>
+                                <tr class="text-gray-700 bg-blue-100">
+                                    <td class="px-4 py-3 text-sm text-right font-semibold" colspan="7">
                                         Total Expense:
                                     </td>
                                     <td class="px-4 py-3 text-sm text-right font-semibold">
-                                        {{ $formatAmount(state.data.totalExpense) }}
+                                        {{ $formatAmount(state.totalExpense) }}
                                     </td>
                                 </tr>
                             </template>
@@ -83,12 +94,12 @@ const props = defineProps({
 const state = reactive({
     isPageLoading: false,
     data: [],
+    totalExpense: 0,
     columnHeaders: [
         { name: 'Trans #', textAlign: 'center'},
         { name: 'Date Posted', textAlign: 'center'},
         { name: 'Actual Date', textAlign: 'center'},
         { name: 'Ref #', textAlign: 'center'},
-        { name: 'Office'},
         { name: 'Expense Type', textAlign: 'center'},
         { name: 'Vendor'},
         { name: 'Remarks'},
@@ -115,8 +126,8 @@ async function loadData(){
                 endDate: endDate
             }
             const response = await expenseService.getExpenseReport(params)
-            state.data = response.data
-            console.log(response.data)
+            state.totalExpense = response.data.totalExpense
+            groupData(response.data)
         }catch(error){
             console.log(error)
         }
@@ -124,5 +135,24 @@ async function loadData(){
     }
     else
         navigateTo('/expenses')
+}
+function groupData(data){
+    var group = []
+    data.expenses.forEach(item => {
+        var objIndex = group.findIndex((obj) => obj.accountid === item.accountid)
+        if(objIndex >= 0){
+            group[objIndex].data.push(item)
+            group[objIndex].totalamount += item.amount
+        }
+        else{
+            group.push({
+                accountid: item.accountid,
+                name: item.office.accountname,
+                totalamount: item.amount,
+                data: [ item ]
+            })
+        }
+    });
+    state.data = group
 }
 </script>

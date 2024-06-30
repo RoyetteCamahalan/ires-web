@@ -78,12 +78,14 @@ async function submit(){
     v$.value.$validate()
     if(!v$.value.$error){
         try{
-            let response
-            if(props.formStatus === 0)
-                response = await accountService.createOffice(state.data)
-            else
-                response = await accountService.updateOffice(state.data)
-            emit('modalClose', response.data.accountid)
+            if(props.formStatus === 0){
+                const response = await accountService.createOffice(state.data)
+                emit('modalClose', response.data.accountid)
+            }
+            else{
+                await accountService.updateOffice(state.data)
+                emit('modalClose', true)
+            }
         }catch(error){
             state.error = error.message
         }

@@ -2,11 +2,12 @@
     <div>
         <LoadingSpinner :isActive="state.isPageLoading">
           <div class="mx-4 mt-2">
-                <NavigationBack url="/accountspayable"></NavigationBack>
+                <NavigationBack url="/expenses"></NavigationBack>
                 <div class="px-2 py-4 rounded-lg bg-white">
-                    <div class="flex mt-1">
+                    <div class="flex mt-1" title="Deduct this expense from Petty Cash fund">
                         <FormCheckBox v-model="state.data.usepettycash" class="my-auto"></FormCheckBox>
-                        <FormLabel for="frompettycash" label="From Petty Cash?"/>
+                        <FormLabel for="frompettycash" label="From Petty Cash?" class="font-semibold"/>
+                        <Icon name="material-symbols:help-outline" class="w-5 h-5 ml-1 my-auto text-blue-500"></Icon>
                     </div>
                     <div class="grid grid-cols-6 gap-4">
                         <div class="col-span-6 sm:col-span-3">
@@ -25,11 +26,18 @@
                             <div class="grid grid-cols-6 gap-4">
                                 <div class="col-span-6 sm:col-span-4">
                                     <FormLabel for="office" label="Office" />
-                                    <FormSelectOffice v-model="state.data.accountid"></FormSelectOffice>
+                                    <div class="relative">
+                                        <FormSelectOffice v-model="state.data.accountid" class="pr-16"></FormSelectOffice>
+                                        <a 
+                                            href="/masterfiles/offices" target="_blank"
+                                            class="flex items-center absolute inset-y-0 right-0 px-3 text-sm text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-r-md hover:bg-blue-700">
+                                            Manage
+                                        </a>
+                                    </div>
                                     <FormError :error="v$.data.accountid && v$.data.accountid.$errors && v$.data.accountid.$errors.length > 0 ? v$.data.accountid.$errors[0].$message : null "/>
                                 </div>
                                 <div class="col-span-6 sm:col-span-2">
-                                    <FormLabel for="currentbalance" label="Current Balance" />
+                                    <FormLabel for="currentbalance" label="Petty Cash Balance" />
                                     <LoadingSpinner :isActive="state.isFetchingBalance">
                                         <FormNumberField name="currentbalance" placeholder="Current Balance" class="text-right cursor-not-allowed bg-blue-50" v-model="state.currentBalance" readonly></FormNumberField>
                                     </LoadingSpinner>
@@ -41,8 +49,15 @@
                     </div>
                     <div class="grid grid-cols-6 gap-4">
                         <div class="col-span-6 sm:col-span-3">
-                            <FormLabel for="expensetype" label="Expense Type" />
-                            <FormSelectExpensetypes v-model="state.data.expensetypeid"></FormSelectExpensetypes>
+                            <FormLabel for="expensetype" label="Expense Type" />                            
+                            <div class="relative">
+                                <FormSelectExpensetypes v-model="state.data.expensetypeid"></FormSelectExpensetypes>
+                                <a 
+                                    href="/masterfiles/expensetypes" target="_blank"
+                                    class="flex items-center absolute inset-y-0 right-0 px-3 text-sm text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-r-md hover:bg-blue-700">
+                                    Manage
+                                </a>
+                            </div>
                             <FormError :error="v$.data.expensetypeid && v$.data.expensetypeid.$errors && v$.data.expensetypeid.$errors.length > 0 ? v$.data.expensetypeid.$errors[0].$message : null "/>
                         </div>
                         <div class="col-span-6 sm:col-span-3">
@@ -141,7 +156,7 @@
           minValue: helpers.withMessage('This field is required.', minValue(1)) 
         },
       },
-      currentBalance: { isValidRefAccount: helpers.withMessage('Insufficient Balance', isValidAccountBalance) },
+      currentBalance: { isValidRefAccount: helpers.withMessage('Insufficient Balance, Please cash in or uncheck `From Petty Cash`', isValidAccountBalance) },
     }
   })
   

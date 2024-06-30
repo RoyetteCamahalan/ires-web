@@ -34,12 +34,21 @@
                                         <span v-if="data.isactive" class="px-2 py-1 font-semibold leading-tight rounded-full text-green-700 bg-green-100">Active</span>
                                         <span v-else class="px-2 py-1 font-semibold leading-tight rounded-full text-red-700 bg-red-100">Inactive</span>
                                     </td>
-                                    <td class="px-4 py-3 w-1/5 text-center">
-                                        <button class="px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray" 
-                                            aria-label="Edit"
-                                            @click="updateRecord(data.accountid)">
-                                            <Icon name="material-symbols:edit" class="w-5 h-5"></Icon>
-                                        </button>
+                                    <td class="px-4 py-3 w-1/5 text-center">                                        
+                                        <div class="flex justify-center">
+                                            <MenuPopper icon-name="material-symbols:settings" :has-icon="true">
+                                                <button 
+                                                    @click="updateRecord(data.accountid)"
+                                                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    @click=" navigateTo('/pettycash/accounthistory?ref=' + data.accountid)"
+                                                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                                    Account History
+                                                </button>
+                                            </MenuPopper>
+                                        </div>
                                     </td>
                                 </tr>
                             </template>

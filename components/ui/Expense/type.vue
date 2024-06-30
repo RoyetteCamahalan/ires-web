@@ -86,12 +86,14 @@ async function submit(){
     v$.value.$validate()
     if(!v$.value.$error){
         try{
-            let response
-            if(props.formStatus === 0)
-                response = await expenseService.createExpenseType(state.data)
-            else
-                response = await expenseService.updateExpenseType(state.data)
-            emit('modalClose', response.data.expensetypeid)
+            if(props.formStatus === 0){
+                const response = await expenseService.createExpenseType(state.data)
+                emit('modalClose', response.data.expensetypeid)
+            }
+            else{
+                await expenseService.updateExpenseType(state.data)
+                emit('modalClose', true)
+            }
         }catch(error){
             state.error = error.message
         }

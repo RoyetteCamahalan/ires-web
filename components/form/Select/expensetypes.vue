@@ -34,7 +34,7 @@ watch(() => props.newID, async (newValue) => {
 async function loadData(){
     state.isLoading = true
     try{
-        const response = await expenseService.getExpenseTypes(1, false, '')
+        const response = await expenseService.getExpenseTypes(0, false, '')
         state.options = []
         response.data.data.forEach((element: any) => {
             state.options.push({ value: element.expensetypeid, label: element.expensetypedesc })

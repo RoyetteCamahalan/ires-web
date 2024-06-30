@@ -15,6 +15,9 @@ class PettyCashService extends BaseAPIService{
     async voidRecord(params: object): Promise<any> {
         return await this.request(`/pettycash/voiddisbursement`, 'PUT', params)
     }
+    async getAccountHistory(params: object): Promise<any> {
+        return await this.request(`/pettycash/getaccounthistory`, 'GET',params)
+    }
 }
 
 export const pettyCashService = new PettyCashService()

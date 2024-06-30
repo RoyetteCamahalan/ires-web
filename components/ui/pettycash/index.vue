@@ -87,7 +87,7 @@
         amount: 0,
         remarks: '',
         transtype: 0,
-        refaccountid: 0,
+        refaccountid: null,
       },
       currentBalance: 0,
       isFetchingBalance: false,

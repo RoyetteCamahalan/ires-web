@@ -11,8 +11,8 @@
             <FormNumberField name="price" placeholder="Price" v-model="state.data.price"></FormNumberField>
             <FormError :error="v$.data.price && v$.data.price.$errors && v$.data.price.$errors.length > 0 ? v$.data.price.$errors[0].$message : null "/>
 
-            <FormLabel for="memo" label="Memo" />
-            <FormTextField name="memo" placeholder="Memo" v-model="state.data.memo"></FormTextField>
+            <FormLabel for="description" label="Memo" />
+            <FormTextField name="description" placeholder="Memo" v-model="state.data.description"></FormTextField>
                                 
             <div class="flex mt-1">
                 <FormCheckBox v-model="state.data.isactive" class="my-auto"></FormCheckBox>
@@ -55,7 +55,7 @@ const state = reactive({
     data:{
         id: 0,
         name: '',
-        memo: '',
+        description: '',
         price: null,
         isactive: true,
     }

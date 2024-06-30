@@ -9,8 +9,8 @@
                 <div class="mt-1 text-sm text-center">
                     From: {{ moment(startDate).format('MM/DD/YYYY') }}  To: {{ moment(endDate).format('MM/DD/YYYY') }}
                 </div>
-                <div class="w-full my-4 overflow-hidden rounded-lg shadow-xs">
-                    <div class="w-full overflow-x-auto">
+                <div class="w-full my-4 rounded-lg shadow-xs">
+                    <div class="w-full">
                         <Table :columnHeaders="state.columnHeaders" :isLoading="state.isPageLoading" :data="state.data"
                             class="w-full whitespace-no-wrap">
                             
@@ -153,7 +153,6 @@ function groupData(data){
             })
         }
     });
-    console.log(group)
     state.data = group
 }
 </script>
