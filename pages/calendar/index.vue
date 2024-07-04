@@ -6,20 +6,20 @@
                     <div class="w-full px-4 py-3 flex justify-between bg-blue-50 rounded-t-lg">
                         <h1 class="font-semibold">{{ state.monthName + ' ' + state.year }}</h1>
                         <div class="flex">
-                            <MenuDropDown2 :label="state.monthName">
-                                <MenuItem v-for="(data, index) in state.months" :key="index">
-                                    <button 
-                                        @click="selectMonth(data)"
-                                        class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">{{ data.label }}</button>
-                                </MenuItem>
-                            </MenuDropDown2>
-                            <MenuDropDown2 label="2023" class="ml-2">
-                                <MenuItem v-for="(data, index) in state.years" :key="index">
-                                    <button 
-                                        @click="selectYear(data)"
-                                        class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">{{ data }}</button>
-                                </MenuItem>
-                            </MenuDropDown2>
+                            <MenuPopOver :label="state.monthName" position="right-0">
+                                <button v-for="(data, index) in state.months" :key="index"
+                                    @click="selectMonth(data)"
+                                    type="button"
+                                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">{{ data.label }}
+                                </button>
+                            </MenuPopOver>
+                            <MenuPopOver :label="state.year" class="ml-2" position="right-0">
+                                <button v-for="(data, index) in state.years" :key="index"
+                                    @click="selectYear(data)"
+                                    type="button"
+                                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">{{ data }}
+                                </button>
+                            </MenuPopOver>
                         </div>
                     </div>
                     <div class="w-full">
@@ -100,14 +100,13 @@
     </div>
 </template>
 <script setup>
-import { MenuItem } from '@headlessui/vue'
 import { dashboardService } from '@/components/api/Dashboard';
 import { appModules } from '@/contants/consts';
 import moment from 'moment'
 
 const currentDate = new Date()
 const state = reactive({
-    year: 2023,
+    year: currentDate.getFullYear(),
     month: 5,
     monthName: '',
     years: [],

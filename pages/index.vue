@@ -266,7 +266,7 @@
           <p class="px-4 text-gray-500">
             Manage car bookings, payment, charges. 
           </p>
-          <button type="button" class="px-3 py-2 mt-2 bg-gray-200 rounded-xl text-sm font-semibold">Coming Soon!</button>
+          <button type="button" class="px-3 py-2 mt-2 bg-gray-200 rounded-full text-sm font-semibold">Coming Soon!</button>
         </div>
         <div
           data-aos="fade-up"
@@ -285,7 +285,25 @@
           <p class="px-4 text-gray-500">
             Integrated software for property sale (Lot or House and Lot) with agent management and automatic commission generator
           </p>
-          <button type="button" class="px-3 py-2 mt-2 bg-gray-200 rounded-xl text-sm font-semibold">Coming Soon!</button>
+          <button type="button" class="px-3 py-2 mt-2 bg-gray-200 rounded-full text-sm font-semibold">Coming Soon!</button>
+        </div>
+        <div
+          data-aos="fade-up"
+          data-aos-delay="150"
+          class="bg-white shadow-xl p-6 text-center rounded-xl aos-init aos-animate"
+        >
+          <div
+            class="rounded-full w-16 h-16 flex items-center justify-center mx-auto bg-yellow-500 shadow-lg transform -translate-y-12"
+          >
+            <Icon name="material-symbols:deployed-code" class="w-6 h-6 text-white"></Icon>
+          </div>
+          <h1 class="font-medium text-xl mb-3 lg:px-14 text-darken">
+            Software Development
+          </h1>
+          <p class="px-4 pb-2 text-gray-500">
+            We accept software development projects that are tailored to your business needs.
+          </p>
+          <a href="#contactus" class="px-4 py-2 bg-cyan-500 text-white rounded-full text-sm font-semibold">Let's Talk</a>
         </div>
       </div>
       <div class="mt-28">

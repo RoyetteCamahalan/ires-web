@@ -50,6 +50,12 @@
         </a>
         <a
           v-if="!props.hideMenu"
+          href="/docs" target="_blank"
+          class="px-4 py-2 mt-2 text-sm font-medium bg-transparent rounded-lg md:mt-8 md:ml-4 hover:text-gray-900 focus:outline-none focus:shadow-outline"
+          >Docs
+        </a>
+        <a
+          v-if="!props.hideMenu"
           href="#contactus"
           class="px-4 py-2 mt-2 text-sm font-medium bg-transparent rounded-lg md:mt-8 md:ml-4 hover:text-gray-900 focus:outline-none focus:shadow-outline"
           >Contact Us

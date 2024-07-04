@@ -135,7 +135,7 @@
                 </a>
               </div>
             </li>
-            <li>
+            <!-- <li>
               <div class="bg-white rounded-t-lg text-dark-500">
                 <a href="/accountspayable"
                   :class="route.path === '/accountspayable' ? activeMenu : 'hover:bg-gray-100'"
@@ -147,7 +147,7 @@
                   <span class="ml-3 text-dark-500 text-sm">Accounts Payable</span>
                 </a>
               </div>
-            </li>
+            </li> -->
             <li>
               <div class="bg-white rounded-t-lg text-dark-500">
                 <a href="/pettycash"

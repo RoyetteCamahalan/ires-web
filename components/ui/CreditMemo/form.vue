@@ -5,16 +5,16 @@
           <div class="mx-4 mt-2">
               <NavigationBack url="/payments"></NavigationBack>
               <div class="grid grid-cols-8 gap-2 p-3 mb-3 rounded-lg bg-white border">
-                  <div class="col-span-6 sm:col-span-4">
+                  <div class="col-span-8 sm:col-span-4">
                       <FormLabel for="client" label="Client" />
                       <FormSelectClient v-model="state.payment.custid"></FormSelectClient>
                         <FormError :error="v$.payment.custid && v$.payment.custid.$errors && v$.payment.custid.$errors.length > 0 ? v$.payment.custid.$errors[0].$message : null "/>
                   </div>
-                  <div class="col-span-6 sm:col-span-2">
+                  <div class="col-span-8 sm:col-span-2">
                         <FormLabel for="paymentdate" label="Date"/>
                         <FormDateField name="paymentdate" placeholder="Payment" v-model="state.payment.paymentdate"/>
                   </div>
-                  <div class="col-span-6 sm:col-span-2">
+                  <div class="col-span-8 sm:col-span-2">
                         <FormLabel for="paymentdate" label="CM Type"/>
                         <FormSelectCmtypes v-model="state.payment.creditmemotypeid"></FormSelectCmtypes>
                         <FormError :error="v$.payment.creditmemotypeid && v$.payment.creditmemotypeid.$errors && v$.payment.creditmemotypeid.$errors.length > 0 ? v$.payment.creditmemotypeid.$errors[0].$message : null "/>
