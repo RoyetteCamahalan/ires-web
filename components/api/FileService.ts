@@ -9,6 +9,9 @@ class FileService extends BaseAPIService{
     async upload(params: Object): Promise<any> {
         return await this.request(`/attachment`, 'POST', params)
     }
+    async download(filepath: String): Promise<any> {
+        return await this.request(`/attachment/download`, 'GET', { filename: filepath})
+    }
     async delete(params: Object): Promise<any> {
         return await this.request(`/attachment/deletefile`, 'POST', params)
     }

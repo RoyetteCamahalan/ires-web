@@ -29,7 +29,7 @@
                 <LoadingSpinner :isActive="state.isPageLoading">
                     <div class="w-full px-2 flex flex-row-reverse border-b pb-2">
                         <label>
-                            <input type="file" class="hidden" accept="image/*,.pdf" @change="fileSelected($event)"/>
+                            <input type="file" class="hidden" @change="fileSelected($event)"/>
                             <span class="inline-flex items-center py-2 px-2 text-xs font-medium text-center text-white rounded-lg bg-blue-500 shadow-md shadow-gray-300 hover:scale-[1.02] transition-transform"
                             >
                                 <Icon name="material-symbols:upload" class="-ml-1 w-5 h-5"></Icon>
@@ -61,11 +61,19 @@
                                     class="absolute right-0 z-10 mt-1 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                                     >
                                     <div class="px-1 py-1">
-                                        <MenuItem>
+                                        <MenuItem
+                                            v-if="file.filetype == 0 || file.filetype == 1">
                                             <button
                                                 @click="openFile(file)"
                                                 class="group flex w-full items-center rounded-md px-1 py-1 text-sm hover:bg-gray-100">
-                                                Open/Download
+                                                Open
+                                            </button>
+                                        </MenuItem>
+                                        <MenuItem>
+                                            <button
+                                                @click="downloadFile(file)"
+                                                class="group flex w-full items-center rounded-md px-1 py-1 text-sm hover:bg-gray-100">
+                                                Download
                                             </button>
                                         </MenuItem>
                                         <!-- <MenuItem>
@@ -86,6 +94,8 @@
                                 </Menu>
                             </div>
                             <img v-if="file.filetype === 0" :src="runtimeConfig.public.apiBaseURL + '/attachments/' + user.companyid + '/' + file.filename" class="h-16 mx-auto">
+                            <img v-else-if="file.filetype === 1" src="~/assets/img/pdf_file.svg" class="w-16 h-16 mx-auto">
+                            <img v-else-if="file.filetype === 2" src="~/assets/img/docx.png" class="w-16 h-16 mx-auto">
                             <img v-else src="~/assets/img/pdf_file.svg" class="w-16 h-16 mx-auto">
                             <span class="text-xs">{{ file.documentname.substring(0, 12) }}</span>
                         </div>
@@ -105,7 +115,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import { useUserStore } from '@/store/user';
 import { fileService } from '@/components/api/FileService';
 
-const { $toastNotification } = useNuxtApp()
+const { $toastNotification, $downloadFile } = useNuxtApp()
 const runtimeConfig = useRuntimeConfig()
 
 const user = useUserStore().getUser
@@ -151,20 +161,27 @@ async function getFiles(){
 }
 
 async function fileSelected(e){
+    const file = e.target.files[0]
+    const maxFileSize = 50 * 1024 * 1024 // 2 MB
+    if (file && file.size > maxFileSize){
+        $toastNotification('error', '', 'File too large! Please limit to 50mb.')
+        return
+    }
+
     let data = new FormData()
     data.append('companyid', user.companyid)
     data.append('invoiceno', props.attachableID)
     data.append('lotid', props.lotID)
     data.append('attachedby', user.employeeid)
     data.append('typeid', props.typeID)
-    data.append('formFile', e.target.files[0])
+    data.append('formFile', file)
     state.isPageLoading = true
     try{
         const response = await fileService.upload(data)
         state.files.push(response.data)
     }
     catch(error){
-        console.log(error)
+        $toastNotification('error', '', error.message)
     }
     state.isPageLoading = false
     
@@ -172,6 +189,9 @@ async function fileSelected(e){
 
 function openFile(file){
     window.open(runtimeConfig.public.apiBaseURL + '/attachments/' + user.companyid + '/' + file.filename, '_blank');
+}
+function downloadFile(file){
+    $downloadFile('wwwroot/attachments/' + user.companyid + '/' + file.filename, file.documentname)
 }
 
 async function deleteFile(id){

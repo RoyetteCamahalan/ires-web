@@ -31,7 +31,7 @@ const prefStore = usePrefStore()
 const layoutCustomProps = useAttrs()
 
 const state = reactive({
-    sidebarOpen: prefStore.getSideBarStatus,
+    sidebarOpen: true,
     openHoverState: false
 })
 

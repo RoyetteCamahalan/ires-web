@@ -139,7 +139,7 @@ async function getInvoiceFile(id){
     state.isPageLoading = true
     try{
         const response = await billingService.generateInvoice(id)
-        $downloadFile(response.data)
+        $downloadFile(response.data.fullpath, response.data.filename)
     }catch(error){
         $toastNotification('error', '', 'Failed to download invoice')
     }

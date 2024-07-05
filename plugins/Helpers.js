@@ -1,4 +1,5 @@
 import { defineNuxtPlugin } from '#app';
+import { fileService } from '@/components/api/FileService';
 
 export default defineNuxtPlugin(() => {
     const base64Encode = (data) => {
@@ -63,18 +64,41 @@ export default defineNuxtPlugin(() => {
         return ''
     }
 
-    const downloadFile = async (url) => {
-      try {    
+    const downloadFile = async (filepath, fileName) => {
+      try {
+        const response = await fileService.download(filepath)
+        console.log(fileName)
+        console.log(response)
+        // Create a link element
         const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'test.pdf'); // Update with the actual file name
-        link.target = '_blank'
+        link.href = window.URL.createObjectURL(new Blob([response]));
+
+        // Set the download attribute with a filename
+        link.setAttribute('download', fileName);
+        
+        // Append the link to the body
         document.body.appendChild(link);
+        
+        // Programmatically click the link to trigger the download
         link.click();
+        
+        // Clean up by revoking the object URL and removing the link element
+        window.URL.revokeObjectURL(link.href);
         document.body.removeChild(link);
-      } catch (err) {
-        console.error('Failed to download file:', err);
+      } catch (error) {
+        console.error('Error downloading file:', error);
       }
+      // try {    
+      //   const link = document.createElement('a');
+      //   link.href = url;
+      //   link.setAttribute('download', filename); // Update with the actual file name
+      //   //link.target = '_blank'
+      //   document.body.appendChild(link);
+      //   link.click();
+      //   document.body.removeChild(link);
+      // } catch (err) {
+      //   console.error('Failed to download file:', err);
+      // }
     }
     const getNumberRank = (data) =>{
       var lastChar = data.toString().slice(-1); 
