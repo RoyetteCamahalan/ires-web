@@ -14,6 +14,13 @@
                     <img src="/img/banner.png" class="h-8">
                 </li>
                 <li class="mt-4">
+                    <a 
+                        href="/faqs"
+                        class="w-full flex items-center text-base font-normal text-gray-800 py-2 bg-white  rounded-lg group transition-all duration-200 hover:text-blue-400">
+                        <span class="ml-3 text-dark-500">FAQs</span>
+                    </a>
+                </li>
+                <li class="mt-2">
                     <button 
                         @click="toggleMenu('gettingstarted')"
                         type="button"

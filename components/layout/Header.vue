@@ -30,7 +30,7 @@
             >
               <Icon name="material-symbols:menu" class="w-6 h-6"></Icon>
             </button>
-            <a href="/" class="text-md font-semibold flex items-center lg:mr-1.5">
+            <a href="/dashboard" class="text-md font-semibold flex items-center lg:mr-1.5">
               <!-- <img
                 src="https://i.imgur.com/hamRKWZ.jpeg"
                 class="mr-2 h-7"

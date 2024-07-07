@@ -219,6 +219,14 @@
                 </li>
               </LayoutSidebarToggleMenu>
             </li>
+            <li>
+              <a
+                href="/faqs"
+                target="_blank"
+                class="block w-full mt-2 px-2 py-1 text-center bg-blue-50 text-blue-500 text-sm font-semibold rounded-full border border-blue-500">
+                Documentation
+              </a>
+            </li>
           </ul>
         </div>
       </div>
