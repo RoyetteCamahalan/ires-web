@@ -33,6 +33,40 @@
                 
                 </form>
               </div>
+              
+              <ModalEmpty title="" :isShow="state.showUnverified">
+              <div class="w-full mx-2 px-6 py-4 bg-white rounded-b-lg sm:rounded-lg sm:m-4 sm:max-w-xl" role="dialog" id="modal">
+                  <!-- Remove header if you don't want a close icon. Use modal body to place modal tile. -->
+                  <div class="w-full relative flex flex-col">
+                      <LoadingSpinner :is-active="state.isResendingEmail">
+                          <div class="w-full relative flex items-start justify-center">
+                              <div class="absolute -top-14">
+                                  <Icon name="ri:close-circle-line" size="6rem" class="text-red-400 bg-white rounded-full" />                            
+                              </div>
+                              <span class="mt-10 mb-4 text-xl text-gray-700 text-center">
+                                  Unverified Account!
+                              </span>
+                          </div>
+                          <div>
+                              <p class="text-sm text-gray-500 text-center">
+                                  We have sent an email confirmation link to your registered email after your registration.
+                              </p>
+                          </div>
+                          <div class="flex px-4 mt-4 justify-between flex-col sm:flex-row">
+                              <button class="border px-3 py-1 rounded-md text-gray-700 bg-gray-100 text-sm" @click="SendConfirmationLink()">
+                                  Re-Send Link
+                              </button>
+                              <button class="border px-3 py-1 mt-1 rounded-md text-white bg-blue-500" @click="state.showUnverified = false">
+                                  Login
+                              </button>
+                              <!-- <FormButton type="submit" buttonStyle="primary" @click="navigateTo('/login')" class="block">
+                                  Login
+                              </FormButton> -->
+                          </div>
+                      </LoadingSpinner>
+                  </div>
+              </div>
+            </ModalEmpty>
           </LoadingSpinner>
         </div>
       </div>
@@ -44,15 +78,20 @@
 import { useVuelidate } from '@vuelidate/core'
 import { required, helpers } from '@vuelidate/validators'
 import { authService } from '@/components/api/AuthService'
+import { companyService} from '@/components/api/CompanyService'
 import { useUserStore } from '@/store/user'
 
 const userStore = useUserStore()
 const runtimeConfig = useRuntimeConfig()
+const { $toastNotification } = useNuxtApp()
 
 const state = reactive({
   username: '',
   password: '',
   isPageLoading: false,
+  isResendingEmail: false,
+  showUnverified: false,
+  newCompanyID: 0,
   error: null
 })
 const validators = computed(()=>{
@@ -82,17 +121,25 @@ async function login(){
           navigateTo('/dashboard')
     }catch(error){
         state.isPageLoading = false
-        state.error = error.message
+        if(error.code == 1){
+          state.showUnverified =  true
+          state.newCompanyID = error.data.companyid
+        }
+        else
+          state.error = error.message
     }
   }
 }
-
-async function test(){
-  try{
-    const response = await $fetch('https://catfact.ninja/fact')
-    console.log(response)
-  }catch(error){
-    console.log(error)
-  }
+async function SendConfirmationLink(){
+    state.isResendingEmail = true
+    try{
+        await companyService.resendConfirmation({ id: state.newCompanyID})
+        $toastNotification('success', '', 'Email confirmation link sent to your email')
+        state.showUnverified = false
+    }catch(error){
+        $toastNotification('error', '', error.message)
+        state.error = error.message
+    }
+    state.isResendingEmail = false
 }
 </script>

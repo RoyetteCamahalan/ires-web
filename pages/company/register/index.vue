@@ -36,10 +36,16 @@
                                     </div>
                                 </div>
                                                                 
-                                <div class="flex"><FormLabel for="email" label="Email" /><span class="block text-xs mt-2.5 ml-1 text-gray-500">(Verification email will be sent here)</span></div>
+                                <div class="flex">
+                                    <FormLabel for="email" label="Email" /><span class="block text-xs mt-2.5 ml-1 text-gray-500">(Verification email will be sent here)</span>
+                                </div>
                                 <FormTextField name="email" placeholder="Email" v-model="state.company.email"/>
                                 <FormError :error="v$.company.email && v$.company.email.$errors && v$.company.email.$errors.length > 0 ? v$.company.email.$errors[0].$message : null "/>
                                         
+                                <FormLabel for="password" label="Password" />
+                                <FormPasswordField name="password" placeholder="Password" v-model="state.company.password"/>
+                                <FormError :error="v$.company.password && v$.company.password.$errors && v$.company.password.$errors.length > 0 ? v$.company.password.$errors[0].$message : null "/>
+
                                 <FormLabel for="app" label="App" />
                                 <FormSelect :options="state.plans" v-model="state.company.planid" :canClear="false"></FormSelect>
                                 <FormError :error="v$.company.planid && v$.company.planid.$errors && v$.company.planid.$errors.length > 0 ? v$.company.planid.$errors[0].$message : null "/>
@@ -89,7 +95,7 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-500 text-center">
-                                We have sent an email confirmation link and password to your registered email.
+                                We have sent an email confirmation link to your registered email.
                             </p>
                         </div>
                         <div class="flex px-4 mt-4 justify-between flex-col sm:flex-row">
@@ -113,7 +119,7 @@
 <script setup>
 import { companyService} from '@/components/api/CompanyService'
 import { useVuelidate } from '@vuelidate/core'
-import { required, email, helpers } from '@vuelidate/validators'
+import { required, email, minLength, helpers } from '@vuelidate/validators'
 import { useSubscriptionStore } from '@/store/subscription'
 
 definePageMeta({
@@ -132,6 +138,7 @@ const state = reactive({
         adminfirstname: '',
         adminlastname: '',
         email: '',
+        password: '',
         planid: subscriptionStore.getSelectedPlanID ? subscriptionStore.getSelectedPlanID : null
     },
     isAgree: false,
@@ -164,6 +171,10 @@ const validators = computed(() =>{
             email: { 
                 required: helpers.withMessage('This field is required.', required),
                 email: helpers.withMessage('Please enter a valid email address.', email)
+            },
+            password: { 
+                required: helpers.withMessage('This field is required.', required),
+                minLength: helpers.withMessage('Password must be minimum 6 characters.', minLength(6))
             },
             planid: { required: helpers.withMessage('Select your app.', required) },
         },
