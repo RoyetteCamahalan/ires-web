@@ -15,7 +15,7 @@
                             class="h-5 w-5 text-blue-600" ></Icon>
                         </DisclosureButton>
                         <DisclosurePanel class="px-4 pb-2 pt-4 text-sm text-gray-500">
-                        Go to login page then enter your email address and password. The app will pop a message saying you the account is unverified. At the bottom, click `Resend Link`.
+                        Go to login page then enter your email address and password. The app will pop a message saying your the account is unverified. At the bottom, click `Resend Link`.
                         </DisclosurePanel>
                     </Disclosure>
                     <Disclosure v-slot="{ open }">
@@ -28,8 +28,8 @@
                             class="h-5 w-5 text-blue-600" ></Icon>
                         </DisclosureButton>
                         <DisclosurePanel class="px-4 pb-2 pt-4 text-sm text-gray-500">
-                        You can register again using the corect and email but you the company name should not be the same as the first (You can add extra character if you want) and
-                        update you company name later.
+                        You can register again using the corect email but the company name should not be the same as the first (You can add extra character if you want) and
+                        update your company name later.
                         </DisclosurePanel>
                     </Disclosure>
                     <Disclosure v-slot="{ open }">
@@ -42,7 +42,7 @@
                             class="h-5 w-5 text-blue-600" ></Icon>
                         </DisclosureButton>
                         <DisclosurePanel class="px-4 pb-2 pt-4 text-sm text-gray-500">
-                        In the upper right corner of the app, click your profile the go to `Company Informatio`. You edit other info except for the verified email. If you wish to update
+                        In the upper right corner of the app, click your profile then go to `Company Information`. You edit other info except for the verified email. If you wish to update
                         the company email, you can message us at <a href="mailto:admin@hexabyt.com" class="text-blue-600 font-semibold">admin@hexabyt.com</a>.
                         </DisclosurePanel>
                     </Disclosure>
@@ -81,7 +81,7 @@
                             class="h-5 w-5 text-blue-600" ></Icon>
                         </DisclosureButton>
                         <DisclosurePanel class="px-4 pb-2 pt-4 text-sm text-gray-500">
-                        You can visit your account's billing page the select your unpaid invoice then click `Pay`.
+                        You can visit your account's billing page then select your unpaid invoice then click `Pay`.
                         </DisclosurePanel>
                     </Disclosure>
                     <Disclosure v-slot="{ open }">
@@ -94,7 +94,7 @@
                             class="h-5 w-5 text-blue-600" ></Icon>
                         </DisclosureButton>
                         <DisclosurePanel class="px-4 pb-2 pt-4 text-sm text-gray-500">
-                        Your can still login to your account but most transactions are unavailable until the payment has been settled.
+                        You can still login to your account but most transactions are unavailable until the payment has been settled.
                         </DisclosurePanel>
                     </Disclosure>
                     <Disclosure v-slot="{ open }">
