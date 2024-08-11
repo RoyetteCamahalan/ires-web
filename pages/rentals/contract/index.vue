@@ -44,11 +44,11 @@
                                     class="group flex justify-between w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
                                     Send Account History
                                 </button> -->
-                                <!-- <button
-                                    @click="reCompute"
+                                <button
+                                    @click="sendSOA"
                                     class="group flex justify-between w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
                                     Send SOA
-                                </button> -->
+                                </button>
                                 <button
                                     @click="state.modalIsShowAttachment = true"
                                     class="group flex  w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
@@ -73,6 +73,9 @@
                 <ModalEmpty :isShow="state.modalIsShowAttachment">
                     <UiAttachment :typeID="14" :attachableID="state.contractID" @closeAttachment="closeAttachment"></UiAttachment>
                 </ModalEmpty>
+                <ModalEmpty  title="" :isShow="state.modalIsShowEmail">
+                    <UiSetEmail :email="state.contract.client.email" @modalClose="closeSetEmail"></UiSetEmail>
+                </ModalEmpty>
                 <ModalGeneric :title="state.ModalGenericTitle" :isShow="state.ModalGenericIsShow" type="terminaterental" @modalClose="closeGeneric"></ModalGeneric>
             </div>
         </NuxtLayout>
@@ -89,6 +92,7 @@ import moment from "moment"
 
 const route = useRoute()
 const rentalStore = useRentalStore()
+const { $toastNotification } = useNuxtApp()
 
 const state = reactive({
     contractID: route.query.ref ? Number(route.query.ref) : 0,
@@ -109,7 +113,8 @@ const state = reactive({
         payables: [],
         client:{
             fullname: '',
-            address: ''
+            address: '',
+            email: ''
         },
         createdBy:{
             firstname: '',
@@ -121,6 +126,7 @@ const state = reactive({
     accountHistory: [],
     selectedOtherChargeID: 0,
     modalIsShowAttachment: false,
+    modalIsShowEmail: false,
     ModalGenericIsShow: false,
     ModalGenericTitle: '',
     ModalGenericFields: [],
@@ -236,7 +242,32 @@ function printAccountHistory(){
     window.open('/rentals/print/history?ref=' + state.contractID, '_blank')
 }
 
-function printSOA(){
-    window.open('/rentals/print/soa?ref=' + state.contractID, '_blank')
+async function printSOA(){
+    state.isPageLoading = true
+    try{
+        const response = await rentalService.getSOA(state.contractID)
+        window.open(response.data.url, '_blank');
+    }catch(error){
+        console.log(error)
+    }
+    state.isPageLoading = false
+}
+async function sendSOA(){
+    state.modalIsShowEmail = true
+}
+
+async function closeSetEmail(value){
+    state.modalIsShowEmail = false
+    if(value)
+    {
+        state.isPageLoading = true
+        try{
+            await rentalService.sendSOA( { id:state.contractID, email: value })
+            $toastNotification('success', '', 'Email sent successfully')
+        }catch(error){
+            $toastNotification('error', '', error.message)
+        }
+        state.isPageLoading = false
+    }
 }
 </script>

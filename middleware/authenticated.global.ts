@@ -1,10 +1,13 @@
 import { useUserStore } from "@/store/user"
+import { dashboardService } from "@/components/api/Dashboard"
 
 export default defineNuxtRouteMiddleware((to) => {
-    
-    if (to.meta.auth !== false){
+    if(to.path == '/index.js' || to.path == '/index')
+        return navigateTo('/')
+    else if (to.meta.auth !== false){
         if (useUserStore().getToken == null) {
             if (to.path !== '/login') {
+                dashboardService.SaveLog({ logtitle: 'Hexabyt Redirect to Login', logAction: `Trying to access page ${to.path}`})
                 return navigateTo('/login')
             }
         }else{

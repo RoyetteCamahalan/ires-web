@@ -92,7 +92,7 @@
                 <span class="sr-only">View notifications</span>
                 <Icon name="material-symbols:notifications" class="w-6 h-6 text-blue-600"></Icon>
                 <span v-if="state.notifications && state.notifications.length > 0" aria-hidden="true" class="absolute top-0 right-0 w-4 h-4 text-xs font-semibold inline-block transform translate-x-1 -translate-y-1 bg-red-600 text-white rounded-full">
-                  {{ state.notifications ? state.notifications.length : '' }}
+                  {{ state.notifications ? state.notificationCount : '' }}
                 </span>
               </button>
               <div
@@ -107,24 +107,32 @@
                 >
                   Notifications
                 </div>
-                <div v-if="state.notifications.length === 0">
-                  <div class="py-2 text-xs italic text-gray-500 text-center">Your notification is empty!</div>
-                </div>
-                <div v-for="(notification, index) in state.notifications" :key="index">
-                  <button @click="selectNotif(notification)" class="flex py-3 px-4 hover:bg-gray-100">
-                    <div class="flex-shrink-0">
-                      <Icon :name="notification.typeid === 0 ? 'icon-park-outline:bill' : 'material-symbols:info-outline' " class="w-10 h-10 p-2 bg-gray-50 rounded-full"></Icon>
-                    </div>
-                    <div class="pl-3 w-full">
-                      <div class="text-gray-600 font-normal text-left text-sm mb-1.5">
-                        {{ notification.details }}
+                <LoadingSpinner :is-active="state.isNotifLoading">
+                  <div v-for="(notification, index) in state.notifications" :key="index">
+                    <button @click="selectNotif(notification)" class="flex py-3 px-4 hover:bg-gray-100">
+                      <div class="flex-shrink-0">
+                        <Icon :name="notification.typeid === 0 ? 'icon-park-outline:bill' : 'material-symbols:info-outline' " class="w-10 h-10 p-2 bg-gray-50 rounded-full"></Icon>
                       </div>
-                      <div class="text-xs font-medium text-blue-500">
-                        {{ $dateInterVal(moment(notification.datecreated), null) }}
+                      <div class="pl-3 w-full">
+                        <div class="text-gray-600 font-normal text-left text-sm mb-1.5">
+                          {{ notification.details }}
+                        </div>
+                        <div class="text-xs font-medium text-blue-500">
+                          {{ $dateInterVal(moment(notification.datecreated), null) }}
+                        </div>
                       </div>
-                    </div>
-                  </button>
-                </div>
+                    </button>
+                  </div>
+                  <div v-if="state.notificationCount === 0">
+                    <div class="py-2 text-xs italic text-gray-500 text-center">Your notification is empty!</div>
+                  </div>
+                  <div v-if="state.notificationCount > 0">
+                    <button 
+                      @click="MarkAllAsReadNotifs"
+                      type="button"
+                      class="w-full py-1 text-xs text-white bg-blue-600">Mark All as Read</button>
+                  </div>
+                </LoadingSpinner>
               </div>
             </div>
             <div class="ml-3">
@@ -233,15 +241,18 @@ const state = reactive({
   searchString: '',
   modalIsShowChangeProfile: false,
   notifications: [],
+  notificationCount: 0,
   modalIsShowCompanyProfile: false,
+  isNotifLoading: false,    
 })
 
 const emit = defineEmits(['toggleSidebar'])
 
 onMounted(() => {
-  fetchNotifications()
   if(notif_id)
     viewNotification(notif_id)
+  else
+    fetchNotifications()
 })
 
 const openProfile = () =>{
@@ -277,31 +288,53 @@ function onCloseCompanyProfile(){
 }
 
 async function fetchNotifications(){
+  state.isNotifLoading = true
   try{
     const response = await dashboardService.getNotifications()
-    state.notifications = response.data
+    state.notificationCount = response.data.length
+    state.notifications = response.data.slice(0,5)
   }
   catch(error){
 
   }
+  state.isNotifLoading = false
 }
 
-function viewNotification(id){
+async function viewNotification(id){
   try{
     const param = {
       id: id
     }
-    dashboardService.markAsRadNotif(param)
+    await dashboardService.markAsReadNotif(param)
+  }
+  catch(error){
+
+  }
+  fetchNotifications()
+}
+
+async function MarkAllAsReadNotifs(){
+  state.isNotifLoading = true
+  try{
+    const param = {
+      id: user.employeeid
+    }
+    await dashboardService.markAllAsReadNotif(param)
     fetchNotifications()
   }
   catch(error){
 
   }
+  state.isNotifLoading = false
 }
 function selectNotif(data){
+  var notif = `?notif_id=${data.id}`
+  if(data.url.includes('?'))
+    notif = `&notif_id=${data.id}`
+
   if(data.url == route.path)
-    location.replace(data.url + `?notif_id=${data.id}`)
+    location.replace(data.url + notif)
   else
-    navigateTo(data.url + `?notif_id=${data.id}`)
+    navigateTo(data.url + notif)
 }
 </script>

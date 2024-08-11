@@ -20,6 +20,9 @@ class RentalService extends BaseAPIService{
     async getSOA(id: number): Promise<any> {
         return await this.request(`/rental/getsoa/${id}`, 'GET')
     }
+    async sendSOA(params: object): Promise<any> {
+        return await this.request(`/rental/sendsoa`, 'POST', params)
+    }
     async create(params: object): Promise<any> {
         return await this.request(`/rental`, 'POST', params)
     }

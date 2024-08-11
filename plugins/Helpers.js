@@ -107,8 +107,8 @@ export default defineNuxtPlugin(() => {
         return data + 'st'
       else if(lastChar == '2' && last2Char != '12')
         return data + 'nd'
-      else if(lastChar == '2' && last2Char != '13')
-        return data + 'nd'
+      else if(lastChar == '3' && last2Char != '13')
+        return data + 'rd'
       else
         return data + 'th'
     }

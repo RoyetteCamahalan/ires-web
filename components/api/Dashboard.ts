@@ -1,4 +1,5 @@
 import BaseAPIService from "./BaseAPIService";
+import moment from "moment";
 
 
 class DashboardService extends BaseAPIService{
@@ -6,10 +7,12 @@ class DashboardService extends BaseAPIService{
         return await this.request(`/main/getfinancedashboard`, 'GET')
     }
     async getSurvey(): Promise<any> {
-        return await this.request(`/main/getsurveydashboard`, 'GET')
+        var currentDate = new Date();
+        return await this.request(`/main/getsurveydashboard?currentDate=${moment(currentDate).format('YYYY-MM-DD')}`, 'GET')
     }
     async getRental(): Promise<any> {
-        return await this.request(`/main/getrentaldashboard`, 'GET')
+        var currentDate = new Date();
+        return await this.request(`/main/getrentaldashboard?currentDate=${moment(currentDate).format('YYYY-MM-DD')}`, 'GET')
     }
     async getNotifications(): Promise<any> {
         return await this.request(`/main/getnotifications`, 'GET')
@@ -17,8 +20,14 @@ class DashboardService extends BaseAPIService{
     async getCalendarEvents(startDate: number, endDate: number): Promise<any> {
         return await this.request(`/main/getcalendarevents?startDate=${startDate}&&endDate=${endDate}`, 'GET')
     }
-    async markAsRadNotif(params: object): Promise<any> {
+    async markAsReadNotif(params: object): Promise<any> {
         return await this.request(`/main/readnotification`, 'PUT', params)
+    }
+    async markAllAsReadNotif(params: object): Promise<any> {
+        return await this.request(`/main/markallasreadnotifs`, 'POST', params)
+    }
+    async SaveLog(params: object): Promise<any> {
+        return await this.request(`/main/savelog`, 'POST', params)
     }
     
 }
