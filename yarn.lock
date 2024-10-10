@@ -939,10 +939,10 @@
   resolved "https://registry.npmjs.org/@vue/shared/-/shared-3.3.4.tgz"
   integrity sha512-7OjdcV8vQ74eiz1TZLzZP4JwqM5fA94K6yntPS5Z25r9HDuGNzaGdgvwKYq6S+MxwF0TFRwe50fIR/MYnakdkQ==
 
-"@vueform/multiselect@^2.5.8":
-  version "2.6.2"
-  resolved "https://registry.npmjs.org/@vueform/multiselect/-/multiselect-2.6.2.tgz"
-  integrity sha512-4BFvXyzyi0Pqi/lsYdGwONsQy+ypiVzuQbmoDUlttTxuoujFtf9AdeHi1ZhfIorXG9BiysK1HcQSfYB6USgwfQ==
+"@vueform/multiselect@^2.6.9":
+  version "2.6.9"
+  resolved "https://registry.npmjs.org/@vueform/multiselect/-/multiselect-2.6.9.tgz"
+  integrity sha512-eW+pMaWFGnK+WGvUPcB/mEwLx/5Y4VB8wRFGFQZ9c5Wi+K/xFrm/nQ/NbtrFQUcX0nbuQWKYnFBmwa5MENGQxw==
 
 "@vuelidate/core@^2.0.0":
   version "2.0.2"

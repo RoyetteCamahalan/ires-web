@@ -6,7 +6,7 @@ class BillingService extends BaseAPIService{
         return await this.request(`/billing/getplans`, 'GET')
     }
     async getBills(currentPage: number, filter: number): Promise<any> {
-        return await this.request(`/billing/?currentPage=${currentPage}&filter=${filter}`, 'GET')
+        return await this.request(`/billing/?currentPage=${currentPage}&filterBy=${filter}`, 'GET')
     }
     async updateBillingCycle(params: Object): Promise<any> {
         return await this.request(`/billing/updatebillingcycle`, 'PUT', params)

@@ -3,7 +3,7 @@ import BaseAPIService from "./BaseAPIService";
 
 class RentalService extends BaseAPIService{
     async get(currentPage: number, search: string, filterByID: number): Promise<any> {
-        return await this.request(`/rental/?currentPage=${currentPage}&filterByID=${filterByID}&search=${search}`, 'GET')
+        return await this.request(`/rental/?currentPage=${currentPage}&filterBy=${filterByID}&search=${search}`, 'GET')
     }
     async getDetails(id: number): Promise<any> {
         return await this.request(`/rental/${id}`, 'GET')

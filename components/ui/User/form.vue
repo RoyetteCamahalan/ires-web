@@ -211,7 +211,6 @@ export default {
             vaccount$.value.$validate()
             if(!(v$.value.$error || vaccount$.value.$error)){
                 try{
-                    console.log(state.user)
                     if(props.formStatusEdit)
                         await employeeService.update(state.user)
                     else

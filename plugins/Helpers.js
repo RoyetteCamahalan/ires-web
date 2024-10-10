@@ -67,8 +67,6 @@ export default defineNuxtPlugin(() => {
     const downloadFile = async (filepath, fileName) => {
       try {
         const response = await fileService.download(filepath)
-        console.log(fileName)
-        console.log(response)
         // Create a link element
         const link = document.createElement('a');
         link.href = window.URL.createObjectURL(new Blob([response]));
@@ -101,6 +99,8 @@ export default defineNuxtPlugin(() => {
       // }
     }
     const getNumberRank = (data) =>{
+      if(!data)
+        return ''
       var lastChar = data.toString().slice(-1); 
       var last2Char = data.toString().slice(-2); 
       if(lastChar == '1' && last2Char != '11')

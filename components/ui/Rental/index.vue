@@ -127,7 +127,6 @@
 </template>
 
 <script setup>
-import { rentalService } from '@/components/api/RentalService';
 import { rentalContractStatus } from '@/contants/consts'
 import moment from 'moment'
 
