@@ -112,6 +112,12 @@ export default defineNuxtPlugin(() => {
       else
         return data + 'th'
     }
+    const isSurveying = (planId) =>{
+      return (planId >= 0 && planId <= 3) || planId == 9
+    }
+    const isRental = (planId) =>{
+      return (planId >= 6 && planId <= 8) || planId == 9
+    }
     return {
       provide: {
         formatAmount: formatAmount,
@@ -122,7 +128,9 @@ export default defineNuxtPlugin(() => {
         base64Encode: base64Encode,
         base64Decode: base64Decode,
         downloadFile: downloadFile,
-        getNumberRank: getNumberRank
+        getNumberRank: getNumberRank,
+        isSurveying: isSurveying,
+        isRental: isRental
       }
     }
   })

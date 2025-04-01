@@ -29,6 +29,9 @@
                                     {{ moment(bill.duedate).format('MM/DD/YYYY') }}
                                 </td>
                                 <td class="px-4 py-3 text-sm">
+                                    <div v-if="bill.discount" class="line-through">
+                                        {{ $formatAmount(bill.balance) }}    
+                                    </div>
                                     {{ $formatAmount(bill.amount) }}
                                 </td>
                                 <td class="px-4 py-3 text-xs">

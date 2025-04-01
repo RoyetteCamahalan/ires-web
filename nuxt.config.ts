@@ -20,6 +20,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
           apiBaseURL: process.env.API_BASE_URL || 'https://api.example.com/',
+          landingURL: process.env.LANDING_URL || 'https://hexabyt.com',
           appName: process.env.APP_NAME || 'HexaByt',
           CHATWOOT_URL: process.env.CHATWOOT_URL,
           CHATWOOT_TOKEN: process.env.CHATWOOT_TOKEN,

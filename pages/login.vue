@@ -2,7 +2,7 @@
   <div>
     <main class="bg-gray-50">
       <div class="flex flex-col justify-center items-center px-6 pt-8 mx-auto md:h-screen pt:mt-0">
-        <a href="/" class="flex justify-center items-center mb-6 text-2xl font-semibold lg:mb-4">
+        <a :href="runtimeConfig.public.landingURL" class="flex justify-center items-center mb-6 text-2xl font-semibold lg:mb-4">
           <img src="/img/logo.png" class="mr-2 h-10" alt="HexaByt Logo">
           <span class="self-center text-xl font-bold whitespace-nowrap">{{ runtimeConfig.public.appName }} Dashboard</span>
         </a>

@@ -130,17 +130,20 @@
     state.isPageLoading = true
     try{
       const response = await surveyService.getDetails(selectedSurvey)
-      state.survey.id = selectedSurvey;
-      state.client.push({ value: response.data.custid, label: response.data.client.fname + ' ' + response.data.client.lname })
-      state.survey.custid = response.data.custid
-      state.survey.owner = response.data.owner
-      state.survey.titleno = response.data.titleno
-      state.survey.surveyno = response.data.surveyno
-      state.survey.surveydate = moment(response.data.surveydate).format('YYYY-MM-DD')
-      state.survey.propertyname = response.data.propertyname
-      state.survey.address = response.data.address
-      state.survey.details = response.data.details
-      state.survey.contractprice = response.data.contractprice
+      if(response.data){
+        console.log(response.data)
+        state.survey.id = selectedSurvey;
+        state.client = { value: response.data.custid, label: response.data.client.fullname }
+        state.survey.custid = response.data.custid
+        state.survey.owner = response.data.owner
+        state.survey.titleno = response.data.titleno
+        state.survey.surveyno = response.data.surveyno
+        state.survey.surveydate = moment(response.data.surveydate).format('YYYY-MM-DD')
+        state.survey.propertyname = response.data.propertyname
+        state.survey.address = response.data.address
+        state.survey.details = response.data.details
+        state.survey.contractprice = response.data.contractprice
+      }
     }catch(error){
         state.error = error.message
     }

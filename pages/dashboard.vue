@@ -1,8 +1,8 @@
 <template>
     <div>
         <NuxtLayout name="admin" title="Dashboard">
-            <DashboardSurveying v-if="state.planID >= plan.survey_trial && state.planID <=  plan.survey_enterprise" class="my-5"></DashboardSurveying>
-            <DashboardRental v-if="state.planID >= plan.rental_trial && state.planID <=  plan.rental_enterprise" class="my-5"></DashboardRental>
+            <DashboardSurveying v-if="$isSurveying(state.planID)" class="my-5"></DashboardSurveying>
+            <DashboardRental v-if="$isRental(state.planID)" class="my-5"></DashboardRental>
             <DashboardFinance class="my-5"></DashboardFinance>
             <UiOnboarding :hasTour="state.hasTour" :isShow="state.isShowWelcome" @onHideTour="hideTour"></UiOnboarding>
         </NuxtLayout>
@@ -13,6 +13,7 @@ import { dashboardService } from '@/components/api/Dashboard';
 import { plan } from '@/contants/consts';
 import { useUserStore } from '@/store/user'
 
+const { $isRental } = useNuxtApp()
 const user = useUserStore().getUser
 
 const state = reactive({
@@ -23,7 +24,7 @@ const state = reactive({
 
 onMounted(async () =>{
     if(user.company.apptour == 0){
-        if(state.planID >= plan.rental_trial && state.planID <= plan.rental_enterprise){
+        if($isRental(state.planID)){
             await loadRecord()
         }
         state.isShowWelcome = user.company.apptour == 0; 

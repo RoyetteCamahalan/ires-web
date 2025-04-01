@@ -48,6 +48,7 @@ import { projectService } from '@/components/api/ProjectService'
 import { useUserStore } from '@/store/user'
 import { plan } from '@/contants/consts';
 
+const { $isRental } = useNuxtApp()
 const userStore = useUserStore()
 const user = userStore.getUser
 
@@ -76,7 +77,7 @@ const state = reactive({
 })
 
 async function startTour(){
-    if(props.hasTour && state.planID >= plan.rental_trial && state.planID <= plan.rental_enterprise){
+    if(props.hasTour && $isRental(state.planID)){
         state.isWelcomeLoading = true
         try{
             const response = await projectService.GetRentalProperties(1, '')

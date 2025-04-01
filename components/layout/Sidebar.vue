@@ -260,8 +260,8 @@ const props = defineProps({
 
 const state = reactive({
   searchString: '',
-  isSurveying: (user.company.planid >= 0 && user.company.planid <= 3),
-  isRental: (user.company.planid >= 6 && user.company.planid <= 9)
+  isSurveying: (user.company.planid >= 0 && user.company.planid <= 3) || user.company.planid == 9,
+  isRental: (user.company.planid >= 6 && user.company.planid <= 9) || user.company.planid == 9
 })
 
 watch(() => state.searchString, (data)=>{

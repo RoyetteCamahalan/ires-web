@@ -3,7 +3,7 @@ import { dashboardService } from "@/components/api/Dashboard"
 
 export default defineNuxtRouteMiddleware((to) => {
     if(to.path == '/index.js' || to.path == '/index')
-        return navigateTo('/')
+        return navigateTo('/dashboard')
     else if (to.meta.auth !== false){
         if (useUserStore().getToken == null) {
             if (to.path !== '/login') {

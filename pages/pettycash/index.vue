@@ -17,7 +17,7 @@
                         <button type="button" class="inline-flex items-center py-2 px-2 text-xs font-medium text-center text-white rounded-lg bg-blue-500 shadow-md shadow-gray-300 hover:scale-[1.02] transition-transform"
                             @click="addNew">
                             <Icon name="material-symbols:add" class="-ml-1 w-4 h-4"></Icon>
-                            Create New
+                            New Transaction
                         </button>
                     </div>
                 </div>
