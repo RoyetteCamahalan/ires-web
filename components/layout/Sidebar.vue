@@ -41,45 +41,6 @@
                 </a>
               </div>
             </li>
-            <li v-if="state.isSurveying">
-              <div class="bg-white rounded-t-lg text-dark-500">
-                <a href="/surveys"
-                  :class="route.path === '/surveys' ? activeMenu : 'hover:bg-gray-100'"
-                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
-                  sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="icon-park-outline:land-surveying" class="w-4 h-4 text-gray-800"></Icon>
-                  </div>
-                  <span class="ml-3 text-dark-500 text-sm">Surveys</span>
-                </a>
-              </div>
-            </li>
-            <li v-if="state.isRental">
-              <div class="bg-white rounded-t-lg text-dark-500">
-                <a href="/rentals"
-                  :class="route.path === '/rentals' ? activeMenu : 'hover:bg-gray-100'"
-                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
-                  sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="tabler:contract" class="w-4 h-4 text-gray-800"></Icon>
-                  </div>
-                  <span class="ml-3 text-dark-500 text-sm">Rental Contracts</span>
-                </a>
-              </div>
-            </li>
-            <li v-if="state.isRental">
-              <div class="bg-white rounded-t-lg text-dark-500">
-                <a href="/properties"
-                  :class="route.path === '/properties' ? activeMenu : 'hover:bg-gray-100'"
-                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
-                  sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="material-symbols:home-work-outline-rounded" class="w-4 h-4 text-gray-800"></Icon>
-                  </div>
-                  <span class="ml-3 text-dark-500 text-sm">Buildings</span>
-                </a>
-              </div>
-            </li>
             <li v-if="state.isSurveying || state.isRental">
               <div class="bg-white rounded-t-lg text-dark-500">
                 <a href="/payments"
@@ -116,6 +77,93 @@
                     <Icon name="ph:users-three" class="w-4 h-4 text-gray-800"></Icon>
                   </div>
                   <span class="ml-3 text-dark-500 text-sm">Clients</span>
+                </a>
+              </div>
+            </li>
+            <li v-if="state.isSurveying">
+              <div class="bg-white text-sm pl-2 pt-4">Surveying</div>
+            </li>
+            <li v-if="state.isSurveying">
+              <div class="bg-white rounded-t-lg text-dark-500">
+                <a href="/surveys"
+                  :class="route.path === '/surveys' ? activeMenu : 'hover:bg-gray-100'"
+                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
+                  sidebar-toggle-collapse="">
+                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
+                    <Icon name="icon-park-outline:land-surveying" class="w-4 h-4 text-gray-800"></Icon>
+                  </div>
+                  <span class="ml-3 text-dark-500 text-sm">Surveys</span>
+                </a>
+              </div>
+            </li>
+            <li v-if="state.isRental">
+              <div class="bg-white text-sm pl-2 pt-4">Rentals</div>
+            </li>
+            <li v-if="state.isRental">
+              <div class="bg-white rounded-t-lg text-dark-500">
+                <a href="/rentals"
+                  :class="route.path === '/rentals' ? activeMenu : 'hover:bg-gray-100'"
+                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
+                  sidebar-toggle-collapse="">
+                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
+                    <Icon name="tabler:contract" class="w-4 h-4 text-gray-800"></Icon>
+                  </div>
+                  <span class="ml-3 text-dark-500 text-sm">Rental Contracts</span>
+                </a>
+              </div>
+            </li>
+            <li v-if="state.isRental">
+              <div class="bg-white rounded-t-lg text-dark-500">
+                <a href="/properties"
+                  :class="route.path === '/properties' ? activeMenu : 'hover:bg-gray-100'"
+                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
+                  sidebar-toggle-collapse="">
+                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
+                    <Icon name="material-symbols:home-work-outline-rounded" class="w-4 h-4 text-gray-800"></Icon>
+                  </div>
+                  <span class="ml-3 text-dark-500 text-sm">Buildings</span>
+                </a>
+              </div>
+            </li>
+            <li v-if="state.isIRES">
+              <div class="bg-white text-sm pl-2 pt-4">Real Estate Management</div>
+            </li>
+            <li v-if="state.isIRES">
+              <div class="bg-white rounded-t-lg text-dark-500">
+                <a href="/ires/contracts"
+                  :class="route.path === '/ires/contracts' ? activeMenu : 'hover:bg-gray-100'"
+                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
+                  sidebar-toggle-collapse="">
+                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
+                    <Icon name="tabler:contract" class="w-4 h-4 text-gray-800"></Icon>
+                  </div>
+                  <span class="ml-3 text-dark-500 text-sm">Contracts</span>
+                </a>
+              </div>
+            </li>
+            <li v-if="state.isIRES">
+              <div class="bg-white rounded-t-lg text-dark-500">
+                <a href="/agents"
+                  :class="route.path === '/agents' ? activeMenu : 'hover:bg-gray-100'"
+                  class="flex items-center py-2.5 px-4 text-base font-normal text-dark-500 rounded-lg group transition-all duration-200"
+                  sidebar-toggle-collapse="">
+                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
+                    <Icon name="ph:users-three" class="w-4 h-4 text-gray-800"></Icon>
+                  </div>
+                  <span class="ml-3 text-dark-500 text-sm">Agents</span>
+                </a>
+              </div>
+            </li>
+            <li v-if="state.isRental">
+              <div class="bg-white rounded-t-lg text-dark-500">
+                <a href="/projects"
+                  :class="route.path === '/projects' ? activeMenu : 'hover:bg-gray-100'"
+                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
+                  sidebar-toggle-collapse="">
+                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
+                    <Icon name="material-symbols:home-work-outline-rounded" class="w-4 h-4 text-gray-800"></Icon>
+                  </div>
+                  <span class="ml-3 text-dark-500 text-sm">Projects</span>
                 </a>
               </div>
             </li>
@@ -261,7 +309,8 @@ const props = defineProps({
 const state = reactive({
   searchString: '',
   isSurveying: (user.company.planid >= 0 && user.company.planid <= 3) || user.company.planid == 9,
-  isRental: (user.company.planid >= 6 && user.company.planid <= 9) || user.company.planid == 9
+  isRental: (user.company.planid >= 6 && user.company.planid <= 9) || user.company.planid == 9,
+  isIRES: true
 })
 
 watch(() => state.searchString, (data)=>{
