@@ -20,10 +20,10 @@
                                 v-if="!(state.isPageLoading || (state.data && state.data.length === 0))">
                                     <tr v-for="(data, index) in state.data" :key="index" class="text-gray-700">
                                         <td class="px-2 py-3 text-sm text-center">
-                                            {{ data.transdate ? moment().format('YYYY/MM/DD') : '' }}
+                                            {{ data.transdate ? moment(data.transdate).format('YYYY/MM/DD') : '' }}
                                         </td>
                                         <td class="px-2 py-3 text-sm text-center">
-                                            {{ data.actualdate ? moment().format('YYYY/MM/DD') : '' }}
+                                            {{ data.actualdate ? moment(data.actualdate).format('YYYY/MM/DD') : '' }}
                                         </td>
                                         <td class="px-2 py-3 text-sm text-center">
                                             {{ data.refno}}
@@ -157,6 +157,7 @@ async function loadData(){
             }
             const response = await pettyCashService.getAccountHistory(params)
             state.data = response.data
+            console.log(response.data)
         }catch(error){
             console.log(error)
         }
