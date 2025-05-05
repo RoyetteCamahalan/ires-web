@@ -188,7 +188,6 @@ const { $toastNotification } = useNuxtApp()
     state.isPageLoading = true
     try{
       var response = await rentalService.getDetails(selectedID)
-      console.log(response.data)
       state.contract.contractid = selectedID
       state.client = { value: response.data.custid, label: response.data.client.fname + ' ' + response.data.client.lname }
       state.contract.custid = response.data.custid
@@ -295,7 +294,6 @@ function removeItem(item, remove = true) {
     if(!v$.value.$error && isValid){
         state.isPageLoading = true;
         try{
-            console.log(state.contract)
             if(props.isFormEdit)
                 await rentalService.update(state.contract)
             else

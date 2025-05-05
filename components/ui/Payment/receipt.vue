@@ -166,7 +166,6 @@ async function loadData(){
     state.isPageLoading = true
     try{
         const response = await paymentService.getDetails(props.paymentID)
-        console.log(response.data)
         state.payment = response.data
     }catch(error){
         console.log(error)

@@ -31,13 +31,24 @@
                                         {{ data.propertyname }}
                                     </td>
                                     <td class="px-4 py-3 text-sm">
-                                        {{ data.address }}
-                                    </td>
-                                    <td class="px-4 py-3 text-sm">
                                         {{ moment(data.surveydate).format('YYYY/MM/DD') }}
                                     </td>
-                                    <td class="px-4 py-3 text-sm text-right">
-                                        {{ $formatAmount(data.contractprice) }}
+                                    <td class="px-4 py-3 text-sm text-center">
+                                        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset">
+                                            {{ $formatAmount(data.contractprice) }}
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3 text-sm text-center">
+                                        <span 
+                                            v-if="data.balance == 0 && data.contractprice > 0"
+                                            class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset">
+                                            Paid
+                                        </span>                                        
+                                        <span 
+                                            v-else-if="data.contractprice > 0"
+                                            class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset">
+                                            {{ $formatAmount(data.balance) }}
+                                        </span>
                                     </td>
                                     <td class="px-4 py-3 text-xs">
                                         <span v-if="data.status === surveyStatus.pending" class="px-2 py-1 font-semibold leading-tight rounded-full text-gray-700 bg-gray-100">Pending</span>
@@ -136,9 +147,9 @@ const state = reactive({
         { name: 'Survey No'},
         { name: 'Client Name'},
         { name: 'Property'},
-        { name: 'Location'},
         { name: 'Date'},
-        { name: 'Contract Price'},
+        { name: 'Contract Price', textAlign: "center"},
+        { name: 'Balance', textAlign: "center"},
         { name: 'Status'},
         { name: 'Action'}
     ],

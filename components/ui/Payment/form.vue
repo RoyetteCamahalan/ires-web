@@ -375,7 +375,6 @@ function validatePayables(){
 }
 
 async function submit(){
-  console.log(state.payment.bankTransfer)
   v$.value.$validate()
   let isValid = !v$.value.$error
   if(state.payment.paymentmode === 1){

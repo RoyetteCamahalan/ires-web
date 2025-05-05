@@ -18,6 +18,9 @@ class PettyCashService extends BaseAPIService{
     async getAccountHistory(params: object): Promise<any> {
         return await this.request(`/pettycash/getaccounthistory`, 'GET',params)
     }
+    async reCompute(id: Number): Promise<any> {
+        return await this.request(`/pettycash/recompute/${id}`, 'POST')
+    }
 }
 
 export const pettyCashService = new PettyCashService()

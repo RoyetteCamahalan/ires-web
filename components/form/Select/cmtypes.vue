@@ -45,7 +45,6 @@ async function searchChange(query: string){
     state.isLoading = true
     try{
         const response = await creditNoteService.getCreditTypes(1,query, false)
-        console.log(response.data.data)
         state.options = []
         response.data.data.forEach((element: any) => {
             state.options.push({ value: element.id, label: element.name })

@@ -154,7 +154,7 @@ async function fetchEvents(){
             }
         }
     }catch(error){
-        console.log(response.data)
+        console.log(error)
     }
     state.isPageLoading = false
 }

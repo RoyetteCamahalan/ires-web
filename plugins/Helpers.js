@@ -67,8 +67,6 @@ export default defineNuxtPlugin(() => {
     const downloadFile = async (filepath, fileName) => {
       try {
         const response = await fileService.download(filepath)
-        console.log(fileName)
-        console.log(response)
         // Create a link element
         const link = document.createElement('a');
         link.href = window.URL.createObjectURL(new Blob([response]));

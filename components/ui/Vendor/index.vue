@@ -85,11 +85,13 @@ async function submit(){
     if(!v$.value.$error){
         try{
             let response
-            if(props.formStatus === 0)
+            if(props.formStatus === 0){
                 response = await expenseService.createVendor(state.data)
+                state.data.vendorid = response.data.vendorid
+            }
             else
                 response = await expenseService.updateVendor(state.data)
-            emit('modalClose', response.data.vendorid, state.data.vendorname)
+            emit('modalClose', state.data.vendorid, state.data.vendorname)
         }catch(error){
             state.error = error.message
         }

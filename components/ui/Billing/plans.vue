@@ -169,7 +169,6 @@ async function updateCycle(plan, billingcycle){
             }
             const response = await billingService.updateBillingCycle(params)
             data.billingcycle = billingcycle
-            console.log(response)
         }catch(error){
             state.error = error
         }
@@ -183,7 +182,6 @@ function showPlanUpgrade(subscriptionPlan){
     state.isShowPlanUpgrade = true
 }
 async function upgradePlan(planID){
-    console.log(planID)
     if(planID == 0)
         state.isShowPlanUpgrade = false
     else if(planID > state.selectedPlanID){

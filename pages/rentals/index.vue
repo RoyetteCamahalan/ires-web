@@ -27,7 +27,7 @@
                                 
                                 <tr v-for="(data, index) in state.mainList.data" :key="index" class="text-gray-700">
                                     <td class="px-4 py-3 text-sm text-center">
-                                        <a :href="'rentals/contract?ref=' + data.contractno" class="text-blue-600">{{ data.contractno }}</a>
+                                        <a :href="'rentals/contract?ref=' + data.contractid" class="text-blue-600">{{ data.contractno }}</a>
                                     </td>
                                     <td class="px-4 py-3 text-sm">
                                         {{ data.client.fname + ' ' + data.client.lname }}

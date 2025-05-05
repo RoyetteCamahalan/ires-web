@@ -51,7 +51,6 @@ async function loadData(){
         const response = await rentalService.getDetails(state.contractID) 
         state.contract = response.data       
         const responseHistory = await rentalService.getSOA(state.contractID)
-        console.log(responseHistory.data)
         state.accountHistory = responseHistory.data
     }catch(error){
         console.log(error)

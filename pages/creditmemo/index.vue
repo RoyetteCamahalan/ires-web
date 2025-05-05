@@ -177,7 +177,6 @@ const modalCloseOverride = async (success) =>{
     if(success){
         state.isPageLoading = true
         try{
-            console.log(state.selectedPaymentID)
             await paymentService.voidPayment( { paymentid: state.selectedPaymentID })
             $toastNotification('success', '', 'Payment has been tagged as Void.')
         }catch(error){
