@@ -142,7 +142,6 @@ async function getOfficeBalance(){
     if(!v$.value.$error){
         state.isPageLoading = true;
         try{
-          console.log(state.data)
           await pettyCashService.create(state.data)
           navigateTo('/pettycash')
         }

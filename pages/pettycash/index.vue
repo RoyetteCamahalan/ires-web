@@ -80,7 +80,7 @@
                 </div>
             </div>
             <ModalEmpty title="" :isShow="state.modalIsShowOverride">
-                <UiUserOverride :action="'Void Payment: ' + state.selectedDataID" @AfterOverride="modalCloseOverride"></UiUserOverride>
+                <UiUserOverride :action="'Void Transaction: ' + state.selectedDataID" @AfterOverride="modalCloseOverride"></UiUserOverride>
             </ModalEmpty>
         </NuxtLayout>
     </div>
@@ -91,6 +91,7 @@ import { pettyCashService } from '@/components/api/PettyCashService'
 import { usePrefStore } from '@/store/pref'
 import moment from 'moment'
 
+const { $toastNotification } = useNuxtApp()
 const prefStore = usePrefStore()
 
 const currentDate = new Date();

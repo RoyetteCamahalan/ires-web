@@ -109,7 +109,7 @@
           landarea: null,
           address: '',
           details: '',
-          contractprice: null,
+          contractprice: 0,
         //   propertyname: 'Ula Phase 1',
         //   address: 'Ula, Davao City',
         //   details: '1234 test',
@@ -131,7 +131,6 @@
     try{
       const response = await surveyService.getDetails(selectedSurvey)
       if(response.data){
-        console.log(response.data)
         state.survey.id = selectedSurvey;
         state.client = { value: response.data.custid, label: response.data.client.fullname }
         state.survey.custid = response.data.custid
@@ -143,6 +142,7 @@
         state.survey.address = response.data.address
         state.survey.details = response.data.details
         state.survey.contractprice = response.data.contractprice
+        state.survey.landarea = response.data.landarea
       }
     }catch(error){
         state.error = error.message
@@ -185,7 +185,6 @@
     if(!v$.value.$error){
         state.isPageLoading = true;
         try{
-            console.log(state.survey)
             if(props.formStatus == 1)
                 await surveyService.update(state.survey)
             else

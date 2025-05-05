@@ -33,7 +33,7 @@
                                         {{ data.area}}
                                     </td>
                                     <td class="px-4 py-3 text-sm text-center">
-                                        {{ data.tenant}}
+                                        <a v-if="data.contract_id" :href="'/rentals/contract?ref=' + data.contract_id" class="text-blue-600">{{ data.tenant}}</a>
                                     </td>
                                     <td class="px-4 py-3 text-xs text-center">
                                         <span v-if="data.status === rentalPropertyStatus.vacant" class="px-2 py-1 font-semibold leading-tight rounded-full text-green-700 bg-green-100">Vacant</span>
@@ -111,6 +111,7 @@ const loadList = async (search) =>{
     try{
         const response = await projectService.GetRentalUnits(state.selectedPropertyID, state.currentPage, search)
         state.mainList = response.data
+        console.log(response.data);
     }catch(erro: any){
         state.error = error.message
     }

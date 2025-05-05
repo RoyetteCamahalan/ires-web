@@ -58,7 +58,9 @@
                                         {{ $PaymentModeDescription(data.paymentmode) }}
                                     </td>
                                     <td class="px-4 py-3 text-sm text-right">
-                                        {{ $formatAmount(data.totalamount) }}
+                                        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset">
+                                            {{ $formatAmount(data.totalamount) }}
+                                        </span>
                                     </td>
                                     <td class="px-4 py-3">
                                         <div class="flex justify-center">
@@ -116,7 +118,7 @@ const state = reactive({
         { name: 'Client Name'},
         { name: 'Date'},
         { name: 'Mode'},
-        { name: 'Amount'},
+        { name: 'Amount', textAlign: 'center'},
         { name: 'Action', textAlign: 'center'}
     ],
     startDate: moment(firstDay).format('YYYY-MM-DD'),

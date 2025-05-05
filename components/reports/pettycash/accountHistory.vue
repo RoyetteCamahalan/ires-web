@@ -90,6 +90,11 @@ const props = defineProps({
     endDate:{
         type: String,
         required: true
+    },
+    recompute:{
+        type: Boolean,
+        required: false,
+        default: false
     }
 })
 
@@ -125,6 +130,9 @@ watch(() => props.startDate, async (newValue) => {
 watch(() => props.endDate, async (newValue) => {
     loadData()
 })
+watch(() => props.recompute, async (newValue) => {
+    recompute()
+})
 
 async function loadInfo(){
     state.isPageLoading = true
@@ -156,5 +164,16 @@ async function loadData(){
     }
     else
         navigateTo('/master')
+}
+
+async function recompute(){
+    state.isPageLoading = true
+    try{
+        await pettyCashService.reCompute(props.officeID)
+        await loadData()
+    }catch(error){
+        console.log(error)
+    }
+    state.isPageLoading = false
 }
 </script>

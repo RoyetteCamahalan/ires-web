@@ -8,12 +8,22 @@
                             <Icon name="material-symbols:arrow-back-ios"></Icon>
                             Back
                         </button>
-                        <div class="flex-1 flex flex-row-reverse">
-                            <FormButton buttonStyle="primary"
-                                @click="print">
-                                <Icon name="material-symbols:print" class="w-5 h-5"></Icon>
-                                Print
-                            </FormButton>
+                        <div class="flex-1 flex flex-row-reverse items-center">
+                            <MenuPopOver icon-name="material-symbols:settings" :has-icon="true" position="right-0">
+                                <button
+                                    @click="state.recompute = !state.recompute"
+                                    class="group flex justify-between w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                    ReCompute History
+                                </button>
+                            </MenuPopOver>
+                            <span class="ml-1"></span>
+                            <MenuPopOver icon-name="material-symbols:print" :has-icon="true" position="right-0">
+                                <button
+                                    @click="print"
+                                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                    Print
+                                </button>
+                            </MenuPopOver>
                             <div class="my-auto mr-1 hidden sm:flex">
                                 <FormLabel label="From" class="mr-2"></FormLabel>
                                 <div class="w-30">
@@ -41,7 +51,7 @@
                         </div>
                     </div>
                 </div>
-                <ReportsPettycashAccountHistory :officeID="officeID" :startDate="state.startDate" :endDate="state.endDate"></ReportsPettycashAccountHistory>
+                <ReportsPettycashAccountHistory :officeID="officeID" :startDate="state.startDate" :endDate="state.endDate" :recompute="state.recompute"></ReportsPettycashAccountHistory>
             </div>
         </NuxtLayout>
     </div>
@@ -60,6 +70,7 @@ const currentDate = new Date();
 const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
 
 const state = reactive({
+    recompute: false,
     startDate: moment(firstDay).format('YYYY-MM-DD'),
     endDate: moment(currentDate).format('YYYY-MM-DD'),
 })

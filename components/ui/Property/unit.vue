@@ -115,7 +115,7 @@ async function submit(){
 async function loadRecord(){
     state.isPageLoading = true
     try{
-        const response = await projectService.GetRentalUnit(props.selectedDataID)
+        const response = await projectService.GetRentalUnit(props.selectedDataID)        
         state.data.propertyname = response.data.propertyname
         state.data.area = response.data.area
         state.data.monthlyrent = response.data.monthlyrent

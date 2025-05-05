@@ -282,8 +282,6 @@
       required: true
     }
   })
-
-  console.log(route.path)
   
   const state = reactive({
     searchString: '',

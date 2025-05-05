@@ -4,6 +4,7 @@
         :loading="state.isLoading"
         noOptionsText="Office list is empty"
         placeholder="Select Office"
+        v-on:search-change="loadData"
         class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus-:border-blue-400 focus:ring-2"/>
 </template>
 
@@ -25,16 +26,16 @@ const state = reactive({
 })
 
 onMounted(() =>{
-    loadData()
+    loadData('')
 })
 watch(() => props.newAccountID, async (newValue) => {
-    loadData()
+    loadData('')
 })
 
-async function loadData(){
+async function loadData(query: string){
     state.isLoading = true
     try{
-        const response = await accountService.getOffices(1, false, '')
+        const response = await accountService.getOffices(0, false, query)
         state.options = []
         response.data.data.forEach((element: any) => {
             state.options.push({ value: element.accountid, label: element.accountname })
@@ -43,3 +44,4 @@ async function loadData(){
     state.isLoading = false
 }
 </script>
+
