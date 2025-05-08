@@ -2,11 +2,11 @@ import BaseAPIService from "./BaseAPIService";
 
 
 class ProjectService extends BaseAPIService{
-    async GetProject(id: number): Promise<any> {
-        return await this.request(`/project/${id}`, 'GET')
+    async GetProject(uuid: string): Promise<any> {
+        return await this.request(`/project/${uuid}`, 'GET')
     }
     async GetProjects(currentPage: number, search: string): Promise<any> {
-        return await this.request(`/project/?currentPage=${currentPage}&search=${search}`, 'GET')
+        return await this.request(`/project/?pagenumber=${currentPage}&search=${search}`, 'GET')
     }
     async CreateProject(params: object): Promise<any> {
         return await this.request(`/project`, 'POST', params)

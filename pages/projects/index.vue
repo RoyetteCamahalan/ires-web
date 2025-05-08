@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NuxtLayout name="admin" title="Buildings">
+        <NuxtLayout name="admin" title="Projects">
             
             <div class="flex flex-col my-2 mx-4">
                 <div class="w-full flex flex-row-reverse">
@@ -22,19 +22,19 @@
                                 
                                 <tr v-for="(data, index) in state.mainList.data" :key="index" class="text-gray-700">
                                     <td class="px-4 py-3 text-sm">
-                                        <button @click="SelectProperty(data.propertyid)" class="text-blue-600">{{ data.propertyname}}</button>
+                                        <button @click="navigateTo(`/projects/${data.guid}`)" class="text-blue-600">{{ data.propertyname}}</button>
                                     </td>
                                     <td class="px-4 py-3 text-sm">
                                         {{ data.address}}
                                     </td>
                                     <td class="px-4 py-3 text-sm text-center">
-                                        {{ data.noofunits}}
+                                        {{ data.nooflots}}
                                     </td>
                                     <td class="px-4 py-3 text-sm text-center">
-                                        {{ data.noofoccupiedunits}} / {{ data.noofunits}}
+                                        <!-- {{ data.noofoccupiedunits}} / {{ data.noofunits}} -->
                                     </td>
                                     <td class="px-4 py-3 w-1/5 text-center">
-                                        <button @click="SelectProperty(data.propertyid)" type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded-lg">
+                                        <button @click="navigateTo(`/projects/${data.guid}`)" type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded-lg">
                                             Manage
                                         </button>
                                         <button class="px-2 py-2 text-sm font-medium leading-5 text-blue-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray" 
@@ -51,7 +51,7 @@
                 </div>
             </div>
             <Modal :title="state.modalTitle" :isShow="state.modalShow" @modalClose="modalClose">
-                <UiProperty @modalClose="modalClose" :formStatus="state.formStatus" :selectedDataID="state.selectedDataID"></UiProperty>
+                <UiProject @modalClose="modalClose" :formStatus="state.formStatus" :selectedDataID="state.selectedDataID"></UiProject>
             </Modal>
         </NuxtLayout>
     </div>
@@ -70,9 +70,9 @@ const state = reactive({
     currentPage: 1,
     isPageLoading: false,
     columnHeaders: [
-        { name: 'Property/Building'},
+        { name: 'Project'},
         { name: 'Address'},
-        { name: '# of Units', textAlign: 'center'},
+        { name: '# of Lots', textAlign: 'center'},
         { name: 'Occupancy Rate', textAlign: 'center'},
         { name: 'Action', textAlign: 'center'}
     ],
@@ -85,7 +85,7 @@ const state = reactive({
 const loadList = async (search) =>{
     state.isPageLoading = true
     try{
-        const response = await projectService.GetRentalProperties(state.currentPage, search)
+        const response = await projectService.GetProjects(state.currentPage, search)
         state.mainList = response.data
     }catch(error){
         state.error = error.message
@@ -123,12 +123,12 @@ const modalClose = (value) =>{
     state.modalShow = false
     if(value)
     {
-        state.currentPage = 1
-        loadList('')
+        if(state.formStatus == 0)
+            navigateTo(`/projects/${value.guid}/models`)
+        else{
+            state.currentPage = 1
+            loadList('')
+        }
     }
-}
-const SelectProperty = (value) => {
-    propertyStore.setSelectedID(value)
-    navigateTo('/properties/units')
 }
 </script>

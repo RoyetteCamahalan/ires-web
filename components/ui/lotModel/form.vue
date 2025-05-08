@@ -2,19 +2,9 @@
     <div>
         <LoadingSpinner :isActive="state.isPageLoading">
           <div class="mx-4 mt-2">
-            <FormLabel for="name" label="Project Name" />
-            <FormTextField name="name" placeholder="Name" v-model="state.data.propertyname"></FormTextField>
-            <FormError :error="v$.data.propertyname && v$.data.propertyname.$errors && v$.data.propertyname.$errors.length > 0 ? v$.data.propertyname.$errors[0].$message : null "/>
-                
-            <FormLabel for="alias" label="Short Name/Alias (Incase of long project name)" />
-            <FormTextField name="alias" placeholder="Short Name" v-model="state.data.alias"></FormTextField>
-
-            <FormLabel for="address" label="Address" />
-            <FormTextField name="address" placeholder="Address" v-model="state.data.address"></FormTextField>
-
-            <FormLabel for="area" label="Land Area (sqm)" />
-            <FormNumberField name="area" placeholder="Area" v-model="state.data.area"></FormNumberField>
-                
+            <FormLabel for="name" label="Name" />
+            <FormTextField name="name" placeholder="Name" v-model="state.data.name"></FormTextField>
+            <FormError :error="v$.data.name && v$.data.name.$errors && v$.data.name.$errors.length > 0 ? v$.data.name.$errors[0].$message : null "/>
         </div>
         <div class="px-4">
             <FormError :error="state.error && state.error.length > 0 ? state.error : null "/>
@@ -30,14 +20,19 @@
 import { reactive, computed } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 import { required, helpers, minValue } from '@vuelidate/validators'
-import { projectService } from '@/components/api/ProjectService'
+import { lotmodelService } from '@/components/api/LotModelService'
 import { useUserStore } from '@/store/user'
 
 const emit = defineEmits(['modalClose','onSkipTour'])
 
+
 const user = useUserStore().getUser
 
 const props = defineProps({
+    project_id:{
+        type: Number,
+        required: true
+    },
     formStatus:{
         type: Number,
         required: false,
@@ -58,16 +53,14 @@ const state = reactive({
     error: null,
     isPageLoading: false,
     data:{
-        propertyid: props.selectedDataID,
-        propertyname: '',
-        alias: '',
-        address: '',
-        area: 0
+        id: props.selectedDataID,
+        project_id: null,
+        name: '',
     },
 })
 onMounted(() =>{
     if(props.formStatus === 0)
-        state.data.propertyid = 0
+        state.data.id = 0
     else if(props.formStatus === 1)
         loadRecord()
 })
@@ -75,7 +68,7 @@ onMounted(() =>{
 const validators = computed(() =>{
   return {
     data: {
-        propertyname: { 
+        name: { 
         required: helpers.withMessage('This field is required.', required),
       }
     }
@@ -89,10 +82,11 @@ async function submit(){
     if(!v$.value.$error){
         try{
             let response
+            state.data.project_id = props.project_id
             if(props.formStatus === 0)
-                response = await projectService.CreateProject(state.data)
+                response = await lotmodelService.Create(state.data)
             else
-                response = await projectService.UpdateProject(state.data)
+                response = await lotmodelService.Update(state.data)
             emit('modalClose', response.data)
         }catch(error){
             state.error = error.message
@@ -103,7 +97,7 @@ async function submit(){
 async function loadRecord(){
     state.isPageLoading = true
     try{
-        const response = await projectService.GetRentalProperty(props.selectedDataID)
+        const response = await lotmodelService.GetModel(props.selectedDataID)
         state.data = response.data
     }catch(error){
         state.error = error.message

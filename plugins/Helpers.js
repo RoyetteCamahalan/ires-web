@@ -12,7 +12,7 @@ export default defineNuxtPlugin(() => {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
     const formatAmount = (amount, decimal = 2) =>{
-        return numberWithCommas(parseFloat(amount).toFixed(2).toLocaleString('en-US', { maximumFractionDigits: decimal }))
+        return numberWithCommas(parseFloat(amount).toFixed(decimal).toLocaleString('en-US', { maximumFractionDigits: decimal }))
     }
     const dateInterVal = (date1, date2) =>{
       if(!date2)
