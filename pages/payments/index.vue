@@ -3,7 +3,7 @@
         <NuxtLayout name="admin" title="Payments">
             
             <div class="flex flex-col mt-2 mx-4">
-                <div class="w-full flex flex-col sm:flex-row">
+                <div class="w-full flex flex-col sm:flex-row items-center">
                     <div class="flex flex-col sm:flex-row my-auto mb-2 sm:mb-0">
                         <FormLabel label="From" class="my-auto mr-2"></FormLabel>
                         <FormDateField name="startdate" placeholder="Start Date" class="py-1"
@@ -13,15 +13,26 @@
                             v-model="state.endDate"></FormDateField>
                     </div>
                     <div class="flex justify-between flex-1">
-                        <MenuDropDown2 class="ml-0 sm:ml-2 my-auto mt-1" label="Print" :has-icon="true" position="left-0">
-                            <MenuItem>
-                                <button
-                                    @click="printCollection"
-                                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
-                                    Print Collection Report
-                                </button>
-                            </MenuItem>
-                        </MenuDropDown2>
+                        <div class="flex items-center gap-2">
+                            <MenuDropDown2 class="ml-0 sm:ml-2 my-auto" label="Print" :has-icon="true" position="left-0">
+                                <MenuItem>
+                                    <button
+                                        @click="printCollection"
+                                        class="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                        Print Collection Report
+                                    </button>
+                                </MenuItem>
+                            </MenuDropDown2>
+                            <MenuDropDown2 icon-name="material-symbols:settings" :has-icon="true" position="right-0">
+                                <MenuItem>
+                                    <button
+                                        @click="state.modalIsShowSettings = true"
+                                        class="group flex justify-between w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                                        Set Auto Cash-In
+                                    </button>
+                                </MenuItem>
+                            </MenuDropDown2>
+                        </div>
                         <button type="button" class="inline-flex items-center py-1 px-2 text-xs font-medium text-center text-white rounded-lg bg-blue-500 shadow-md shadow-gray-300 hover:scale-[1.02] transition-transform"
                             @click="createNew">
                             <Icon name="material-symbols:add" class="-ml-1 w-4 h-4"></Icon>
@@ -90,6 +101,9 @@
             <ModalEmpty title="" :isShow="state.modalIsShowOverride">
                 <UiUserOverride :action="'Void Payment: ' + state.selectedPaymentID" @AfterOverride="modalCloseOverride" :has-remarks="true"></UiUserOverride>
             </ModalEmpty>
+            <Modal title="Payment Settings" :isShow="state.modalIsShowSettings" @modalClose="state.modalIsShowSettings = false">
+                <UiCompanySetting @close="state.modalIsShowSettings = false"></UiCompanySetting>
+            </Modal>
         </NuxtLayout>
     </div>
 </template>
@@ -124,6 +138,7 @@ const state = reactive({
     startDate: moment(firstDay).format('YYYY-MM-DD'),
     endDate: moment(currentDate).format('YYYY-MM-DD'),
     modalIsShowOverride: false,
+    modalIsShowSettings: false,
     formStatusEdit: false,
     selectedPaymentID: 0,
 })

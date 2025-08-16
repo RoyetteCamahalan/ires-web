@@ -20,6 +20,13 @@ class CompanyService extends BaseAPIService{
     async completeTour(id: Number): Promise<any> {
         return await this.request(`/company/completetour/${id}`, 'POST')
     }
+    
+    async updateSettings(params: object): Promise<any> {
+        return await this.request(`/company/settings`, 'POST', params)
+    }    
+    async getSettings(): Promise<any> {
+        return await this.request(`/company/settings`, 'GET')
+    }
 }
 
 export const companyService = new CompanyService()

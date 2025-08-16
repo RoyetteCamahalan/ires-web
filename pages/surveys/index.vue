@@ -116,7 +116,9 @@
                             </template>
                         </Table>
                     </div>
-                    <Pagination @onPageChanged="onPageChanged" :isLoading="state.isPageLoading" :data="state.surveys" :currentPage="state.currentPage"></Pagination>
+                    <Pagination 
+                        v-if="user && (user.companyid !==15 || user.isappsysadmin)"
+                        @onPageChanged="onPageChanged" :isLoading="state.isPageLoading" :data="state.surveys" :currentPage="state.currentPage"></Pagination>
                 </div>
             </div>
             <ModalEmpty  title="" :isShow="state.modalIsShowAttachment">
@@ -130,6 +132,7 @@ import { MenuItem } from '@headlessui/vue'
 import { surveyService } from '@/components/api/SurveyService'
 import { usePrefStore } from '@/store/pref'
 import { useSurveyStore } from '@/store/survey'
+import { useUserStore } from '@/store/user'
 import moment from 'moment'
 import { surveyStatus } from '@/contants/consts'
 
@@ -137,6 +140,9 @@ const { $toastNotification } = useNuxtApp()
 const prefStore = usePrefStore()
 
 const surveyStore = useSurveyStore()
+const userStore = useUserStore();
+
+const user = userStore.getUser;
 
 const state = reactive({
     surveys: [],

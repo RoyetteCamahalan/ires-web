@@ -142,16 +142,23 @@
                       </div>
                       <div class="col-span-6 sm:col-span-2 border-l pl-2">
                             <LoadingSpinner :isActive="state.isReceiptLoading">
-                            <FormLabel for="receipttype" label="Receipt Type" />
-                            <FormSelect :options="state.receiptTypes" :searchable="false" v-model="state.payment.receipttype"></FormSelect>
-                            <FormError :error="v$.payment.receipttype && v$.payment.receipttype.$errors && v$.payment.receipttype.$errors.length > 0 ? v$.payment.receipttype.$errors[0].$message : null "/>
-                            <FormLabel for="receiptno" label="Receipt #"/>
-                            <FormNumberField name="receiptno" placeholder="Receipt #" v-model="state.payment.orno"></FormNumberField>
-                            <FormError :error="v$.payment.orno && v$.payment.orno.$errors && v$.payment.orno.$errors.length > 0 ? v$.payment.orno.$errors[0].$message : null "/>
+                              <div v-if="user && (user.companyid !==15 || user.isappsysadmin)">
+                                <FormLabel for="receipttype" label="Receipt Type" />
+                                <FormSelect :options="state.receiptTypes" :searchable="false" v-model="state.payment.receipttype" :canClear="false"></FormSelect>
+                              </div>
+                              <FormError :error="v$.payment.receipttype && v$.payment.receipttype.$errors && v$.payment.receipttype.$errors.length > 0 ? v$.payment.receipttype.$errors[0].$message : null "/>
+                              <FormLabel for="receiptno" label="Receipt #"/>
+                              <FormNumberField name="receiptno" placeholder="Receipt #" v-model="state.payment.orno"></FormNumberField>
+                              <FormError :error="v$.payment.orno && v$.payment.orno.$errors && v$.payment.orno.$errors.length > 0 ? v$.payment.orno.$errors[0].$message : null "/>
                             </LoadingSpinner>
                             <FormLabel for="paidby" label="Paid By" />
                             <FormTextField name="paidby" placeholder="If payment is made by other person." v-model="state.payment.paidby"></FormTextField>
-                      </div>
+                            
+                            <div v-if="state.settings.autocashinaccountid_survey">
+                              <FormLabel for="office" label="Auto Cash-in Account" />
+                              <FormSelectOffice v-model="state.payment.autocashinaccountid" :isAccount="true" :canClear="true"></FormSelectOffice>
+                            </div>
+                      </div>  
                   </div>
               </div>
           </div>
@@ -169,12 +176,13 @@
 <script setup>
 import { reactive, computed, watch } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
-import { required, minValue, helpers, numeric, requiredIf } from '@vuelidate/validators'
+import { required, minValue, helpers, numeric } from '@vuelidate/validators'
 import { useSearchStore } from '@/store/search';
 import { useUserStore } from '@/store/user'
 import moment from 'moment'
-import { paymentService } from '~~/components/api/PaymentService'
-import { paymentMode } from '~~/contants/consts';
+import { paymentService } from '@/components/api/PaymentService'
+import { companyService } from '@/components/api/CompanyService';
+import { paymentMode, receiptType } from '~~/contants/consts';
 
 const { $toastNotification } = useNuxtApp()
 
@@ -200,7 +208,7 @@ const state = reactive({
     custid: 0,
     encodedby: user.employeeid,
     orno: null,
-    receipttype: null,
+    receipttype: receiptType.OR,
     totalamount: null,
     transtype: 'P',
     paidby: '',
@@ -220,7 +228,8 @@ const state = reactive({
       paymentdate: moment(currentDate).format('YYYY-MM-DD'),
       refno: '',
       memo: ''
-    }
+    },
+    autocashinaccountid: null
   },
   newBankAccountID: 0,
   receiptTypes:[
@@ -242,7 +251,10 @@ const state = reactive({
                 { name: 'Payment', width: '20%', textAlign: 'center'},
                 { name: '', width: '28'},
             ],
-  modalBankAccountShow: false
+  modalBankAccountShow: false,
+  settings:{
+    autocashinaccountid_survey: null
+  }
 })
 
 const validators = computed(() =>{
@@ -301,8 +313,9 @@ const v$ = useVuelidate(validators, state)
 const vCheck$ = useVuelidate(checkValidators, state)
 const vbankTransfer$ = useVuelidate(bankTransferValidators, state)
 
-onMounted(() =>{
+onMounted(async () =>{
   searchStore.resetSelectedData
+  await loadCompanySettings();
 })
 watch(() => state.payment.custid, async (newValue) => {
   state.payment.payables = []
@@ -326,6 +339,16 @@ watch(() => state.payment.paymentmode, async (newValue) => {
 const totalPayment = computed(() =>{
   return state.payment.payables.reduce( (Sum, payable) => payable.paymentAmount + Sum,0)
 })
+
+async function loadCompanySettings(){
+  try{
+        const response = await companyService.getSettings();
+        state.settings = response.data;
+        if (state.settings.autocashinaccountid_survey)
+          state.payment.autocashinaccountid = state.settings.autocashinaccountid_survey;
+    }
+    catch(error){}
+}
 
 function modalClose(value){
   state.modalShow = false
