@@ -65,15 +65,16 @@
                                 <FormError :error="vaccount$.user.username && vaccount$.user.username.$errors && vaccount$.user.username.$errors.length > 0 ? vaccount$.user.username.$errors[0].$message : null "/>
                             </div>
                         </div>
-                        <p class="text-xs text-gray-500" v-if="formStatusEdit">*Password edit not allowed</p>
-                        <FormLabel for="password" label="Password" />
-                        <FormPasswordField name="password" placeholder="Password" v-model="state.user.userpass" :disabled="formStatusEdit"/>
-                        <FormError :error="vaccount$.user.userpass && vaccount$.user.userpass.$errors && vaccount$.user.userpass.$errors.length > 0 ? vaccount$.user.userpass.$errors[0].$message : null "/>
+                        <div v-if="!formStatusEdit">
+                            <FormLabel for="password" label="Password" />
+                            <FormPasswordField name="password" placeholder="Password" v-model="state.user.userpass" :disabled="formStatusEdit"/>
+                            <FormError :error="vaccount$.user.userpass && vaccount$.user.userpass.$errors && vaccount$.user.userpass.$errors.length > 0 ? vaccount$.user.userpass.$errors[0].$message : null "/>
 
-                        <FormLabel for="confirmpassword" label="Confirm Password" />
-                        <FormPasswordField name="confirmpassword" placeholder="Confirm Password" v-model="state.user.confirmpassword" :disabled="formStatusEdit"/>
-                        <FormError :error="vaccount$.user.confirmpassword && vaccount$.user.confirmpassword.$errors && vaccount$.user.confirmpassword.$errors.length > 0 ? vaccount$.user.confirmpassword.$errors[0].$message : null "/>
-                        <FormError :error="state.error && state.error.length > 0 ? state.error : null "/>
+                            <FormLabel for="confirmpassword" label="Confirm Password" />
+                            <FormPasswordField name="confirmpassword" placeholder="Confirm Password" v-model="state.user.confirmpassword" :disabled="formStatusEdit"/>
+                            <FormError :error="vaccount$.user.confirmpassword && vaccount$.user.confirmpassword.$errors && vaccount$.user.confirmpassword.$errors.length > 0 ? vaccount$.user.confirmpassword.$errors[0].$message : null "/>
+                            <FormError :error="state.error && state.error.length > 0 ? state.error : null "/>
+                        </div>
                     </div>
                 </div>
                             <!-- <FormError :error="v$.company.name && v$.company.name.$errors && v$.company.name.$errors.length > 0 ? v$.company.name.$errors[0].$message : null "/> -->

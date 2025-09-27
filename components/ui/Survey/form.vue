@@ -28,7 +28,7 @@
                         <FormTextField name="titleno" placeholder="Title No." v-model="state.survey.titleno"/>
                     </div>
                     <div class="col-span-6 sm:col-span-3">
-                        <FormLabel for="surveyno" label="Survey No." />
+                        <FormLabel for="surveyno" label="Trans No." />
                         <FormTextField name="surveyno" placeholder="Survey No." v-model="state.survey.surveyno"/>
                     </div>
                 </div>
@@ -44,8 +44,8 @@
                 </div>
                 <div class="grid grid-cols-6 gap-4">
                     <div class="col-span-6 sm:col-span-3">
-                        <FormLabel for="propertyname" label="Property Name" />
-                        <FormTextField name="propertyname" placeholder="Property Name" v-model="state.survey.propertyname"/>
+                        <FormLabel for="propertyname" label="Work Details" />
+                        <FormTextField name="propertyname" placeholder="Work Details" v-model="state.survey.propertyname"/>
                         <FormError :error="v$.survey.propertyname && v$.survey.propertyname.$errors && v$.survey.propertyname.$errors.length > 0 ? v$.survey.propertyname.$errors[0].$message : null "/>
                     </div>
                     <div class="col-span-6 sm:col-span-3">

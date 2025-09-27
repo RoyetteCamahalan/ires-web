@@ -23,13 +23,13 @@
                                             {{ data.transdate ? moment(data.transdate).format('YYYY/MM/DD') : '' }}
                                         </td>
                                         <td class="px-2 py-3 text-sm text-center">
-                                            {{ data.actualdate ? moment(data.actualdate).format('YYYY/MM/DD') : '' }}
-                                        </td>
-                                        <td class="px-2 py-3 text-sm text-center">
                                             {{ data.refno}}
                                         </td>
                                         <td class="px-2 py-3 text-sm">
                                             {{ data.particular}}
+                                        </td>
+                                        <td class="px-2 py-3 text-sm">
+                                            {{ data.remarks}}
                                         </td>
                                         <td class="px-2 py-3 text-sm text-right">
                                             {{ (data.debit && data.debit > 0) ? $formatAmount(data.debit) : '' }}
@@ -40,24 +40,6 @@
                                         <td class="px-2 py-3 text-sm text-right">
                                             {{ $formatAmount(data.runningbalance) }}
                                         </td>
-                                        <!-- <td class="px-4 py-3 text-sm text-center">
-                                            {{ moment(data.transdate).format('YYYY/MM/DD') }}
-                                        </td>
-                                        <td class="px-4 py-3 text-sm text-center">
-                                            {{ moment(data.refdate).format('YYYY/MM/DD') }}
-                                        </td>
-                                        <td class="px-4 py-3 text-sm text-center">
-                                            {{ data.refno}}
-                                        </td>
-                                        <td class="px-4 py-3 text-sm">
-                                            {{ data.expenseType.expensetypedesc}}
-                                        </td>
-                                        <td class="px-4 py-3 text-sm">
-                                            {{ data.vendor.vendorname}}
-                                        </td>
-                                        <td class="px-4 py-3 text-xs">
-                                            {{ data.memo}}
-                                        </td> -->
                                     </tr>
                             </template>
                         </Table>
@@ -105,9 +87,9 @@ const state = reactive({
     accountname: '-',
     columnHeaders: [
         { name: 'Date Posted', textAlign: 'center'},
-        { name: 'Actual Date', textAlign: 'center'},
         { name: 'Ref #', textAlign: 'center'},
         { name: 'Particular'},
+        { name: 'Remarks'},
         { name: 'Debit', textAlign: 'center'},
         { name: 'Credit', textAlign: 'center'},
         { name: 'Running Bal', textAlign: 'center'},

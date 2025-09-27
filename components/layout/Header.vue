@@ -118,7 +118,7 @@
                           {{ notification.details }}
                         </div>
                         <div class="text-xs font-medium text-blue-500">
-                          {{ $dateInterVal(moment(notification.datecreated), null) }}
+                          {{ moment(notification.datecreated).fromNow() }}
                         </div>
                       </div>
                     </button>

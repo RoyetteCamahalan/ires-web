@@ -20,22 +20,24 @@
             </div>
             </div>
             <!-- Card -->
-            <div class="flex items-center p-4 bg-white rounded-lg shadow-md">
-            <div class="p-3 mr-4 text-blue-500 bg-blue-100 rounded-full">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
-                </svg>
-            </div>
-            <div>
-                <p class="mb-2 text-sm font-medium text-gray-600">
-                Total Petty Cash
-                </p>
-                <LoadingDots :isActive="state.isPageLoading" class="ml-2">
-                    <p class="text-lg font-semibold text-gray-700">
-                    {{ state.totalPettyCash ? $formatAmount(state.totalPettyCash) : '-' }}
+            <div
+                v-if="user && (user.companyid !==15 || user.isappsysadmin)" 
+                class="flex items-center p-4 bg-white rounded-lg shadow-md">
+                <div class="p-3 mr-4 text-blue-500 bg-blue-100 rounded-full">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <div>
+                    <p class="mb-2 text-sm font-medium text-gray-600">
+                    Total Petty Cash
                     </p>
-                </LoadingDots>
-            </div>
+                    <LoadingDots :isActive="state.isPageLoading" class="ml-2">
+                        <p class="text-lg font-semibold text-gray-700">
+                        {{ state.totalPettyCash ? $formatAmount(state.totalPettyCash) : '-' }}
+                        </p>
+                    </LoadingDots>
+                </div>
             </div>
                 <!-- Card -->
             <div class="flex items-center p-4 bg-white rounded-lg shadow-md">

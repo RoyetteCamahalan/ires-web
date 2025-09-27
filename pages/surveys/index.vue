@@ -150,7 +150,7 @@ const state = reactive({
     currentPage: 1,
     isPageLoading: false,
     columnHeaders: [
-        { name: 'Survey No'},
+        { name: 'Trans No'},
         { name: 'Client Name'},
         { name: 'Property'},
         { name: 'Date'},
