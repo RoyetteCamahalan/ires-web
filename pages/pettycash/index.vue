@@ -76,7 +76,9 @@
                             </template>
                         </Table>
                     </div>
-                    <Pagination @onPageChanged="onPageChanged" :isLoading="state.isPageLoading" :data="state.mainList" :currentPage="state.currentPage"></Pagination>
+                    <Pagination 
+                        v-if="user && (user.companyid !==15 || user.isappsysadmin)"
+                        @onPageChanged="onPageChanged" :isLoading="state.isPageLoading" :data="state.mainList" :currentPage="state.currentPage"></Pagination>
                 </div>
             </div>
             <ModalEmpty title="" :isShow="state.modalIsShowOverride">
@@ -89,10 +91,14 @@
 import { MenuItem } from '@headlessui/vue'
 import { pettyCashService } from '@/components/api/PettyCashService'
 import { usePrefStore } from '@/store/pref'
+import { useUserStore } from '@/store/user'
 import moment from 'moment'
 
 const { $toastNotification } = useNuxtApp()
 const prefStore = usePrefStore()
+const userStore = useUserStore();
+
+const user = userStore.getUser;
 
 const currentDate = new Date();
 const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);

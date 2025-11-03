@@ -152,7 +152,7 @@ const state = reactive({
     columnHeaders: [
         { name: 'Trans No'},
         { name: 'Client Name'},
-        { name: 'Property'},
+        { name: 'Work Details'},
         { name: 'Date'},
         { name: 'Contract Price', textAlign: "center"},
         { name: 'Balance', textAlign: "center"},

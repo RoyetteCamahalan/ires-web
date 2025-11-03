@@ -83,7 +83,7 @@
         companyid: user.companyid,
         accountid: null,
         refdate: moment(currentDate).format('YYYY-MM-DD'),
-        refno: '',
+        refno: moment(currentDate).format('YYMMDD-HHmmssSSS'),
         amount: 0,
         remarks: '',
         transtype: 0,
