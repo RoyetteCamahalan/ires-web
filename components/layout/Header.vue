@@ -13,7 +13,8 @@
             >
               <Icon name="material-symbols:menu" class="w-6 h-6"></Icon>
             </button>
-            <button v-if="sidebarOpen"
+            <button
+              v-if="sidebarOpen"
               id="toggleSidebarMobileSearch"
               type="button"
               class="p-2 text-gray-500 rounded-2xl lg:hidden hover:text-gray-900 hover:bg-gray-100"
@@ -21,7 +22,8 @@
             >
               <Icon name="material-symbols:close" class="w-6 h-6"></Icon>
             </button>
-            <button v-else
+            <button
+              v-else
               id="toggleSidebarMobile"
               aria-expanded="true"
               aria-controls="sidebar"
@@ -30,7 +32,10 @@
             >
               <Icon name="material-symbols:menu" class="w-6 h-6"></Icon>
             </button>
-            <a href="/dashboard" class="text-md font-semibold flex items-center lg:mr-1.5">
+            <a
+              href="/dashboard"
+              class="text-md font-semibold flex items-center lg:mr-1.5"
+            >
               <!-- <img
                 src="https://i.imgur.com/hamRKWZ.jpeg"
                 class="mr-2 h-7"
@@ -60,7 +65,9 @@
                 ></FormTextField>
               </div>
             </form>
-            <h1 class="ml-2 text-lg font-bold text-blue-600">{{ props.title }}</h1>
+            <h1 class="ml-2 text-lg font-bold text-blue-600">
+              {{ props.title }}
+            </h1>
           </div>
           <div class="flex items-center">
             <button
@@ -73,15 +80,18 @@
               <Icon name="material-symbols:search" class="w-6 h-6"></Icon>
             </button>
             <button
-                  type="button"
-                  class="mx-1 p-2 flex text-sm"
-                  id="user-menu-button-2"
-                  aria-expanded="false"
-                  data-dropdown-toggle="dropdown-2"
-                  @click="navigateTo('/calendar')"
-                >
-                  <Icon name="material-symbols:calendar-today" class="w-6 h-6 text-blue-600"></Icon>
-                </button>
+              type="button"
+              class="mx-1 p-2 flex text-sm"
+              id="user-menu-button-2"
+              aria-expanded="false"
+              data-dropdown-toggle="dropdown-2"
+              @click="navigateTo('/calendar')"
+            >
+              <Icon
+                name="material-symbols:calendar-today"
+                class="w-6 h-6 text-blue-600"
+              ></Icon>
+            </button>
             <div class="relative mx-1">
               <button
                 type="button"
@@ -90,9 +100,16 @@
                 @click="openNotifications"
               >
                 <span class="sr-only">View notifications</span>
-                <Icon name="material-symbols:notifications" class="w-6 h-6 text-blue-600"></Icon>
-                <span v-if="state.notifications && state.notifications.length > 0" aria-hidden="true" class="absolute top-0 right-0 w-4 h-4 text-xs font-semibold inline-block transform translate-x-1 -translate-y-1 bg-red-600 text-white rounded-full">
-                  {{ state.notifications ? state.notificationCount : '' }}
+                <Icon
+                  name="material-symbols:notifications"
+                  class="w-6 h-6 text-blue-600"
+                ></Icon>
+                <span
+                  v-if="state.notifications && state.notifications.length > 0"
+                  aria-hidden="true"
+                  class="absolute top-0 right-0 w-4 h-4 text-xs font-semibold inline-block transform translate-x-1 -translate-y-1 bg-red-600 text-white rounded-full"
+                >
+                  {{ state.notifications ? state.notificationCount : "" }}
                 </span>
               </button>
               <div
@@ -108,13 +125,28 @@
                   Notifications
                 </div>
                 <LoadingSpinner :is-active="state.isNotifLoading">
-                  <div v-for="(notification, index) in state.notifications" :key="index">
-                    <button @click="selectNotif(notification)" class="flex py-3 px-4 hover:bg-gray-100">
+                  <div
+                    v-for="(notification, index) in state.notifications"
+                    :key="index"
+                  >
+                    <button
+                      @click="selectNotif(notification)"
+                      class="flex py-3 px-4 hover:bg-gray-100"
+                    >
                       <div class="flex-shrink-0">
-                        <Icon :name="notification.typeid === 0 ? 'icon-park-outline:bill' : 'material-symbols:info-outline' " class="w-10 h-10 p-2 bg-gray-50 rounded-full"></Icon>
+                        <Icon
+                          :name="
+                            notification.typeid === 0
+                              ? 'icon-park-outline:bill'
+                              : 'material-symbols:info-outline'
+                          "
+                          class="w-10 h-10 p-2 bg-gray-50 rounded-full"
+                        ></Icon>
                       </div>
                       <div class="pl-3 w-full">
-                        <div class="text-gray-600 font-normal text-left text-sm mb-1.5">
+                        <div
+                          class="text-gray-600 font-normal text-left text-sm mb-1.5"
+                        >
                           {{ notification.details }}
                         </div>
                         <div class="text-xs font-medium text-blue-500">
@@ -124,13 +156,18 @@
                     </button>
                   </div>
                   <div v-if="state.notificationCount === 0">
-                    <div class="py-2 text-xs italic text-gray-500 text-center">Your notification is empty!</div>
+                    <div class="py-2 text-xs italic text-gray-500 text-center">
+                      Your notification is empty!
+                    </div>
                   </div>
                   <div v-if="state.notificationCount > 0">
-                    <button 
+                    <button
                       @click="MarkAllAsReadNotifs"
                       type="button"
-                      class="w-full py-1 text-xs text-white bg-blue-600">Mark All as Read</button>
+                      class="w-full py-1 text-xs text-white bg-blue-600"
+                    >
+                      Mark All as Read
+                    </button>
                   </div>
                 </LoadingSpinner>
               </div>
@@ -147,62 +184,76 @@
                 >
                   <span class="sr-only">Open user menu</span>
                   <div
-                    class="flex flex-col justify-center w-8 h-8 rounded-full text-white">
-                    <span class="text-lg font-semibold relative items-center">{{ user.firstname[0] }}</span>
+                    class="flex flex-col justify-center w-8 h-8 rounded-full text-white"
+                  >
+                    <span class="text-lg font-semibold relative items-center">{{
+                      user.firstname[0]
+                    }}</span>
                   </div>
                 </button>
               </div>
 
-                <ul v-click-outside="closeProfileMenu" v-if="state.isOpenProfile"
-                  class="profile-menu-items origin-top-right absolute right-0 mt-2 mr-4 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-                >
-                  <li>
-                    <a
-                      href="/billing"
-                      class="flex items-center gap-x-3 px-4 py-3 text-sm text-gray-700 cursor-pointer hover:bg-gray-200"
-                    >
-                      <Icon name="solar:bill-check-linear" class="w-5 h-5"></Icon>
-                      Billing
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      @click="state.modalIsShowCompanyProfile = true"
-                      class="flex items-center gap-x-3 px-4 py-3 text-sm text-gray-700 cursor-pointer hover:bg-gray-200"
-                    >
-                      <Icon name="material-symbols:settings-account-box-outline-rounded" class="w-5 h-5"></Icon>
-                      Company Profile
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      class="flex items-center gap-x-3 px-4 py-3 text-sm text-gray-700 cursor-pointer hover:bg-gray-200"
-                      @click="state.modalIsShowChangeProfile = true"
-                    >
-                      <Icon name="material-symbols:lock-outline-sharp" class="w-5 h-5"></Icon>
-                      Change Password
-                    </a>
-                  </li>
-                  <li>
-                    <button type="button"
-                      class="flex items-center gap-x-3 px-4 py-3 text-sm text-gray-700 cursor-pointer hover:bg-gray-200"
-                      @click="logOut"
-                    >
-                      <Icon
-                        name="material-symbols:login-sharp"
-                        class="w-5 h-5"
-                      ></Icon>
-                      Logout
-                    </button>
-                  </li>
-                </ul>
+              <ul
+                v-click-outside="closeProfileMenu"
+                v-if="state.isOpenProfile"
+                class="profile-menu-items origin-top-right absolute right-0 mt-2 mr-4 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+              >
+                <li>
+                  <a
+                    href="/billing"
+                    class="flex items-center gap-x-3 px-4 py-3 text-sm text-gray-700 cursor-pointer hover:bg-gray-200"
+                  >
+                    <Icon name="solar:bill-check-linear" class="w-5 h-5"></Icon>
+                    Billing
+                  </a>
+                </li>
+                <li>
+                  <a
+                    @click="state.modalIsShowCompanyProfile = true"
+                    class="flex items-center gap-x-3 px-4 py-3 text-sm text-gray-700 cursor-pointer hover:bg-gray-200"
+                  >
+                    <Icon
+                      name="material-symbols:settings-account-box-outline-rounded"
+                      class="w-5 h-5"
+                    ></Icon>
+                    Company Profile
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="flex items-center gap-x-3 px-4 py-3 text-sm text-gray-700 cursor-pointer hover:bg-gray-200"
+                    @click="state.modalIsShowChangeProfile = true"
+                  >
+                    <Icon
+                      name="material-symbols:lock-outline-sharp"
+                      class="w-5 h-5"
+                    ></Icon>
+                    Change Password
+                  </a>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    class="flex items-center gap-x-3 px-4 py-3 text-sm text-gray-700 cursor-pointer hover:bg-gray-200"
+                    @click="logOut"
+                  >
+                    <Icon
+                      name="material-symbols:login-sharp"
+                      class="w-5 h-5"
+                    ></Icon>
+                    Logout
+                  </button>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
     </nav>
     <ModalEmpty title="" :isShow="state.modalIsShowChangeProfile">
-        <UiUserChangepassword @on-close="onCloseChangePass"></UiUserChangepassword>
+      <UiUserChangepassword
+        @on-close="onCloseChangePass"
+      ></UiUserChangepassword>
     </ModalEmpty>
     <ModalEmpty title="" :isShow="state.modalIsShowCompanyProfile">
       <UiCompanyProfile @on-close="onCloseCompanyProfile"></UiCompanyProfile>
@@ -211,130 +262,119 @@
 </template>
 
 <script setup>
-import { dashboardService } from '@/components/api/Dashboard';
-import { useUserStore } from '@/store/user'
-import { usePrefStore } from '@/store/pref'
-import moment from 'moment';
+import { dashboardService } from "@/components/api/Dashboard";
+import { useUserStore } from "@/store/user";
+import { usePrefStore } from "@/store/pref";
+import moment from "moment";
 
-const route = useRoute()
-const userStore = useUserStore()
-const user = userStore.getUser
-const prefStore = usePrefStore()
+const route = useRoute();
+const userStore = useUserStore();
+const user = userStore.getUser;
+const prefStore = usePrefStore();
 
-const notif_id = route.query.notif_id ? route.query.notif_id : null
+const notif_id = route.query.notif_id ? route.query.notif_id : null;
 
 const props = defineProps({
-  sidebarOpen:{
+  sidebarOpen: {
     type: Boolean,
     required: true,
   },
-  title:{
+  title: {
     type: String,
     required: false,
-    default: ''
-  }
-})
+    default: "",
+  },
+});
 
 const state = reactive({
   isOpenProfile: false,
   isOpenNotification: false,
-  searchString: '',
+  searchString: "",
   modalIsShowChangeProfile: false,
   notifications: [],
   notificationCount: 0,
   modalIsShowCompanyProfile: false,
-  isNotifLoading: false,    
-})
+  isNotifLoading: false,
+});
 
-const emit = defineEmits(['toggleSidebar'])
+const emit = defineEmits(["toggleSidebar"]);
 
 onMounted(() => {
-  if(notif_id)
-    viewNotification(notif_id)
-  else
-    fetchNotifications()
-})
+  if (notif_id) viewNotification(notif_id);
+  else fetchNotifications();
+});
 
-const openProfile = () =>{
-  state.isOpenProfile = !state.isOpenProfile
-  state.isOpenNotification = false
-}
-const closeProfileMenu = () =>{
-  state.isOpenProfile = false
-}
+const openProfile = () => {
+  state.isOpenProfile = !state.isOpenProfile;
+  state.isOpenNotification = false;
+};
+const closeProfileMenu = () => {
+  state.isOpenProfile = false;
+};
 
-const openNotifications = () =>{
-  state.isOpenNotification = !state.isOpenNotification
-  state.isOpenProfile = false
-}
-const closeNotifications = () =>{
-  state.isOpenNotification = false
-}
+const openNotifications = () => {
+  state.isOpenNotification = !state.isOpenNotification;
+  state.isOpenProfile = false;
+};
+const closeNotifications = () => {
+  state.isOpenNotification = false;
+};
 
-const logOut = () =>{
-  userStore.resetUser()
-  navigateTo('/login')
+const logOut = () => {
+  userStore.resetUser();
+  navigateTo("/login");
+};
+
+watch(
+  () => state.searchString,
+  (data) => {
+    prefStore.setSearchString(data);
+  },
+);
+
+function onCloseChangePass() {
+  state.modalIsShowChangeProfile = false;
 }
-
-watch(() => state.searchString, (data)=>{
-  prefStore.setSearchString(data)
-})
-
-function onCloseChangePass(){
-  state.modalIsShowChangeProfile= false
-}
-function onCloseCompanyProfile(){
-  state.modalIsShowCompanyProfile= false
-}
-
-async function fetchNotifications(){
-  state.isNotifLoading = true
-  try{
-    const response = await dashboardService.getNotifications()
-    state.notificationCount = response.data.length
-    state.notifications = response.data.slice(0,5)
-  }
-  catch(error){
-
-  }
-  state.isNotifLoading = false
+function onCloseCompanyProfile() {
+  state.modalIsShowCompanyProfile = false;
 }
 
-async function viewNotification(id){
-  try{
+async function fetchNotifications() {
+  state.isNotifLoading = true;
+  try {
+    const response = await dashboardService.getNotifications();
+    state.notificationCount = response.data.length;
+    state.notifications = response.data.slice(0, 5);
+  } catch (error) {}
+  state.isNotifLoading = false;
+}
+
+async function viewNotification(id) {
+  try {
     const param = {
-      id: id
-    }
-    await dashboardService.markAsReadNotif(param)
-  }
-  catch(error){
-
-  }
-  fetchNotifications()
+      id: id,
+    };
+    await dashboardService.markAsReadNotif(param);
+  } catch (error) {}
+  fetchNotifications();
 }
 
-async function MarkAllAsReadNotifs(){
-  state.isNotifLoading = true
-  try{
+async function MarkAllAsReadNotifs() {
+  state.isNotifLoading = true;
+  try {
     const param = {
-      id: user.employeeid
-    }
-    await dashboardService.markAllAsReadNotif(param)
-    fetchNotifications()
-  }
-  catch(error){
-
-  }
-  state.isNotifLoading = false
+      id: user.employeeid,
+    };
+    await dashboardService.markAllAsReadNotif(param);
+    fetchNotifications();
+  } catch (error) {}
+  state.isNotifLoading = false;
 }
-function selectNotif(data){
-  var notif = `?notif_id=${data.id}`
-  if(data.url.includes('?'))
-    notif = `&notif_id=${data.id}`
+function selectNotif(data) {
+  var notif = `?notif_id=${data.id}`;
+  if (data.url.includes("?")) notif = `&notif_id=${data.id}`;
 
-  if(data.url == route.path)
-    location.replace(data.url + notif)
-  else
-    navigateTo(data.url + notif)
+  if (data.url == route.path) location.replace(data.url + notif);
+  else navigateTo(data.url + notif);
 }
 </script>

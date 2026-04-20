@@ -1,11 +1,9 @@
 <template>
-    <div>
-        <div class="p-3 h-auto">
-            <ReportsExpense :isPrint="true"></ReportsExpense>
-        </div>
+  <div>
+    <div class="p-3 h-auto">
+      <ReportsExpense :isPrint="true"></ReportsExpense>
     </div>
+  </div>
 </template>
 
-<script setup>
-
-</script>
+<script setup></script>

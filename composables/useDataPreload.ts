@@ -8,27 +8,22 @@ class DataPreload {
 
     if (!userStore.token) return;
 
-
     const storeMap = {
       officeStore: useOfficeStore(),
     } as any;
 
-    const preloads = [
-      'officeStore.offices',
-    ];
+    const preloads = ["officeStore.offices"];
 
     try {
-      const response = await api.request('company/preload', 'GET');
+      const response = await api.request("company/preload", "GET");
       if (!response) return;
 
       preloads.forEach((preload) => {
-        const [storeName, refContainer] = preload.split('.');
-        const store = storeMap[storeName ?? ''];
-        store[refContainer ?? ''] = response[refContainer ?? ''];
+        const [storeName, refContainer] = preload.split(".");
+        const store = storeMap[storeName ?? ""];
+        store[refContainer ?? ""] = response[refContainer ?? ""];
       });
-    } catch (error: any) {
-      
-    }
+    } catch (error: any) {}
   }
 }
 

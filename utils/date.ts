@@ -1,8 +1,8 @@
-import moment from 'moment';
+import moment from "moment";
 moment().format();
 
 export const isValidDate = (dob: any) => {
-  return dob !== null && dob !== '';
+  return dob !== null && dob !== "";
 };
 
 /**
@@ -16,10 +16,14 @@ export const setDateToTime = (startDate: any, timeString: any) => {
   // check if timeString is an date object
   if (timeString instanceof Date) {
     return new Date(
-      startDate.setHours(timeString.getHours(), timeString.getMinutes(), timeString.getSeconds())
+      startDate.setHours(
+        timeString.getHours(),
+        timeString.getMinutes(),
+        timeString.getSeconds(),
+      ),
     );
-  } else if (typeof timeString === 'string') {
-    const [hours, minutes, seconds] = timeString.split(':').map(Number);
+  } else if (typeof timeString === "string") {
+    const [hours, minutes, seconds] = timeString.split(":").map(Number);
     return new Date(startDate.setHours(hours, minutes, seconds));
   }
   return new Date(startDate);
@@ -33,7 +37,7 @@ export const setDateToTime = (startDate: any, timeString: any) => {
  * @returns {Date} - A new Date object with the updated time.
  */
 export const setDateToTimeUTC = (startDate: any, timeString: any) => {
-  const [hours, minutes, seconds] = timeString.split(':').map(Number);
+  const [hours, minutes, seconds] = timeString.split(":").map(Number);
   const startD = new Date(startDate);
   // Set the time on the date and return it as a string with local timezone offset
   const dateWithTime = moment.utc(startD).set({
@@ -52,14 +56,14 @@ export const setDateToTimeUTC = (startDate: any, timeString: any) => {
  * @returns {Object} - An object containing hours, minutes, and seconds.
  */
 export const calculateTimeSpan = (startTime: string, endTime: string) => {
-  const start = moment(startTime, 'HH:mm:ss');
-  const end = moment(endTime, 'HH:mm:ss');
+  const start = moment(startTime, "HH:mm:ss");
+  const end = moment(endTime, "HH:mm:ss");
 
   let duration = moment.duration(end.diff(start));
 
   // Adjust for cases where end time is on the next day
   if (duration.asSeconds() < 0) {
-    duration = moment.duration(end.add(1, 'day').diff(start));
+    duration = moment.duration(end.add(1, "day").diff(start));
   }
 
   const hours = Math.floor(duration.asHours());
@@ -75,11 +79,11 @@ export const calculateTimeSpan = (startTime: string, endTime: string) => {
  * @param {function} callback - Callback function to handle the parsed time
  */
 let parseTimeTimeout: NodeJS.Timeout;
-export const parseTime = (time = '', callback: (date: Date) => void) => {
+export const parseTime = (time = "", callback: (date: Date) => void) => {
   clearTimeout(parseTimeTimeout);
   parseTimeTimeout = setTimeout(() => {
     if (time.length >= 3) {
-      const parsedTime = moment(time, 'h:mm A');
+      const parsedTime = moment(time, "h:mm A");
       const isValid = parsedTime.isValid();
       if (isValid) {
         callback(parsedTime.toDate());

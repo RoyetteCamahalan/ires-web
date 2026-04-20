@@ -1,10 +1,13 @@
 <template>
   <div>
     <Head>
-      <Meta name="google-site-verification" content="vASMY3wXjH9V5IZWyeeAX_TFXpHpGBSh8ePkkiavjNc"></Meta>
+      <Meta
+        name="google-site-verification"
+        content="vASMY3wXjH9V5IZWyeeAX_TFXpHpGBSh8ePkkiavjNc"
+      ></Meta>
     </Head>
-      <LandingHeader></LandingHeader>
-    <div class="bg-blue-100" >
+    <LandingHeader></LandingHeader>
+    <div class="bg-blue-100">
       <div
         class="max-w-screen-xl px-8 mx-auto flex flex-col lg:flex-row items-start"
       >
@@ -25,7 +28,8 @@
             data-aos-delay="300"
             class="leading-normal text-2xl mb-8 aos-init aos-animate"
           >
-            HexaByt is an interesting platform that will help you grow your business
+            HexaByt is an interesting platform that will help you grow your
+            business
           </p>
           <div
             data-aos="fade-up"
@@ -148,7 +152,8 @@
         <div class="bg-white w-full h-20 -mt-px"></div>
       </div>
     </div>
-    <div id="cloudapps"
+    <div
+      id="cloudapps"
       class="container px-4 lg:px-8 mx-auto max-w-screen-xl text-gray-700"
     >
       <!-- <div class="max-w-4xl mx-auto">
@@ -176,7 +181,8 @@
           One <span class="text-blue-600">Cloud Software.</span>
         </h1>
         <p class="leading-relaxed text-gray-500">
-          HexaByt is one platform for automation with scalable apps to help you run your business with ease.
+          HexaByt is one platform for automation with scalable apps to help you
+          run your business with ease.
         </p>
       </div>
       <div class="grid md:grid-cols-3 gap-14 md:gap-5 mt-20">
@@ -190,18 +196,21 @@
           >
             <Icon name="ion:ios-pricetags" class="w-6 h-6 text-white"></Icon>
           </div>
-          <h1
-            class="font-medium text-xl lg:px-14 text-darken lg:h-14 pt-3"
-          >
+          <h1 class="font-medium text-xl lg:px-14 text-darken lg:h-14 pt-3">
             Rental Management
           </h1>
-          <p class="text-sm text-gray-500 italic mb-3 ">(For Real Estate)</p>
+          <p class="text-sm text-gray-500 italic mb-3">(For Real Estate)</p>
           <p class="px-4 text-gray-500">
-            Monitors your renter's payment and charges. Applicable for property rental and rental services. 
+            Monitors your renter's payment and charges. Applicable for property
+            rental and rental services.
           </p>
           <button
             @click="tryPlan(6)"
-            type="button" class="px-4 py-2 mt-2 bg-blue-600 text-white rounded-full text-sm font-semibold">Try for Free</button>
+            type="button"
+            class="px-4 py-2 mt-2 bg-blue-600 text-white rounded-full text-sm font-semibold"
+          >
+            Try for Free
+          </button>
         </div>
         <div
           data-aos="fade-up"
@@ -211,17 +220,25 @@
             class="rounded-full w-16 h-16 flex items-center justify-center mx-auto shadow-lg transform -translate-y-12"
             style="background: rgb(91, 114, 238)"
           >
-            <Icon name="icon-park-outline:land-surveying" class="w-6 h-6 text-white"></Icon>
+            <Icon
+              name="icon-park-outline:land-surveying"
+              class="w-6 h-6 text-white"
+            ></Icon>
           </div>
           <h1 class="font-medium text-xl mb-3 lg:px-14 text-darken">
             Surveying Management
           </h1>
           <p class="px-4 text-gray-500">
-            Simple app for survey record keeping. Survey scheduling and payment management. Also comes with expense management for monitoring
+            Simple app for survey record keeping. Survey scheduling and payment
+            management. Also comes with expense management for monitoring
           </p>
-          <button 
+          <button
             @click="tryPlan(1)"
-            type="button" class="px-4 py-2 mt-2 bg-blue-600 text-white rounded-full text-sm font-semibold">Try for Free</button>
+            type="button"
+            class="px-4 py-2 mt-2 bg-blue-600 text-white rounded-full text-sm font-semibold"
+          >
+            Try for Free
+          </button>
         </div>
         <div
           data-aos="fade-up"
@@ -240,11 +257,15 @@
             Financial Monitoring
           </h1>
           <p class="px-4 text-gray-500">
-            Track your company's expenses, petty cash funds and accounts payable 
+            Track your company's expenses, petty cash funds and accounts payable
           </p>
           <button
             @click="tryPlan(4)"
-            type="button" class="px-4 py-2 mt-2 bg-blue-600 text-white rounded-full text-sm font-semibold">Try for Free</button>
+            type="button"
+            class="px-4 py-2 mt-2 bg-blue-600 text-white rounded-full text-sm font-semibold"
+          >
+            Try for Free
+          </button>
         </div>
       </div>
       <div class="grid md:grid-cols-3 gap-14 md:gap-5 mt-14">
@@ -256,7 +277,10 @@
           <div
             class="rounded-full w-16 h-16 flex items-center justify-center mx-auto shadow-lg bg-teal-500 transform -translate-y-12"
           >
-            <Icon name="material-symbols:car-tag-sharp" class="w-6 h-6 text-white"></Icon>
+            <Icon
+              name="material-symbols:car-tag-sharp"
+              class="w-6 h-6 text-white"
+            ></Icon>
           </div>
           <h1
             class="font-medium text-xl lg:px-14 mb-3 text-darken lg:h-14 pt-3"
@@ -264,9 +288,14 @@
             Car Rental Management
           </h1>
           <p class="px-4 text-gray-500">
-            Manage car bookings, payment, charges. 
+            Manage car bookings, payment, charges.
           </p>
-          <button type="button" class="px-3 py-2 mt-2 bg-gray-200 rounded-full text-sm font-semibold">Coming Soon!</button>
+          <button
+            type="button"
+            class="px-3 py-2 mt-2 bg-gray-200 rounded-full text-sm font-semibold"
+          >
+            Coming Soon!
+          </button>
         </div>
         <div
           data-aos="fade-up"
@@ -277,15 +306,24 @@
             class="rounded-full w-16 h-16 flex items-center justify-center mx-auto shadow-lg transform -translate-y-12"
             style="background: rgb(244, 140, 6)"
           >
-            <Icon name="material-symbols:real-estate-agent" class="w-6 h-6 text-white"></Icon>
+            <Icon
+              name="material-symbols:real-estate-agent"
+              class="w-6 h-6 text-white"
+            ></Icon>
           </div>
           <h1 class="font-medium text-xl mb-3 lg:px-14 text-darken">
             Real Estate Management
           </h1>
           <p class="px-4 text-gray-500">
-            Integrated software for property sale (Lot or House and Lot) with agent management and automatic commission generator
+            Integrated software for property sale (Lot or House and Lot) with
+            agent management and automatic commission generator
           </p>
-          <button type="button" class="px-3 py-2 mt-2 bg-gray-200 rounded-full text-sm font-semibold">Coming Soon!</button>
+          <button
+            type="button"
+            class="px-3 py-2 mt-2 bg-gray-200 rounded-full text-sm font-semibold"
+          >
+            Coming Soon!
+          </button>
         </div>
         <div
           data-aos="fade-up"
@@ -295,15 +333,23 @@
           <div
             class="rounded-full w-16 h-16 flex items-center justify-center mx-auto bg-yellow-500 shadow-lg transform -translate-y-12"
           >
-            <Icon name="material-symbols:deployed-code" class="w-6 h-6 text-white"></Icon>
+            <Icon
+              name="material-symbols:deployed-code"
+              class="w-6 h-6 text-white"
+            ></Icon>
           </div>
           <h1 class="font-medium text-xl mb-3 lg:px-14 text-darken">
             Software Development
           </h1>
           <p class="px-4 pb-2 text-gray-500">
-            We accept software development projects that are tailored to your business needs.
+            We accept software development projects that are tailored to your
+            business needs.
           </p>
-          <a href="#contactus" class="px-4 py-2 bg-cyan-500 text-white rounded-full text-sm font-semibold">Let's Talk</a>
+          <a
+            href="#contactus"
+            class="px-4 py-2 bg-cyan-500 text-white rounded-full text-sm font-semibold"
+            >Let's Talk</a
+          >
         </div>
       </div>
       <div class="mt-28">
@@ -315,8 +361,11 @@
             What is <span class="text-yellow-500">HexaByt?</span>
           </h1>
           <p class="text-gray-500">
-            HexaByt is a single platform that captures your business needs. It is also a open platform which can be integrated whatever your system your need.
-            Meaning, our platform is growing whether surveying, real estate and many more. Discuss with us what you need to build apps that suites your business.
+            HexaByt is a single platform that captures your business needs. It
+            is also a open platform which can be integrated whatever your system
+            your need. Meaning, our platform is growing whether surveying, real
+            estate and many more. Discuss with us what you need to build apps
+            that suites your business.
           </p>
         </div>
       </div>
@@ -327,7 +376,9 @@
           ></div>
           <h1 class="font-semibold text-2xl relative z-50 text-darken lg:pr-10">
             We thrive to automate everything,
-            <span class="text-yellow-500">literally Everything with HexaByt</span>
+            <span class="text-yellow-500"
+              >literally Everything with HexaByt</span
+            >
           </h1>
           <!-- <p class="py-5 lg:pr-32">
             Skilline’s school management software helps traditional and online
@@ -373,38 +424,38 @@
   </div>
 </template>
 <script setup>
-import { useSubscriptionStore } from '@/store/subscription';
+import { useSubscriptionStore } from "@/store/subscription";
 
-const runtimeConfig = useRuntimeConfig()
+const runtimeConfig = useRuntimeConfig();
 
 definePageMeta({
-    auth: false
-})
+  auth: false,
+});
 
+onMounted(() => {
+  initChatWoot(document, "script");
+});
 
-onMounted(() =>{
-  initChatWoot(document,'script')
-})
+const subscriptionStore = useSubscriptionStore();
 
-const subscriptionStore = useSubscriptionStore()
-
-function tryPlan(planID){
+function tryPlan(planID) {
   subscriptionStore.setSelectedPlanID(planID);
-  navigateTo('/company/register')
+  navigateTo("/company/register");
 }
 
-function initChatWoot(d,t) {
-  var BASE_URL="https://app.chatwoot.com";
-  var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-  g.src=BASE_URL+"/packs/js/sdk.js";
+function initChatWoot(d, t) {
+  var BASE_URL = "https://app.chatwoot.com";
+  var g = d.createElement(t),
+    s = d.getElementsByTagName(t)[0];
+  g.src = BASE_URL + "/packs/js/sdk.js";
   g.defer = true;
   g.async = true;
-  s.parentNode.insertBefore(g,s);
-  g.onload=function(){
+  s.parentNode.insertBefore(g, s);
+  g.onload = function () {
     window.chatwootSDK.run({
-      websiteToken: 'UdjpiuCkqCHURfn2498Hc5HK',
-      baseUrl: BASE_URL
-    })
-  }
+      websiteToken: "UdjpiuCkqCHURfn2498Hc5HK",
+      baseUrl: BASE_URL,
+    });
+  };
 }
 </script>

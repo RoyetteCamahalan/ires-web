@@ -1,32 +1,31 @@
 import BaseAPIService from "./BaseAPIService";
 
+class CompanyService extends BaseAPIService {
+  async register(params: object): Promise<any> {
+    return await this.request(`/company/register`, "POST", params);
+  }
+  async verify(params: object): Promise<any> {
+    return await this.request(`/company/verify`, "POST", params);
+  }
+  async resendConfirmation(params: object): Promise<any> {
+    return await this.request(`/company/resendconfirmation`, "POST", params);
+  }
+  async get(): Promise<any> {
+    return await this.request(`/company`, "GET");
+  }
+  async update(params: object): Promise<any> {
+    return await this.request(`/company/update`, "POST", params);
+  }
+  async completeTour(id: Number): Promise<any> {
+    return await this.request(`/company/completetour/${id}`, "POST");
+  }
 
-class CompanyService extends BaseAPIService{
-    async register(params: object): Promise<any> {
-        return await this.request(`/company/register`, 'POST', params)
-    }
-    async verify(params: object): Promise<any> {
-        return await this.request(`/company/verify`, 'POST', params)
-    }
-    async resendConfirmation(params: object): Promise<any> {
-        return await this.request(`/company/resendconfirmation`, 'POST', params)
-    }
-    async get(): Promise<any> {
-        return await this.request(`/company`, 'GET')
-    }
-    async update(params: object): Promise<any> {
-        return await this.request(`/company/update`, 'POST', params)
-    }
-    async completeTour(id: Number): Promise<any> {
-        return await this.request(`/company/completetour/${id}`, 'POST')
-    }
-    
-    async updateSettings(params: object): Promise<any> {
-        return await this.request(`/company/settings`, 'POST', params)
-    }    
-    async getSettings(): Promise<any> {
-        return await this.request(`/company/settings`, 'GET')
-    }
+  async updateSettings(params: object): Promise<any> {
+    return await this.request(`/company/settings`, "POST", params);
+  }
+  async getSettings(): Promise<any> {
+    return await this.request(`/company/settings`, "GET");
+  }
 }
 
-export const companyService = new CompanyService()
+export const companyService = new CompanyService();

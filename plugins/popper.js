@@ -1,6 +1,6 @@
-import { defineNuxtPlugin } from '#app';
-import Popper from 'vue3-popper'
+import { defineNuxtPlugin } from "#app";
+import Popper from "vue3-popper";
 
 export default defineNuxtPlugin((nuxtApp) => {
-    nuxtApp.vueApp.use(Popper)
-})
+  nuxtApp.vueApp.use(Popper);
+});

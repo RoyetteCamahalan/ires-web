@@ -4,9 +4,17 @@
       <div>
         <MenuButton
           class="inline-flex w-full justify-center gap-x-1 rounded-md bg-white px-3 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-purple-600 hover:bg-gray-50"
-        > 
-          <Icon name="material-symbols:settings" class="h-5 w-4 mt-1/2 text-gray-600" area-hidden="true"></Icon>
-          <Icon name="material-symbols:keyboard-arrow-down" class="-mr-1 h-5 w-5" area-hidden="true"></Icon>
+        >
+          <Icon
+            name="material-symbols:settings"
+            class="h-5 w-4 mt-1/2 text-gray-600"
+            area-hidden="true"
+          ></Icon>
+          <Icon
+            name="material-symbols:keyboard-arrow-down"
+            class="-mr-1 h-5 w-5"
+            area-hidden="true"
+          ></Icon>
         </MenuButton>
       </div>
 
@@ -31,5 +39,5 @@
 </template>
 
 <script setup>
-import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 </script>

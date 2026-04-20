@@ -1,11 +1,9 @@
 <template>
   <div>
     <NuxtLayout name="admin" title="Surveys">
-        <UiSurveyForm :formStatus="0"></UiSurveyForm>
+      <UiSurveyForm :formStatus="0"></UiSurveyForm>
     </NuxtLayout>
   </div>
 </template>
 
-<script setup>
-
-</script>
+<script setup></script>
