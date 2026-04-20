@@ -1,0 +1,49 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: MASTER - SMARTER
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm   ci
+
+      - name: Generate static site
+        run: npm run generate
+        env:
+          # Add any public runtime env vars your app needs at build time, e.g.:
+          API_BASE_URL: https://api.hexabyt.com
+          CHATWOOT_TOKEN:
+          CHATWOOT_URL: https://app.chatwoot.com
+          NODE_ENV: production
+
+      - name: Deploy via FTP to SmarterASP.NET
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.SMARTERFTP_SERVER_LIVE }}        # e.g. ftp.domain.com or your SmarterASP FTP host
+          username: ${{ secrets.SMARTERFTP_USERNAME_LIVE }}    # SmarterASP FTP username
+          password: ${{ secrets.SMARTERFTP_PASSWORD_LIVE }}    # SmarterASP FTP password
+          local-dir: ./.output/public/             # Nuxt generate output directory
+          server-dir: /                    # Remote directory on SmarterASP.NET
+          dangerous-clean-slate: true              # Removes remote files not in local build (optional)
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
