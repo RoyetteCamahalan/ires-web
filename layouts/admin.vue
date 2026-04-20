@@ -23,6 +23,9 @@ const state = reactive({
     openHoverState: false
 })
 
+
+await useDataPreload.Run();
+
 const toggleSidebar = (value) =>{
     if(value)
         state.sidebarOpen = value

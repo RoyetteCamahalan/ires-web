@@ -2,11 +2,11 @@ import APIError from './APIError'
 import { useUserStore } from '@/store/user'
 
 class BaseAPIService{
-    async request(url: string, method: string, params: object = null): Promise<any> {
+    async request(url: string, method: string, params: any = null): Promise<any> {
         const runtimeConfig = useRuntimeConfig()
         const userStore = useUserStore()
         const _token = userStore.getToken
-        let config = null
+        let config = null as any
         if (method === 'GET') {
             // GET
             config = {
@@ -15,7 +15,7 @@ class BaseAPIService{
                 headers: {
                     Authorization: 'Bearer ' + _token,
                 },
-                async onRequest({ request, options }) {
+                async onRequest({ request: any, options }: { request: any, options: any }) {
                     options.params = params
                 }
             }
@@ -32,7 +32,7 @@ class BaseAPIService{
         }
         try {
             return await $fetch(url, config)
-        } catch (error) {
+        } catch (error: any) {
             if(error.response){
                 switch (error.response.status) {
                     case 400:
@@ -64,3 +64,4 @@ class BaseAPIService{
 }
 
 export default BaseAPIService
+export const api = new BaseAPIService()

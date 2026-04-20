@@ -1,3 +1,142 @@
+<script setup lang="ts">
+  import { reactive, computed } from 'vue'
+  import { useVuelidate } from '@vuelidate/core'
+  import { required, minValue, helpers, numeric, requiredIf } from '@vuelidate/validators'
+  import { expenseService } from '@/components/api/ExpenseService'
+  import { accountService } from '@/components/api/AccountService'
+  import { useExpenseStore } from '@/store/expense'
+import { useOfficeStore } from '~/store/office'
+  import { useUserStore } from '@/store/user'
+  import moment from 'moment'
+import { storeToRefs } from 'pinia'
+          
+  const currentDate = new Date();
+  const officeStore = useOfficeStore()
+  const expenseStore = useExpenseStore()
+  const userStore = useUserStore();
+  const user = userStore.getUser as any;
+
+  const props = defineProps({
+    formStatus:{
+      type: Number,
+      required: false,
+      default: 0   
+    }
+  })
+
+  const { offices } = storeToRefs(officeStore)
+  const state = reactive({
+      error: '',
+      isPageLoading: false,
+      data: {
+        expenseid: 0,
+        accountid: null,
+        expensetypeid: null,
+        refno: '',
+        refdate: moment(currentDate).format('YYYY-MM-DD'),
+        amount: 0,
+        memo: '',
+        payeeid: null,
+        usepettycash: true
+      } as any,
+      vendor: null,
+      newVendorID: null,
+      currentBalance: 0,
+      isFetchingBalance: false,
+      modalVendorShow: false,
+  })
+
+  const activeOffices = computed(() => {
+    return offices.value.filter((office: any) => office.isactive)
+  })
+  
+  const isValidAccountBalance = () => {
+    return props.formStatus === 1 || !state.data.usepettycash || (props.formStatus === 0 && state.data.usepettycash && state.currentBalance >= state.data.amount)
+  }
+  const validators = computed(() =>{
+    return {
+      data: {
+        payeeid: { required: helpers.withMessage('This field is required.', required) },
+        expensetypeid: { required: helpers.withMessage('This field is required.', required) },
+        accountid: { required: helpers.withMessage('This field is required.', required) },
+        refno: { required: helpers.withMessage('This field is required.', required) },
+        amount: { 
+          numeric: helpers.withMessage('Invalid input.', numeric),
+          minValue: helpers.withMessage('This field is required.', minValue(1)) 
+        },
+      },
+      currentBalance: { isValidRefAccount: helpers.withMessage('Insufficient Balance, Please cash in or uncheck `From Petty Cash`', isValidAccountBalance) },
+    }
+  })
+  
+  const v$ = useVuelidate(validators, state)
+
+
+  onMounted(() =>{
+    if(props.formStatus === 1)
+      loadRecord()
+  })
+
+  watch(() => state.data.accountid, () => {
+    if(state.data.accountid > 0)
+        getOfficeBalance()
+    })
+
+
+    async function getOfficeBalance(){
+    state.isFetchingBalance = true
+        try{
+            const response = await accountService.getOffice(state.data.accountid)
+            state.currentBalance = response.data.pettycashbalance
+        }catch(error: any){
+            state.error = error.message
+        }
+        state.isFetchingBalance = false
+    }
+
+  async function loadRecord(){
+    state.isPageLoading = true
+    try{
+      const response = await expenseService.get(expenseStore.getSelectedID)
+      response.data.refdate = moment(response.data.refdate).format('YYYY-MM-DD')
+      state.vendor = response.data.vendor
+      state.data = response.data
+    }catch(error){
+        state.error = error.message
+    }
+    state.isPageLoading = false
+  }
+
+  function onCloseVendor(id = 0, name = ''){
+    if(id > 0){
+      state.data.payeeid = id;
+      state.vendor = {
+        vendorid: id,
+        vendorname: name
+      }
+    }
+    state.modalVendorShow = false;
+  }
+
+  const submit = async () => {
+    v$.value.$validate()
+    if(!v$.value.$error){
+        state.isPageLoading = true;
+        try{
+          if(props.formStatus === 0)
+            await expenseService.create(state.data)
+          else
+            await expenseService.update(state.data)
+          navigateTo('/expenses')
+        }
+        catch(error: any){
+            state.error = error.message
+        }
+        state.isPageLoading = false;
+    }
+  }
+</script>
+  
 <template>
     <div>
         <LoadingSpinner :isActive="state.isPageLoading">
@@ -24,19 +163,32 @@
                         </div>
                         <div class="col-span-6 sm:col-span-3">
                             <div class="grid grid-cols-6 gap-4">
-                                <div class="col-span-6 sm:col-span-4">
+                                <div class="col-span-6"
+                                  :class="(user.companyid !==15 || user.isappsysadmin) ? 'sm:col-span-4' : ''">
                                     <FormLabel for="office" label="Office" />
-                                    <div class="relative">
-                                        <FormSelectOffice v-model="state.data.accountid" class="pr-16"></FormSelectOffice>
-                                        <a 
-                                            href="/masterfiles/offices" target="_blank"
-                                            class="flex items-center absolute inset-y-0 right-0 px-3 text-sm text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-r-md hover:bg-blue-700">
-                                            Manage
-                                        </a>
-                                    </div>
+                                    <InputGroup>
+                                        <Select
+                                            v-model="state.data.accountid"
+                                            :options="activeOffices"
+                                            optionValue="accountid"
+                                            optionLabel="accountname"
+                                            size="small"
+                                            />
+                                        <InputGroupAddon
+                                            v-if="user.companyid !==15 || user.isappsysadmin">
+                                            <Button 
+                                                as="a" 
+                                                label="Manage" 
+                                                href="/masterfiles/offices" 
+                                                target="_blank" 
+                                                rel="noopener"
+                                                size="small"
+                                                />
+                                        </InputGroupAddon>
+                                    </InputGroup>
                                     <FormError :error="v$.data.accountid && v$.data.accountid.$errors && v$.data.accountid.$errors.length > 0 ? v$.data.accountid.$errors[0].$message : null "/>
                                 </div>
-                                <div class="col-span-6 sm:col-span-2">
+                                <div v-if="user.companyid !==15 || user.isappsysadmin" class="col-span-6 sm:col-span-2">
                                     <FormLabel for="currentbalance" label="Petty Cash Balance" />
                                     <LoadingSpinner :isActive="state.isFetchingBalance">
                                         <FormNumberField name="currentbalance" placeholder="Current Balance" class="text-right cursor-not-allowed bg-blue-50" v-model="state.currentBalance" readonly></FormNumberField>
@@ -100,131 +252,3 @@
         </LoadingSpinner>
     </div>
   </template>
-  
-  <script setup>
-  import { reactive, computed } from 'vue'
-  import { useVuelidate } from '@vuelidate/core'
-  import { required, minValue, helpers, numeric, requiredIf } from '@vuelidate/validators'
-  import { expenseService } from '@/components/api/ExpenseService'
-  import { accountService } from '@/components/api/AccountService'
-  import { useExpenseStore } from '@/store/expense'
-  import moment from 'moment'
-          
-  const currentDate = new Date();
-  const expenseStore = useExpenseStore()
-
-  const props = defineProps({
-    formStatus:{
-      type: Number,
-      required: false,
-      default: 0   
-    }
-  })
-  const state = reactive({
-      error: '',
-      isPageLoading: false,
-      data: {
-        expenseid: 0,
-        accountid: null,
-        expensetypeid: null,
-        refno: '',
-        refdate: moment(currentDate).format('YYYY-MM-DD'),
-        amount: 0,
-        memo: '',
-        payeeid: null,
-        usepettycash: true
-      },
-      vendor: null,
-      newVendorID: null,
-      currentBalance: 0,
-      isFetchingBalance: false,
-      modalVendorShow: false,
-  })
-  
-  const isValidAccountBalance = () => {
-    return props.formStatus === 1 || !state.data.usepettycash || (props.formStatus === 0 && state.data.usepettycash && state.currentBalance >= state.data.amount)
-  }
-  const validators = computed(() =>{
-    return {
-      data: {
-        payeeid: { required: helpers.withMessage('This field is required.', required) },
-        expensetypeid: { required: helpers.withMessage('This field is required.', required) },
-        accountid: { required: helpers.withMessage('This field is required.', required) },
-        refno: { required: helpers.withMessage('This field is required.', required) },
-        amount: { 
-          numeric: helpers.withMessage('Invalid input.', numeric),
-          minValue: helpers.withMessage('This field is required.', minValue(1)) 
-        },
-      },
-      currentBalance: { isValidRefAccount: helpers.withMessage('Insufficient Balance, Please cash in or uncheck `From Petty Cash`', isValidAccountBalance) },
-    }
-  })
-  
-  const v$ = useVuelidate(validators, state)
-
-
-  onMounted(() =>{
-    if(props.formStatus === 1)
-      loadRecord()
-  })
-
-  watch(() => state.data.accountid, () => {
-    if(state.data.accountid > 0)
-        getOfficeBalance()
-    })
-
-
-    async function getOfficeBalance(){
-    state.isFetchingBalance = true
-        try{
-            const response = await accountService.getOffice(state.data.accountid)
-            state.currentBalance = response.data.pettycashbalance
-        }catch(error){
-            state.error = error.message
-        }
-        state.isFetchingBalance = false
-    }
-
-  async function loadRecord(){
-    state.isPageLoading = true
-    try{
-      const response = await expenseService.get(expenseStore.getSelectedID)
-      response.data.refdate = moment(response.data.refdate).format('YYYY-MM-DD')
-      state.vendor = response.data.vendor
-      state.data = response.data
-    }catch(error){
-        state.error = error.message
-    }
-    state.isPageLoading = false
-  }
-
-  function onCloseVendor(id = 0, name = ''){
-    if(id > 0){
-      state.data.payeeid = id;
-      state.vendor = {
-        vendorid: id,
-        vendorname: name
-      }
-    }
-    state.modalVendorShow = false;
-  }
-
-  const submit = async () => {
-    v$.value.$validate()
-    if(!v$.value.$error){
-        state.isPageLoading = true;
-        try{
-          if(props.formStatus === 0)
-            await expenseService.create(state.data)
-          else
-            await expenseService.update(state.data)
-          navigateTo('/expenses')
-        }
-        catch(error){
-            state.error = error.message
-        }
-        state.isPageLoading = false;
-    }
-  }
-</script>
-  

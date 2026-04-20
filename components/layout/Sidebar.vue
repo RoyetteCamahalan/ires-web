@@ -1,3 +1,61 @@
+<script setup lang="ts">
+import { reactive } from 'vue'
+import { useUserStore } from '@/store/user'
+import { usePrefStore } from '@/store/pref'
+
+const userStore = useUserStore();
+const user = userStore.getUser as any
+const prefStore = usePrefStore()
+
+const route = useRoute()
+
+const activeMenu = 'bg-blue-500 text-white'
+
+const props = defineProps({
+  sidebarOpen:{
+    type: Boolean,
+    required: true
+  },
+  openHoverState:{
+    type: Boolean,
+    required: true
+  }
+})
+
+const state = reactive({
+  searchString: '',
+  isSurveying: (user.company.planid >= 0 && user.company.planid <= 3) || user.company.planid == 9,
+  isRental: (user.company.planid >= 6 && user.company.planid <= 9) || user.company.planid == 9
+})
+
+const menuGroups: any = [
+  { 
+    group: 'Main',
+    items: [
+      { name: 'Dashboard', icon: 'material-symbols:home-outline-rounded', link: '/dashboard' },
+      { name: 'Surveys', icon: 'icon-park-outline:land-surveying', link: '/surveys', isVisible: state.isSurveying },
+      { name: 'Rental Contracts', icon: 'tabler:contract', link: '/rentals', isVisible: state.isRental },
+      { name: 'Buildings', icon: 'material-symbols:home-work-outline-rounded', link: '/properties', isVisible: state.isRental },
+      { name: 'Payments', icon: 'material-symbols:payments-outline', link: '/payments', isVisible: state.isSurveying || state.isRental },
+      { name: 'Credit Memo', icon: 'ri:discount-percent-line', link: '/creditmemo', isVisible: state.isSurveying || state.isRental },
+      { name: 'Clients', icon: 'ph:users-three', link: '/clients', isVisible: state.isSurveying || state.isRental },
+    ]
+  },  
+  { 
+    group: 'Finance',
+    items: [
+      { name: 'Expenses', icon: 'solar:bill-check-outline', link: '/expenses' },
+      { name: 'Petty Cash', icon: 'streamline:money-cash-bag-dollar-bag-payment-cash-money-finance', link: '/pettycash', isVisible: user && (user.companyid !==15 || user.isappsysadmin) },
+
+    ]
+  }
+];
+
+watch(() => state.searchString, (data)=>{
+  prefStore.setSearchString(data)
+})
+</script>
+
 <template>
   <aside
     id="sidebar"
@@ -28,204 +86,86 @@
                 </div>
               </form>
             </li>
-            <li>
-              <div class="bg-white rounded-t-lg text-dark-500">
-                <a href="/dashboard"
-                  :class="route.path === '/dashboard' ? activeMenu : 'hover:bg-gray-100'"
-                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200 "
-                  sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-md shadow-gray-300 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="material-symbols:home-outline-rounded" class="w-4 h-4 text-gray-800"></Icon>
+            <template v-for="(menuGroup, index) in menuGroups" :key="index">
+              <li v-if="menuGroup.group" class="mt-2">
+                <div class="bg-white text-sm pl-2 pt-4">{{ menuGroup.group }}</div>
+              </li>
+              <template v-for="(menuItem, idx) in menuGroup.items" :key="idx">
+                <li v-if="menuItem.isVisible === undefined || menuItem.isVisible">
+                  <div class="bg-white rounded-t-lg text-dark-500">
+                    <NuxtLink :to="menuItem.link"
+                      :class="route.path === menuItem.link ? activeMenu : 'hover:bg-gray-100'"
+                      class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200 "
+                      sidebar-toggle-collapse="">
+                      <div class="bg-white shadow-md shadow-gray-300 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
+                        <Icon :name="menuItem.icon" class="w-4 h-4 text-gray-800"></Icon>
+                      </div>
+                      <span class="ml-3 text-dark-500 text-sm">{{ menuItem.name }}</span>
+                    </NuxtLink>
                   </div>
-                  <span class="ml-3 text-dark-500 text-sm">Dashboard</span>
-                </a>
-              </div>
-            </li>
-            <li v-if="state.isSurveying">
-              <div class="bg-white rounded-t-lg text-dark-500">
-                <a href="/surveys"
-                  :class="route.path === '/surveys' ? activeMenu : 'hover:bg-gray-100'"
-                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
-                  sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="icon-park-outline:land-surveying" class="w-4 h-4 text-gray-800"></Icon>
-                  </div>
-                  <span class="ml-3 text-dark-500 text-sm">Surveys</span>
-                </a>
-              </div>
-            </li>
-            <li v-if="state.isRental">
-              <div class="bg-white rounded-t-lg text-dark-500">
-                <a href="/rentals"
-                  :class="route.path === '/rentals' ? activeMenu : 'hover:bg-gray-100'"
-                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
-                  sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="tabler:contract" class="w-4 h-4 text-gray-800"></Icon>
-                  </div>
-                  <span class="ml-3 text-dark-500 text-sm">Rental Contracts</span>
-                </a>
-              </div>
-            </li>
-            <li v-if="state.isRental">
-              <div class="bg-white rounded-t-lg text-dark-500">
-                <a href="/properties"
-                  :class="route.path === '/properties' ? activeMenu : 'hover:bg-gray-100'"
-                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
-                  sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="material-symbols:home-work-outline-rounded" class="w-4 h-4 text-gray-800"></Icon>
-                  </div>
-                  <span class="ml-3 text-dark-500 text-sm">Buildings</span>
-                </a>
-              </div>
-            </li>
-            <li v-if="state.isSurveying || state.isRental">
-              <div class="bg-white rounded-t-lg text-dark-500">
-                <a href="/payments"
-                  :class="route.path === '/payments' ? activeMenu : 'hover:bg-gray-100'"
-                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
-                  sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="material-symbols:payments-outline" class="w-4 h-4 text-gray-800"></Icon>
-                  </div>
-                  <span class="ml-3 text-dark-500 text-sm">Payments</span>
-                </a>
-              </div>
-            </li>
-            <li v-if="state.isSurveying || state.isRental">
-              <div class="bg-white rounded-t-lg text-dark-500">
-                <a href="/creditmemo"
-                  :class="route.path === '/creditmemo' ? activeMenu : 'hover:bg-gray-100'"
-                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
-                  sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="ri:discount-percent-line" class="w-4 h-4 text-gray-800"></Icon>
-                  </div>
-                  <span class="ml-3 text-dark-500 text-sm">Credit Memo</span>
-                </a>
-              </div>
-            </li>
-            <li v-if="state.isSurveying || state.isRental">
-              <div class="bg-white rounded-t-lg text-dark-500">
-                <a href="/clients"
-                  :class="route.path === '/clients' ? activeMenu : 'hover:bg-gray-100'"
-                  class="flex items-center py-2.5 px-4 text-base font-normal text-dark-500 rounded-lg group transition-all duration-200"
-                  sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="ph:users-three" class="w-4 h-4 text-gray-800"></Icon>
-                  </div>
-                  <span class="ml-3 text-dark-500 text-sm">Clients</span>
-                </a>
-              </div>
-            </li>
-            <li>
-              <div class="bg-white text-sm pl-2 pt-4">Finance</div>
-            </li>
-            <li>
-              <div class="bg-white rounded-t-lg text-dark-500">
-                <a href="/expenses"
-                  :class="route.path === '/expenses' ? activeMenu : 'hover:bg-gray-100'"
-                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
-                  sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="solar:bill-check-outline" class="w-4 h-4 text-gray-800"></Icon>
-                  </div>
-                  <span class="ml-3 text-dark-500 text-sm">Expenses</span>
-                </a>
-              </div>
-            </li>
-            <!-- <li>
-              <div class="bg-white rounded-t-lg text-dark-500">
-                <a href="/accountspayable"
-                  :class="route.path === '/accountspayable' ? activeMenu : 'hover:bg-gray-100'"
-                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
-                  sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="solar:bill-broken" class="w-4 h-4 text-gray-800"></Icon>
-                  </div>
-                  <span class="ml-3 text-dark-500 text-sm">Accounts Payable</span>
-                </a>
-              </div>
-            </li> -->
-            <li>
-              <div class="bg-white rounded-t-lg text-dark-500">
-                <a href="/pettycash"
-                  :class="route.path === '/pettycash' ? activeMenu : 'hover:bg-gray-100'"
-                  class="flex items-center py-2.5 px-4 text-base font-normal rounded-lg group transition-all duration-200"
-                  sidebar-toggle-collapse="">
-                  <div class="bg-white shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2 mr-1 rounded-lg text-center grid place-items-center">
-                    <Icon name="streamline:money-cash-bag-dollar-bag-payment-cash-money-finance" class="w-4 h-4 text-gray-800"></Icon>
-                  </div>
-                  <span class="ml-3 text-dark-500 text-sm">Petty Cash</span>
-                </a>
-              </div>
-            </li>
+                </li>
+              </template>
+            </template>
             <li v-if="user.isappsysadmin">
               <LayoutSidebarToggleMenu title="Master Files" iconname="material-symbols:file-copy-outline">
                 <li v-if="state.isSurveying || state.isRental">
-                  <a
-                    href="/masterfiles/banks"
+                  <NuxtLink
+                    to="/masterfiles/banks"
                     class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
-                    ><span>Banks/e-Wallets</span></a
-                  >
+                    ><span>Banks/e-Wallets</span>
+                  </NuxtLink>
                 </li>
                 <li v-if="state.isSurveying || state.isRental">
-                  <a
-                    href="/masterfiles/bankaccounts"
+                  <NuxtLink
+                    to="/masterfiles/bankaccounts"
                     class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
-                    ><span>Bank Accounts</span></a>
+                    ><span>Bank Accounts</span></NuxtLink>
                 </li>
                 <li v-if="state.isSurveying || state.isRental">
-                  <a
-                    href="/masterfiles/creditmemotypes"
+                  <NuxtLink
+                    to="/masterfiles/creditmemotypes"
                     class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
-                    ><span>Credit Types</span></a>
+                    ><span>Credit Types</span></NuxtLink>
                 </li>
                 <li>
-                  <a
-                    href="/masterfiles/expensetypes"
+                  <NuxtLink
+                    to="/masterfiles/expensetypes"
                     class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
-                    ><span>Expense Types</span></a
-                  >
+                    ><span>Expense Types</span></NuxtLink>
                 </li>
                 <li>
-                  <a
-                    href="/masterfiles/offices"
+                  <NuxtLink
+                    to="/masterfiles/offices"
                     class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
-                    ><span>Offices</span></a
-                  >
+                    ><span>Offices</span></NuxtLink>
                 </li>
                 <li>
-                  <a
-                    href="/masterfiles/otherfees"
+                  <NuxtLink
+                    to="/masterfiles/otherfees"
                     class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
-                    ><span>Other Fees</span></a
-                  >
+                    ><span>Other Fees</span></NuxtLink>
                 </li>
                 <li v-if="user.isappsysadmin">
-                  <a
-                    href="/users"
+                  <NuxtLink
+                    to="/users"
                     class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
-                    ><span>Users</span></a
-                  >
+                    ><span>Users</span></NuxtLink>
                 </li>
                 <li>
-                  <a
-                    href="/masterfiles/vendors"
+                  <NuxtLink
+                    to="/masterfiles/vendors"
                     class="text-sm text-dark-500 rounded-lg flex items-center p-2 group hover:bg-gray-200 transition duration-75 pl-11"
-                    ><span>Vendors</span></a
-                  >
+                    ><span>Vendors</span></NuxtLink>
                 </li>
               </LayoutSidebarToggleMenu>
             </li>
             <li>
-              <a
-                href="/faqs"
+              <NuxtLink
+                to="/faqs"
                 target="_blank"
                 class="block w-full mt-2 px-2 py-1 text-center bg-blue-50 text-blue-500 text-sm font-semibold rounded-full border border-blue-500">
                 Documentation
-              </a>
+              </NuxtLink>
             </li>
           </ul>
         </div>
@@ -233,38 +173,3 @@
     </div>
   </aside>
 </template>
-
-<script setup>
-import { reactive } from 'vue'
-import { useUserStore } from '@/store/user'
-import { usePrefStore } from '@/store/pref'
-
-const userStore = useUserStore();
-const user = userStore.getUser
-const prefStore = usePrefStore()
-
-const route = useRoute()
-
-const activeMenu = 'bg-blue-500 text-white'
-
-const props = defineProps({
-  sidebarOpen:{
-    type: Boolean,
-    required: true
-  },
-  openHoverState:{
-    type: Boolean,
-    required: true
-  }
-})
-
-const state = reactive({
-  searchString: '',
-  isSurveying: (user.company.planid >= 0 && user.company.planid <= 3) || user.company.planid == 9,
-  isRental: (user.company.planid >= 6 && user.company.planid <= 9) || user.company.planid == 9
-})
-
-watch(() => state.searchString, (data)=>{
-  prefStore.setSearchString(data)
-})
-</script>

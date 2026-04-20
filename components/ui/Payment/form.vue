@@ -1,183 +1,10 @@
-<template>
-    
-    <div>
-        <LoadingSpinner :isActive="state.isPageLoading">
-          <div class="mx-4 mt-2">
-              <NavigationBack url="/payments"></NavigationBack>
-              <div class="grid grid-cols-6 gap-4 p-3 mb-3 rounded-lg bg-white border">
-                  <div class="col-span-6 sm:col-span-4">
-                      <FormLabel for="client" label="Client" />
-                      <FormSelectClient v-model="state.payment.custid"></FormSelectClient>
-                        <FormError :error="v$.payment.custid && v$.payment.custid.$errors && v$.payment.custid.$errors.length > 0 ? v$.payment.custid.$errors[0].$message : null "/>
-                  </div>
-                  <div class="col-span-6 sm:col-span-2">
-                        <FormLabel for="paymentdate" label="Payment Date"/>
-                        <FormDateField name="paymentdate" placeholder="Payment" v-model="state.payment.paymentdate"/>
-                  </div>
-              </div>
-              
-              <div class="flex flex-col mt-2">
-                  <div class="w-full flex flex-row-reverse">
-                      <button type="button" class="inline-flex items-center py-2 px-2 text-xs font-medium text-center text-white rounded-lg bg-blue-500 shadow-md shadow-gray-300 hover:scale-[1.02] transition-transform"
-                          @click="addNew">
-                          <Icon name="material-symbols:add" class="-ml-1 w-5 h-5"></Icon>
-                          Add New
-                      </button>
-                  </div>
-              </div>
-              
-              <div class="flex flex-col my-3 mt-1 shadow-gray-200">
-                  <div class="inline-block min-w-full align-middle">
-                      <div class="rounded-2xl shadow-lg bg-white">
-                          <Table :columnHeaders="state.columnHeaders" :isLoading="false" :data="state.payment.payables"
-                              class="w-full whitespace-no-wrap">
-                              
-                              <template #body
-                                  v-if="!(state.payment.payables && state.payment.payables.length === 0)">
-                                  
-                                  <tr v-for="(payable, index) in state.payment.payables" :key="index" class="text-gray-700">
-                                      <td class="px-4 py-3 text-sm">
-                                          {{ payable.description }}
-                                      </td>
-                                      <td class="px-4 py-3 text-sm text-right">
-                                          {{ $formatAmount(payable.grossAmount) }}
-                                      </td>
-                                      <td class="px-4 py-3 text-sm text-right">
-                                          {{ $formatAmount(payable.balance) }}
-                                      </td>
-                                      <td class="pl-4 py-3 text-sm text-right">
-                                          <FormNumberField name="paymentamount" placeholder="Payment" class="text-right" v-model="payable.paymentAmount"></FormNumberField>
-                                          <FormError :error="payable.paymentAmount > payable.balance || payable.paymentAmount <= 0 ? 'Invalid input' : null "/>
-                                      </td>
-                                      <td class="p-4 py-3">
-                                          <button type="button" @click="removeItem(payable)">
-                                            <Icon name="material-symbols:delete" class="w-6 h-6 text-red-600"/>
-                                          </button>
-                                      </td>
-                                  </tr>
-                                  <tr class="text-gray-700">
-                                    <td class="px-4 py-3 text-sm text-right font-semibold" colspan="3">
-                                      Total Payment:
-                                    </td>
-                                    <td class="px-4 py-3 text-sm text-right font-semibold">
-                                      {{ $formatAmount(totalPayment) }}
-                                    </td>
-                                    <td class="p-4 py-3"></td>
-                                  </tr>
-                              </template>
-                          </Table>
-                      </div>
-                  </div>
-              </div>
-              <div class="flex flex-col p-3 mb-3 rounded-lg bg-white border">
-                  <div class="text-sm font-semibold">
-                    Payment Details
-                  </div>
-                  <div class="grid grid-cols-6 gap-4">
-                      <div class="col-span-6 sm:col-span-4">
-                            <FormLabel for="paymentmode" label="Payment Mode" />
-                            <FormSelect :options="state.paymentModes" :searchable="false" :canClear="false" v-model="state.payment.paymentmode"></FormSelect>
-                            <div v-if="state.payment.paymentmode === 1">
-                              <div class="grid grid-cols-6 gap-4">
-                                <div class="col-span-6 sm:col-span-3">
-                                    <FormLabel for="checkbank" label="Issuing Bank" />
-                                    <FormSelectBanks
-                                      v-model="state.payment.paymentCheckRequestDto.bankid"></FormSelectBanks>
-                                    <FormError :error="vCheck$.payment.paymentCheckRequestDto.bankid && vCheck$.payment.paymentCheckRequestDto.bankid.$errors && vCheck$.payment.paymentCheckRequestDto.bankid.$errors.length > 0 ? vCheck$.payment.paymentCheckRequestDto.bankid.$errors[0].$message : null "/>
-                                </div>
-                                <div class="col-span-6 sm:col-span-3">
-                                    <FormLabel for="checkno" label="Check No" />
-                                    <FormTextField name="checkno" placeholder="Check No" v-model="state.payment.paymentCheckRequestDto.checkno"></FormTextField>
-                                    <FormError :error="vCheck$.payment.paymentCheckRequestDto.checkno && vCheck$.payment.paymentCheckRequestDto.checkno.$errors && vCheck$.payment.paymentCheckRequestDto.checkno.$errors.length > 0 ? vCheck$.payment.paymentCheckRequestDto.checkno.$errors[0].$message : null "/>
-                                </div>
-                              </div>
-                              <div class="grid grid-cols-6 gap-4">
-                                  <div class="col-span-6 sm:col-span-3">
-                                    <FormLabel for="checkdate" label="Check Date"/>
-                                    <FormDateField name="checkdate" placeholder="Check Date" v-model="state.payment.paymentCheckRequestDto.checkdate"/>
-                                  </div>
-                                  <div class="col-span-6 sm:col-span-3">
-                                    <FormLabel for="accno" label="Account #"/>
-                                    <FormTextField name="accno" placeholder="Account #" v-model="state.payment.paymentCheckRequestDto.accountnumber"></FormTextField>
-                                  </div>
-                              </div>
-                                
-                            </div>
-                            <div v-if="state.payment.paymentmode === 2">
-                              <FormLabel for="banks" label="Company Bank Account" />
-                              <div class="relative">
-                                <FormSelectBankaccounts 
-                                  :newAccountID="state.newBankAccountID"
-                                  v-model="state.payment.bankTransfer.accountid" class="pr-16" ></FormSelectBankaccounts>
-                                  <button 
-                                    @click="state.modalBankAccountShow = true"
-                                    class="absolute inset-y-0 right-0 px-3 text-sm font-medium text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-r-md hover:bg-blue-700">
-                                    Create
-                                  </button>
-                              </div>
-                              <FormError :error="vbankTransfer$.payment.bankTransfer.accountid && vbankTransfer$.payment.bankTransfer.accountid.$errors && vbankTransfer$.payment.bankTransfer.accountid.$errors.length > 0 ? vbankTransfer$.payment.bankTransfer.accountid.$errors[0].$message : null "/>
-                            </div>
-                            <div v-if="state.payment.paymentmode === 3">
-                              <FormLabel for="wallets" label="Wallet" />
-                              <FormSelectEwallets v-model="state.payment.bankTransfer.bankid"></FormSelectEwallets>
-                              <FormError :error="vbankTransfer$.payment.bankTransfer.bankid && vbankTransfer$.payment.bankTransfer.bankid.$errors && vbankTransfer$.payment.bankTransfer.bankid.$errors.length > 0 ? vbankTransfer$.payment.bankTransfer.bankid.$errors[0].$message : null "/>
-                            </div>
-                            <div v-if="state.payment.paymentmode === 2 || state.payment.paymentmode === 3">
-                              <div class="grid grid-cols-6 gap-4">
-                                <div class="col-span-6 sm:col-span-3">
-                                  <FormLabel for="transdate" label="Transaction Date" />
-                                  <FormDateField name="transdate" placeholder="Transaction Date" v-model="state.payment.bankTransfer.paymentdate"/>
-                                </div>
-                                <div class="col-span-6 sm:col-span-3">
-                                  <FormLabel for="refno" label="Reference #"/>
-                                  <FormTextField name="refno" placeholder="Reference #" v-model="state.payment.bankTransfer.refno"></FormTextField>
-                                  <FormError :error="vbankTransfer$.payment.bankTransfer.refno && vbankTransfer$.payment.bankTransfer.refno.$errors && vbankTransfer$.payment.bankTransfer.refno.$errors.length > 0 ? vbankTransfer$.payment.bankTransfer.refno.$errors[0].$message : null "/>
-                                </div>
-                              </div>
-                            </div>
-                            <FormLabel for="remarks" label="Remarks"/>
-                            <FormTextField name="remarks" placeholder="Remarks" v-model="state.payment.remarks"></FormTextField>
-                
-                            <FormError :error="state.error && state.error.length > 0 ? state.error : null "/>
-                      </div>
-                      <div class="col-span-6 sm:col-span-2 border-l pl-2">
-                            <LoadingSpinner :isActive="state.isReceiptLoading">
-                              <div v-if="user && (user.companyid !==15 || user.isappsysadmin)">
-                                <FormLabel for="receipttype" label="Receipt Type" />
-                                <FormSelect :options="state.receiptTypes" :searchable="false" v-model="state.payment.receipttype" :canClear="false"></FormSelect>
-                              </div>
-                              <FormError :error="v$.payment.receipttype && v$.payment.receipttype.$errors && v$.payment.receipttype.$errors.length > 0 ? v$.payment.receipttype.$errors[0].$message : null "/>
-                              <FormLabel for="receiptno" label="Receipt #"/>
-                              <FormNumberField name="receiptno" placeholder="Receipt #" v-model="state.payment.orno"></FormNumberField>
-                              <FormError :error="v$.payment.orno && v$.payment.orno.$errors && v$.payment.orno.$errors.length > 0 ? v$.payment.orno.$errors[0].$message : null "/>
-                            </LoadingSpinner>
-                            <FormLabel for="paidby" label="Paid By" />
-                            <FormTextField name="paidby" placeholder="If payment is made by other person." v-model="state.payment.paidby"></FormTextField>
-                            
-                            <div v-if="state.settings.autocashinaccountid_survey">
-                              <FormLabel for="office" label="Auto Cash-in Account" />
-                              <FormSelectOffice v-model="state.payment.autocashinaccountid" :isAccount="true" :canClear="true"></FormSelectOffice>
-                            </div>
-                      </div>  
-                  </div>
-              </div>
-          </div>
-          <NavigationBottomsave returnURL="/payments" @onSave="submit"></NavigationBottomsave>
-        </LoadingSpinner>
-        
-        <Modal title="Search Payables" :isShow="state.modalShow" @modalClose="modalClose">
-          <SearchPayables searchType="payables" :clientID="state.payment.custid" @modalClose="modalClose"></SearchPayables>
-        </Modal>
-        <Modal title="Create Bank Account" :isShow="state.modalBankAccountShow" @modalClose="modalBankAccountClose">
-          <UiBankAccountForm @modalClose="modalBankAccountClose"></UiBankAccountForm>
-        </Modal>
-    </div>
-</template>
+
 <script setup>
 import { reactive, computed, watch } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 import { required, minValue, helpers, numeric } from '@vuelidate/validators'
 import { useSearchStore } from '@/store/search';
+import { useOfficeStore } from '@/store/office';
 import { useUserStore } from '@/store/user'
 import moment from 'moment'
 import { paymentService } from '@/components/api/PaymentService'
@@ -188,6 +15,7 @@ const { $toastNotification } = useNuxtApp()
 
 const currentDate = new Date();
 const searchStore = useSearchStore()
+const officeStore = useOfficeStore()
 const user = useUserStore().getUser
 
 const props = defineProps({
@@ -436,3 +264,187 @@ async function submit(){
 }
   
   </script>
+
+<template>
+    
+    <div>
+        <LoadingSpinner :isActive="state.isPageLoading">
+          <div class="mx-4 mt-2">
+              <NavigationBack url="/payments"></NavigationBack>
+              <div class="grid grid-cols-6 gap-4 p-3 mb-3 rounded-lg bg-white border">
+                  <div class="col-span-6 sm:col-span-4">
+                      <FormLabel for="client" label="Client" />
+                      <FormSelectClient v-model="state.payment.custid"></FormSelectClient>
+                        <FormError :error="v$.payment.custid && v$.payment.custid.$errors && v$.payment.custid.$errors.length > 0 ? v$.payment.custid.$errors[0].$message : null "/>
+                  </div>
+                  <div class="col-span-6 sm:col-span-2">
+                        <FormLabel for="paymentdate" label="Payment Date"/>
+                        <FormDateField name="paymentdate" placeholder="Payment" v-model="state.payment.paymentdate"/>
+                  </div>
+              </div>
+              
+              <div class="flex flex-col mt-2">
+                  <div class="w-full flex flex-row-reverse">
+                      <button type="button" class="inline-flex items-center py-2 px-2 text-xs font-medium text-center text-white rounded-lg bg-blue-500 shadow-md shadow-gray-300 hover:scale-[1.02] transition-transform"
+                          @click="addNew">
+                          <Icon name="material-symbols:add" class="-ml-1 w-5 h-5"></Icon>
+                          Add New
+                      </button>
+                  </div>
+              </div>
+              
+              <div class="flex flex-col my-3 mt-1 shadow-gray-200">
+                  <div class="inline-block min-w-full align-middle">
+                      <div class="rounded-2xl shadow-lg bg-white">
+                          <Table :columnHeaders="state.columnHeaders" :isLoading="false" :data="state.payment.payables"
+                              class="w-full whitespace-no-wrap">
+                              
+                              <template #body
+                                  v-if="!(state.payment.payables && state.payment.payables.length === 0)">
+                                  
+                                  <tr v-for="(payable, index) in state.payment.payables" :key="index" class="text-gray-700">
+                                      <td class="px-4 py-3 text-sm">
+                                          {{ payable.description }}
+                                      </td>
+                                      <td class="px-4 py-3 text-sm text-right">
+                                          {{ $formatAmount(payable.grossAmount) }}
+                                      </td>
+                                      <td class="px-4 py-3 text-sm text-right">
+                                          {{ $formatAmount(payable.balance) }}
+                                      </td>
+                                      <td class="pl-4 py-3 text-sm text-right">
+                                          <FormNumberField name="paymentamount" placeholder="Payment" class="text-right" v-model="payable.paymentAmount"></FormNumberField>
+                                          <FormError :error="payable.paymentAmount > payable.balance || payable.paymentAmount <= 0 ? 'Invalid input' : null "/>
+                                      </td>
+                                      <td class="p-4 py-3">
+                                          <button type="button" @click="removeItem(payable)">
+                                            <Icon name="material-symbols:delete" class="w-6 h-6 text-red-600"/>
+                                          </button>
+                                      </td>
+                                  </tr>
+                                  <tr class="text-gray-700">
+                                    <td class="px-4 py-3 text-sm text-right font-semibold" colspan="3">
+                                      Total Payment:
+                                    </td>
+                                    <td class="px-4 py-3 text-sm text-right font-semibold">
+                                      {{ $formatAmount(totalPayment) }}
+                                    </td>
+                                    <td class="p-4 py-3"></td>
+                                  </tr>
+                              </template>
+                          </Table>
+                      </div>
+                  </div>
+              </div>
+              <div class="flex flex-col p-3 mb-3 rounded-lg bg-white border">
+                  <div class="text-sm font-semibold">
+                    Payment Details
+                  </div>
+                  <div class="grid grid-cols-6 gap-4">
+                      <div class="col-span-6 sm:col-span-4">
+                            <FormLabel for="paymentmode" label="Payment Mode" />
+                            <FormSelect :options="state.paymentModes" :searchable="false" :canClear="false" v-model="state.payment.paymentmode"></FormSelect>
+                            <div v-if="state.payment.paymentmode === 1">
+                              <div class="grid grid-cols-6 gap-4">
+                                <div class="col-span-6 sm:col-span-3">
+                                    <FormLabel for="checkbank" label="Issuing Bank" />
+                                    <FormSelectBanks
+                                      v-model="state.payment.paymentCheckRequestDto.bankid"></FormSelectBanks>
+                                    <FormError :error="vCheck$.payment.paymentCheckRequestDto.bankid && vCheck$.payment.paymentCheckRequestDto.bankid.$errors && vCheck$.payment.paymentCheckRequestDto.bankid.$errors.length > 0 ? vCheck$.payment.paymentCheckRequestDto.bankid.$errors[0].$message : null "/>
+                                </div>
+                                <div class="col-span-6 sm:col-span-3">
+                                    <FormLabel for="checkno" label="Check No" />
+                                    <FormTextField name="checkno" placeholder="Check No" v-model="state.payment.paymentCheckRequestDto.checkno"></FormTextField>
+                                    <FormError :error="vCheck$.payment.paymentCheckRequestDto.checkno && vCheck$.payment.paymentCheckRequestDto.checkno.$errors && vCheck$.payment.paymentCheckRequestDto.checkno.$errors.length > 0 ? vCheck$.payment.paymentCheckRequestDto.checkno.$errors[0].$message : null "/>
+                                </div>
+                              </div>
+                              <div class="grid grid-cols-6 gap-4">
+                                  <div class="col-span-6 sm:col-span-3">
+                                    <FormLabel for="checkdate" label="Check Date"/>
+                                    <FormDateField name="checkdate" placeholder="Check Date" v-model="state.payment.paymentCheckRequestDto.checkdate"/>
+                                  </div>
+                                  <div class="col-span-6 sm:col-span-3">
+                                    <FormLabel for="accno" label="Account #"/>
+                                    <FormTextField name="accno" placeholder="Account #" v-model="state.payment.paymentCheckRequestDto.accountnumber"></FormTextField>
+                                  </div>
+                              </div>
+                                
+                            </div>
+                            <div v-if="state.payment.paymentmode === 2">
+                              <FormLabel for="banks" label="Company Bank Account" />
+                              <div class="relative">
+                                <FormSelectBankaccounts 
+                                  :newAccountID="state.newBankAccountID"
+                                  v-model="state.payment.bankTransfer.accountid" class="pr-16" ></FormSelectBankaccounts>
+                                  <button 
+                                    @click="state.modalBankAccountShow = true"
+                                    class="absolute inset-y-0 right-0 px-3 text-sm font-medium text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-r-md hover:bg-blue-700">
+                                    Create
+                                  </button>
+                              </div>
+                              <FormError :error="vbankTransfer$.payment.bankTransfer.accountid && vbankTransfer$.payment.bankTransfer.accountid.$errors && vbankTransfer$.payment.bankTransfer.accountid.$errors.length > 0 ? vbankTransfer$.payment.bankTransfer.accountid.$errors[0].$message : null "/>
+                            </div>
+                            <div v-if="state.payment.paymentmode === 3">
+                              <FormLabel for="wallets" label="Wallet" />
+                              <FormSelectEwallets v-model="state.payment.bankTransfer.bankid"></FormSelectEwallets>
+                              <FormError :error="vbankTransfer$.payment.bankTransfer.bankid && vbankTransfer$.payment.bankTransfer.bankid.$errors && vbankTransfer$.payment.bankTransfer.bankid.$errors.length > 0 ? vbankTransfer$.payment.bankTransfer.bankid.$errors[0].$message : null "/>
+                            </div>
+                            <div v-if="state.payment.paymentmode === 2 || state.payment.paymentmode === 3">
+                              <div class="grid grid-cols-6 gap-4">
+                                <div class="col-span-6 sm:col-span-3">
+                                  <FormLabel for="transdate" label="Transaction Date" />
+                                  <FormDateField name="transdate" placeholder="Transaction Date" v-model="state.payment.bankTransfer.paymentdate"/>
+                                </div>
+                                <div class="col-span-6 sm:col-span-3">
+                                  <FormLabel for="refno" label="Reference #"/>
+                                  <FormTextField name="refno" placeholder="Reference #" v-model="state.payment.bankTransfer.refno"></FormTextField>
+                                  <FormError :error="vbankTransfer$.payment.bankTransfer.refno && vbankTransfer$.payment.bankTransfer.refno.$errors && vbankTransfer$.payment.bankTransfer.refno.$errors.length > 0 ? vbankTransfer$.payment.bankTransfer.refno.$errors[0].$message : null "/>
+                                </div>
+                              </div>
+                            </div>
+                            <FormLabel for="remarks" label="Remarks"/>
+                            <FormTextField name="remarks" placeholder="Remarks" v-model="state.payment.remarks"></FormTextField>
+                
+                            <FormError :error="state.error && state.error.length > 0 ? state.error : null "/>
+                      </div>
+                      <div class="flex flex-col col-span-6 sm:col-span-2 border-l pl-2">
+                            <LoadingSpinner :isActive="state.isReceiptLoading">
+                              <div v-if="user && (user.companyid !==15 || user.isappsysadmin)">
+                                <FormLabel for="receipttype" label="Receipt Type" />
+                                <FormSelect :options="state.receiptTypes" :searchable="false" v-model="state.payment.receipttype" :canClear="false"></FormSelect>
+                              </div>
+                              <FormError :error="v$.payment.receipttype && v$.payment.receipttype.$errors && v$.payment.receipttype.$errors.length > 0 ? v$.payment.receipttype.$errors[0].$message : null "/>
+                              <FormLabel for="receiptno" label="Receipt #"/>
+                              <FormNumberField name="receiptno" placeholder="Receipt #" v-model="state.payment.orno"></FormNumberField>
+                              <FormError :error="v$.payment.orno && v$.payment.orno.$errors && v$.payment.orno.$errors.length > 0 ? v$.payment.orno.$errors[0].$message : null "/>
+                            </LoadingSpinner>
+                            <FormLabel for="paidby" label="Paid By" />
+                            <FormTextField name="paidby" placeholder="If payment is made by other person." v-model="state.payment.paidby"></FormTextField>
+                            
+                            <div v-if="state.settings.autocashinaccountid_survey">
+                              <FormLabel for="office" label="Auto Cash-in Account" />
+                              <Select 
+                                v-model="state.payment.autocashinaccountid"
+                                :options="officeStore.activeOffices"
+                                optionLabel="accountname"
+                                optionValue="accountid"
+                                class="w-full"
+                                :showClear="true"
+                                size="small"
+                              />
+                            </div>
+                      </div>  
+                  </div>
+              </div>
+          </div>
+          <NavigationBottomsave returnURL="/payments" @onSave="submit"></NavigationBottomsave>
+        </LoadingSpinner>
+        
+        <Modal title="Search Payables" :isShow="state.modalShow" @modalClose="modalClose">
+          <SearchPayables searchType="payables" :clientID="state.payment.custid" @modalClose="modalClose"></SearchPayables>
+        </Modal>
+        <Modal title="Create Bank Account" :isShow="state.modalBankAccountShow" @modalClose="modalBankAccountClose">
+          <UiBankAccountForm @modalClose="modalBankAccountClose"></UiBankAccountForm>
+        </Modal>
+    </div>
+</template>
