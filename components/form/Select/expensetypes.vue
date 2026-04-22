@@ -1,55 +1,44 @@
-<template>
-  <Multiselect
-    :close-on-select="true"
-    :searchable="true"
-    :options="state.options"
-    :canClear="false"
-    :loading="state.isLoading"
-    noOptionsText="Expense Types list is empty"
-    placeholder="Select Expense Types"
-    class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus-:border-blue-400 focus:ring-2"
-  />
-</template>
-
 <script setup lang="ts">
-import Multiselect from "@vueform/multiselect";
-import "@vueform/multiselect/themes/default.css";
-import { expenseService } from "@/components/api/ExpenseService";
+import { useExpensesStore } from "~/store/expenses";
 
-const props = defineProps({
-  newID: {
-    type: Number,
-    required: false,
-    default: 0,
-  },
-});
-const state = reactive({
-  options: Array(),
-  isLoading: false,
-});
+const value = defineModel<number | null>({ default: null });
 
-onMounted(() => {
-  loadData();
-});
-watch(
-  () => props.newID,
-  async (newValue) => {
-    loadData();
+const props = withDefaults(
+  defineProps<{
+    showCreate?: boolean;
+    size?: string;
+  }>(),
+  {
+    showCreate: false,
+    size: "medium",
   },
 );
 
-async function loadData() {
-  state.isLoading = true;
-  try {
-    const response = await expenseService.getExpenseTypes(0, false, "");
-    state.options = [];
-    response.data.data.forEach((element: any) => {
-      state.options.push({
-        value: element.expensetypeid,
-        label: element.expensetypedesc,
-      });
-    });
-  } catch (error) {}
-  state.isLoading = false;
-}
+const expensesStore = useExpensesStore();
+const { activeExpenseTypes } = expensesStore;
 </script>
+
+<template>
+  <InputGroup>
+    <Select
+      v-model="value"
+      :options="activeExpenseTypes"
+      optionLabel="expensetypedesc"
+      optionValue="expensetypeid"
+      placeholder="Search Expense Type"
+      class="w-full"
+      :size="props.size"
+      fluid
+    />
+    <InputGroupAddon v-if="showCreate">
+      <Button
+        as="a"
+        label="Manage"
+        href="/masterfiles/expensetypes"
+        target="_blank"
+        rel="noopener"
+        :size="props.size"
+      />
+    </InputGroupAddon>
+  </InputGroup>
+</template>

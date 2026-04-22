@@ -1,4 +1,5 @@
 import { api } from "~/components/api/BaseAPIService";
+import { useExpensesStore } from "~/store/expenses";
 import { useOfficeStore } from "~/store/office";
 import { useUserStore } from "~/store/user";
 
@@ -10,9 +11,10 @@ class DataPreload {
 
     const storeMap = {
       officeStore: useOfficeStore(),
+      expensesStore: useExpensesStore(),
     } as any;
 
-    const preloads = ["officeStore.offices"];
+    const preloads = ["officeStore.offices", "expensesStore.expenseTypes"];
 
     try {
       const response = await api.request("company/preload", "GET");

@@ -91,3 +91,37 @@ export const parseTime = (time = "", callback: (date: Date) => void) => {
     }
   }, 700);
 };
+
+/**
+ * Converts a UTC date string to a local Date object.
+ * @param {string} dateString - The UTC date string.
+ * @returns {Date} - The local Date object.
+ */
+export const convertToLocalTime = (dateString: string) => {
+  const date = moment.utc(dateString);
+  return date.local().toDate();
+};
+
+//add function to format datetime to specific format, it should accept a date, format and bool convertToLocal as parameters
+export const formatDate = (
+  date: Date | string,
+  format: string = "YYYY-MM-DD HH:mm:ss",
+  convertToLocal = true,
+) => {
+  if (!isValidDate(date)) return "";
+  let momentDate = moment(date);
+  if (convertToLocal) {
+    momentDate = moment.utc(date).local();
+  }
+  return momentDate.format(format);
+};
+
+export const weekdayLabelMap = new Map([
+  [0, "Sunday"],
+  [1, "Monday"],
+  [2, "Tuesday"],
+  [3, "Wednesday"],
+  [4, "Thursday"],
+  [5, "Friday"],
+  [6, "Saturday"],
+]);

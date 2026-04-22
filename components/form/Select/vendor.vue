@@ -1,82 +1,126 @@
-<template>
-  <Multiselect
-    :close-on-select="true"
-    :searchable="true"
-    :options="state.options"
-    :canClear="true"
-    :loading="state.isLoading"
-    noOptionsText="Type to search vendor"
-    placeholder="Search Vendor"
-    v-on:search-change="searchChange"
-    class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus-:border-blue-400 focus:ring-2"
-  />
-</template>
-
 <script setup lang="ts">
-import Multiselect from "@vueform/multiselect";
-import "@vueform/multiselect/themes/default.css";
-import { expenseService } from "@/components/api/ExpenseService";
+import { useVendorStore } from "~/store/vendor";
+import { Vendor } from "~/types/entities";
 
-const props = defineProps({
-  defaultOption: {
-    type: Object,
-    required: false,
-    default: null,
+const value = defineModel<number | null>({ default: null });
+
+const props = withDefaults(
+  defineProps<{
+    defaultOption?: any;
+    showCreate?: boolean;
+    size?: string;
+  }>(),
+  {
+    defaultOption: null,
+    showCreate: false,
+    size: "",
   },
-});
+);
+
+const vendorStore = useVendorStore();
+
+const options: Ref<Vendor[]> = ref([]);
 const state = reactive({
-  options: Array(),
   isLoading: false,
+  modalVendorShow: false,
 });
+let timeout: ReturnType<typeof setTimeout> | null = null;
 
 onMounted(() => {
   if (props.defaultOption) {
-    state.options = [];
-    state.options.push({
-      value: props.defaultOption.vendorid,
-      label: props.defaultOption.vendorname,
-    });
+    options.value = [];
+    options.value.push(props.defaultOption);
   } else searchChange("");
 });
+
 watch(
   () => props.defaultOption,
-  async (newValue) => {
+  async () => {
     if (props.defaultOption) {
-      state.options = [];
-      state.options.push({
-        value: props.defaultOption.vendorid,
-        label: props.defaultOption.vendorname,
-      });
+      options.value = [];
+      options.value.push(props.defaultOption);
     }
   },
 );
 
+const onFilter = (event: { value: string }) => {
+  if (timeout) clearTimeout(timeout);
+
+  timeout = setTimeout(() => {
+    searchChange(event.value);
+  }, 500);
+};
+
 async function searchChange(query: string) {
   state.isLoading = true;
   try {
-    const response = await expenseService.getVendors(1, false, query);
-    state.options = [];
+    const response = await vendorStore.getVendors(1, false, query);
+    options.value = [];
+    console.log(response);
     if (props.defaultOption) {
-      state.options = [];
-      state.options.push({
-        value: props.defaultOption.vendorid,
-        label: props.defaultOption.vendorname,
-      });
+      options.value = [];
+      options.value.push(props.defaultOption);
     }
-    response.data.data.forEach((element: any) => {
+    response.forEach((vendor: Vendor) => {
       if (
         !(
           props.defaultOption &&
-          props.defaultOption.vendorid === element.vendorid
+          props.defaultOption.vendorid === vendor.vendorid
         )
       ) {
-        state.options.push({
-          value: element.vendorid,
-          label: element.vendorname,
-        });
+        options.value.push(vendor);
       }
     });
   } catch (error) {}
   state.isLoading = false;
 }
+
+const onCloseVendor = (id = 0, name = "") => {
+  if (id > 0) {
+    options.value.push({
+      vendorid: id,
+      vendorname: name,
+    } as Vendor);
+    value.value = id;
+  }
+
+  state.modalVendorShow = false;
+};
 </script>
+
+<template>
+  <InputGroup>
+    <Select
+      v-model="value"
+      :options="options"
+      optionLabel="vendorname"
+      optionValue="vendorid"
+      filter
+      placeholder="Search vendor"
+      :loading="state.isLoading"
+      @filter="onFilter"
+      :showClear="true"
+      class="w-full"
+      :size="size"
+    />
+    <InputGroupAddon v-if="showCreate">
+      <Button
+        label="Create"
+        @click="state.modalVendorShow = true"
+        :size="size"
+      />
+    </InputGroupAddon>
+  </InputGroup>
+
+  <Modal
+    title="Add New Record"
+    :isShow="state.modalVendorShow"
+    @modalClose="onCloseVendor"
+  >
+    <UiVendor
+      @modalClose="onCloseVendor"
+      :formStatus="0"
+      :selectedDataID="0"
+    ></UiVendor>
+  </Modal>
+</template>

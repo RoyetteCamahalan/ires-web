@@ -150,7 +150,11 @@
                           {{ notification.details }}
                         </div>
                         <div class="text-xs font-medium text-blue-500">
-                          {{ moment(notification.datecreated).fromNow() }}
+                          {{
+                            moment(
+                              convertToLocalTime(notification.datecreated),
+                            ).fromNow()
+                          }}
                         </div>
                       </div>
                     </button>

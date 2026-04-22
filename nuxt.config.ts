@@ -1,25 +1,23 @@
 import { definePreset } from "@primeuix/themes";
 import Aura from "@primeuix/themes/aura";
 
-import { parseTime } from "./utils/date";
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: false,
-  css: ["~/assets/css/main.css"],
+  css: ["primeicons/primeicons.css", "~/assets/css/main.css"],
+  modules: [
+    "@primevue/nuxt-module",
+    "@pinia/nuxt",
+    "@pinia-plugin-persistedstate/nuxt",
+    "@vueuse/sound/nuxt",
+    "nuxt-icon",
+  ],
   postcss: {
     plugins: {
       tailwindcss: {},
       autoprefixer: {},
     },
   },
-  modules: [
-    "@pinia/nuxt",
-    "@pinia-plugin-persistedstate/nuxt",
-    "@vueuse/sound/nuxt",
-    "nuxt-icon",
-    "@primevue/nuxt-module",
-  ],
   primevue: {
     options: {
       theme: {
@@ -40,29 +38,18 @@ export default defineNuxtConfig({
             },
           },
         }),
+        options: {
+          cssLayer: {
+            name: "primevue",
+            order: "tailwind-base, primevue, tailwind-utilities",
+          },
+        },
       },
       pt: {
         select: {
           optionLabel: {
             class: "!text-sm",
           },
-        },
-        datepicker: {
-          root: ({ instance, props }) => {
-            const inputFunction = instance.onInput;
-            instance.onInput = (event: any) => {
-              if (props.timeOnly) {
-                parseTime(event.target.value, (e) => {
-                  event.target.value = instance.formatTime(e);
-                  inputFunction.apply(this, [event]);
-                });
-              } else {
-                inputFunction.apply(this, [event]);
-              }
-            };
-          },
-          inputIcon: ({ props }) =>
-            (props.timeOnly ? "pi pi-clock" : "pi pi-calendar") + " ",
         },
       },
     },
@@ -92,17 +79,4 @@ export default defineNuxtConfig({
     },
     preset: "node-server",
   },
-  // chatwoot: {
-  //   init: {
-  //     websiteToken: 'UdjpiuCkqCHURfn2498Hc5HK'
-  //   },
-  //   settings: {
-  //     locale: 'en',
-  //     position: 'right',
-  //     launcherTitle: 'Chat With Us',
-  //     // ... and more settings
-  //   },
-  //   // If this is loaded you can make it true, https://github.com/nuxt-modules/partytown
-  //   partytown: false,
-  // }
 });

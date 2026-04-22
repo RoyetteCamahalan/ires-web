@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, watch } from "vue";
+import { useRoute } from "#imports";
 import { useUserStore } from "@/store/user";
 import { usePrefStore } from "@/store/pref";
+
+defineOptions({
+  name: "LayoutSidebar",
+});
 
 const userStore = useUserStore();
 const user = userStore.getUser as any;
@@ -11,7 +16,7 @@ const route = useRoute();
 
 const activeMenu = "bg-blue-500 text-white";
 
-const props = defineProps({
+defineProps({
   sidebarOpen: {
     type: Boolean,
     required: true,
@@ -83,6 +88,12 @@ const menuGroups: any = [
     group: "Finance",
     items: [
       { name: "Expenses", icon: "solar:bill-check-outline", link: "/expenses" },
+      {
+        name: "Billing Accounts",
+        icon: "material-symbols:account-balance-wallet-outline-rounded",
+        link: "/billing-accounts",
+        isNew: true,
+      },
       {
         name: "Petty Cash",
         icon: "streamline:money-cash-bag-dollar-bag-payment-cash-money-finance",
@@ -167,6 +178,11 @@ watch(
                       <span class="ml-3 text-dark-500 text-sm">{{
                         menuItem.name
                       }}</span>
+                      <Badge
+                        v-if="menuItem.isNew"
+                        value="Beta"
+                        class="ml-auto bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-0.5 rounded-full"
+                      ></Badge>
                     </NuxtLink>
                   </div>
                 </li>
