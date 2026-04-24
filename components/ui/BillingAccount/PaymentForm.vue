@@ -31,7 +31,7 @@ const { $toastNotification } = useNuxtApp();
 const billingAccountStore = useBillingAccountStore();
 
 const form = reactive<BillingAccountPaymentFormModel>(
-  createEmptyBillingAccountPaymentForm(props.account.id),
+  createEmptyBillingAccountPaymentForm(props.account.id, props.account.amount),
 );
 
 const paymentDateValue = ref<Date | null>(new Date());

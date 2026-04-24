@@ -70,12 +70,13 @@ export function createBillingAccountFormFromRecord(
 
 export function createEmptyBillingAccountPaymentForm(
   billingAccountId: number,
+  defaultAmount: number | null = null,
 ): BillingAccountPaymentFormModel {
   const today = formatDateForInput(new Date());
 
   return {
     billingAccountId,
-    amount: null,
+    amount: defaultAmount,
     paymentDate: today,
     periodFrom: today,
     periodTo: today,
