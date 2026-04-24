@@ -33,6 +33,10 @@ jobs:
           CHATWOOT_URL: https://app.chatwoot.com
           NODE_ENV: production
 
+      - name: Copy web.config into publish folder
+        run: copy web.config .output\public\web.config
+        shell: cmd
+
       - name: Deploy via FTP to SmarterASP.NET
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
