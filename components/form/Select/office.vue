@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useOfficeStore } from "~/store/office";
+import { useUserStore } from "~/store/user";
 
 const value = defineModel<number | null>({ default: null });
 
@@ -19,7 +20,9 @@ const props = withDefaults(
 );
 
 const officeStore = useOfficeStore();
+const userStore = useUserStore();
 const { activeOffices } = officeStore;
+const user = userStore.getUser as any;
 </script>
 
 <template>
@@ -34,7 +37,7 @@ const { activeOffices } = officeStore;
       :size="props.size"
       fluid
     />
-    <InputGroupAddon v-if="props.showCreate">
+    <InputGroupAddon v-if="props.showCreate && (user && (user.companyid !== 15 || user.isappsysadmin))">
       <Button
         as="a"
         label="Manage"
